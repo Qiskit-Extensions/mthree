@@ -1,0 +1,10 @@
+scipy>=1.3
+qiskit>=0.24
+pytest
+pylint
+pycodestyle
+Sphinx==3.3
+qiskit_sphinx_theme
+jupyter-sphinx
+nbsphinx
+psutil
