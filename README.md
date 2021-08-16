@@ -62,9 +62,9 @@ import mthree
 # Specify a mitigator object targeting a given backend
 mit = mthree.M3Mitigation(backend)
 
-# Compute the tensored 1Q calibration matrices for the given qubits and given number of shots
+# Compute the 1Q calibration matrices for the given qubits and given number of shots
 # By default it is over all backend qubits at 8192 shots.
-mit.tensored_cals_from_system(qubits, shots)
+mit.cals_from_system(qubits, shots)
 
 # Apply mitigation to a given dict of raw counts over the specified qubits
 m3_quasi = mit.apply_correction(raw_counts, qubits)
@@ -94,5 +94,4 @@ By default, M3 computes errors out to the full distance.
 
 ## License
 
-(C) Copyright IBM Quantum 2021.
-This code is for internal IBM Quantum use only.
+Apache 2.
