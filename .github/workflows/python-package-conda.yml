@@ -22,13 +22,14 @@ jobs:
       run: |
         conda config --set always_yes yes --set changeps1 no
         pip install -U -r requirements.txt
-        python setup.py install
     - name: Lint with pylint and pycodestyle
       run: |
         pip install -U -r requirements-dev.txt
+        python setup.py build_ext --inplace
         pylint -rn mthree
         pycodestyle --max-line-length=100 mthree
     - name: Run tests with pytest
       run: |
         conda install pytest
+        python setup.py install
         pytest -p no:warnings --pyargs mthree/test
