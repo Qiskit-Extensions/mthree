@@ -28,7 +28,7 @@ jobs:
         pip install -U -r requirements-dev.txt
         pylint -rn mthree
         pycodestyle --max-line-length=100 mthree
-    - name: Test no-Qiskit with pytest
+    - name: Run tests with pytest
       run: |
         conda install pytest
         pytest -p no:warnings --pyargs mthree/test
