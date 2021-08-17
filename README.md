@@ -6,13 +6,19 @@ M3 is a measurement mitigation technique that solves for corrected counts using 
 
 ## Installation
 
-Currently M3 needs to be installed from source:
+You can `pip` install M3 in serial mode using PyPi and a compiler via:
+
+```bash
+pip install m3
+```
+
+Alternatively, one can install from source:
 
 ```bash
 python setup.py install
 ```
 
-To enable openmp one must have an openmp enabled compiler and install with:
+To enable openmp one must have an openmp 3.0+ enabled compiler and install with:
 
 ```bash
 python setup.py install --with-openmp
@@ -69,6 +75,7 @@ mit.cals_from_system(qubits, shots)
 # Apply mitigation to a given dict of raw counts over the specified qubits
 m3_quasi = mit.apply_correction(raw_counts, qubits)
 ```
+
 Note that here `qubits` is a list of which qubits are measured to yield the bits in the output.
 For example the list `[4,3,1,2,0]` indicates that a measurement on physical qubit 4 was written to
 classical bit zero in the output bit-strings, physical qubit 3 maps to classical bit 1, etc.
@@ -90,6 +97,7 @@ allows for investigating if large weight errors have much impact on the output. 
 ```python
 m3_quasi = mit.apply_correction(raw_counts, qubits, distance=DIST)
 ```
+
 By default, M3 computes errors out to the full distance.
 
 ## License
