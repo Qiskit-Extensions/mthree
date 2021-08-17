@@ -102,4 +102,4 @@ By default, M3 computes errors out to the full distance.
 
 ## License
 
-Apache 2.
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
