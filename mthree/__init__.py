@@ -34,6 +34,6 @@ def about():
     """
     print('='*80)
     print('# Matrix-free Measurement Mitigation (M3) version {}'.format(__version__))
-    print('# (C) Copyright IBM Quantum, 2021')
-    print('# Paul Nation, Hwajung Kang, and Jay Gambetta')
+    print('# (C) Copyright IBM 2021.')
+    print('# Paul Nation, Hwajung Kang, Neereja Sundaresan, and Jay Gambetta')
     print('='*80)
