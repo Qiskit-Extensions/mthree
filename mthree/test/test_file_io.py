@@ -45,4 +45,4 @@ def test_load_cals_from_file():
             assert np.allclose(item, mit2.single_qubit_cals[idx])
 
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
-    assert mit2_counts not None
+    assert mit2_counts is not None
