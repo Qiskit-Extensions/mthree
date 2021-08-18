@@ -55,7 +55,7 @@ class ProbDistribution(dict):
         Returns:
             float: Standard deviation.
         """
-        return self.exp_val_and_stddev()[1]
+        return self.expval_and_stddev()[1]
 
     def expval_and_stddev(self):
         """Compute expectation value and standard deviation from distribution.
