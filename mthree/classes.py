@@ -72,6 +72,21 @@ class QuasiDistribution(dict):
         """
         return exp_val(self)
 
+    def stddev(self):
+        """Compute standard deviation estimate from distribution.
+
+        Returns:
+            float: Estimate of standard deviation upper-bound.
+
+        Raises:
+            M3Error: Missing shots or mitigation_overhead information.
+        """
+        if self.shots is None:
+            raise M3Error('Quasi-dist is missing shots information.')
+        if self.mitigation_overhead is None:
+            raise M3Error('Quasi-dist is missing mitigation overhead.')
+        return math.sqrt(self.mitigation_overhead / self.shots)
+
     def expval_and_stddev(self):
         """Compute expectation value and standard deviation estimate from distribution.
 
