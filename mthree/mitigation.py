@@ -263,6 +263,48 @@ class M3Mitigation():
         """Applies correction to given counts.
 
         Parameters:
+            counts (dict, list): Input counts dict or list of dicts.
+            qubits (array_like): Qubits on which measurements applied.
+            distance (int): Distance to correct for. Default=num_bits
+            method (str): Solution method: 'auto', 'iterative', 'direct'.
+            max_iter (int): Max. number of iterations, Default=25.
+            tol (float): Convergence tolerance of iterative method, Default=1e-5.
+            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
+            details (bool): Return extra info, default=False.
+
+        Returns:
+            QuasiDistribution or list: Dictionary of quasiprobabilities if
+                                       input is a single dict, else a list
+                                       of quasiprobabilities.
+
+        Raises:
+            M3Error: Bitstring length does not match number of qubits given.
+        """
+        given_list = False
+        if isinstance(counts, (list, np.ndarray)):
+            given_list = True
+        if not given_list:
+            counts = [counts]
+
+        quasi_out = [self._apply_correction(cnts, qubits=qubits,
+                                            distance=distance,
+                                            method=method,
+                                            max_iter=max_iter, tol=tol,
+                                            return_mitigation_overhead=return_mitigation_overhead,
+                                            details=details) for cnts in counts]
+
+        if not given_list:
+            return quasi_out[0]
+        return quasi_out
+
+    def _apply_correction(self, counts, qubits, distance=None,
+                          method='auto',
+                          max_iter=25, tol=1e-5,
+                          return_mitigation_overhead=False,
+                          details=False):
+        """Applies correction to given counts.
+
+        Parameters:
             counts (dict): Input counts dict.
             qubits (array_like): Qubits on which measurements applied.
             distance (int): Distance to correct for. Default=num_bits
@@ -273,7 +315,7 @@ class M3Mitigation():
             details (bool): Return extra info, default=False.
 
         Returns:
-            QuasiDistribution: Dictionary of mitigated counts as probabilities.
+            QuasiDistribution: Dictionary of quasiprobabilities.
 
         Raises:
             M3Error: Bitstring length does not match number of qubits given.
