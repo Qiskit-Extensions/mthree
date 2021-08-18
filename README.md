@@ -4,7 +4,7 @@
 
 Matrix-free Measurement Mitigation (M3).
 
-M3 is a measurement mitigation technique that solves for corrected counts using a dimensionality reduction step followed by either direct LU factorization or a precopnditioned iterative method that nominally converges in O(1) steps, and can be computed in parallel.  For example, M3 can compute corrections on 42 qubit GHZ problems in under two seconds on a quad-core machine (depending on the number of unique bitstrings in the output).
+M3 is a measurement mitigation technique that solves for corrected measurement probabilities using a dimensionality reduction step followed by either direct LU factorization or a preconditioned iterative method that nominally converges in O(1) steps, and can be computed in parallel.  For example, M3 can compute corrections on 42 qubit GHZ problems in under two seconds on a quad-core machine (depending on the number of unique bitstrings in the output).
 
 ## Installation
 
