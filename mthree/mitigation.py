@@ -205,10 +205,9 @@ class M3Mitigation():
         else:
             circs = []
             for kk in qubits:
-                circs.extend(_tensor_meas_states(kk, num_cal_qubits))
+                circs.extend(_tensor_meas_states(kk, self.num_qubits))
 
-            trans_qcs = transpile(circs, self.system,
-                                  initial_layout=qubits, optimization_level=0)
+            trans_qcs = transpile(circs, self.system, optimization_level=0)
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         counts = job.result().get_counts()
 
