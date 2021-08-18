@@ -131,8 +131,8 @@ class M3Mitigation():
             counts_file (str): Output path to write JSON calibration data to.
         """
         warnings.warn("This method is deprecated, use 'cals_from_system' instead.")
-        self.cals_from_system(qubits=qubits, method=method,
-                              shots=shots, rep_delay=rep_delay,
+        self.cals_from_system(qubits=qubits, shots=shots, method=method,
+                              rep_delay=rep_delay,
                               counts_file=counts_file)
 
     def cals_from_system(self, qubits=None, shots=8192, method='independent',
@@ -150,7 +150,8 @@ class M3Mitigation():
             qubits = range(self.num_qubits)
         self.cal_method = method
         self.rep_delay = rep_delay
-        self._grab_additional_cals(qubits, method, shots, rep_delay)
+        self._grab_additional_cals(qubits, shots=shots,  method=method,
+                                   rep_delay=rep_delay)
         if counts_file:
             with open(counts_file, 'wb') as fd:
                 fd.write(orjson.dumps(self.single_qubit_cals,
