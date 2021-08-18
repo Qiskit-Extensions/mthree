@@ -10,7 +10,17 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
-"""mthree classes"""
+"""
+Distributions
+-------------
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   QuasiDistribution
+   ProbDistribution
+
+"""
 
 import math
 from mthree.probability import quasi_to_probs
@@ -22,7 +32,7 @@ class ProbDistribution(dict):
     """A generic dict-like class for probability distributions.
     """
     def __init__(self, data, shots=None):
-        """Initialize a probability distribution.
+        """A generic dict-like class for probability distributions.
 
         Parameters:
             data (dict): Input data.
@@ -53,7 +63,7 @@ class QuasiDistribution(dict):
     """A dict-like class for representing quasi-probabilities.
     """
     def __init__(self, data, shots=None, mitigation_overhead=None):
-        """Initialize a quasi-distribution.
+        """A dict-like class for representing quasi-probabilities.
 
         Parameters:
             data (dict): Input data.
