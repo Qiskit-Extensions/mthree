@@ -298,10 +298,10 @@ class M3Mitigation():
         return quasi_out
 
     def _apply_correction(self, counts, qubits, distance=None,
-                         method='auto',
-                         max_iter=25, tol=1e-5,
-                         return_mitigation_overhead=False,
-                         details=False):
+                          method='auto',
+                          max_iter=25, tol=1e-5,
+                          return_mitigation_overhead=False,
+                          details=False):
         """Applies correction to given counts.
 
         Parameters:
