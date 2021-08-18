@@ -119,14 +119,14 @@ class M3Mitigation():
         cals = self._form_cals(qubits)
         return sdd_check(counts, cals, num_bits, distance)
 
-    def tensored_cals_from_system(self, qubits=None, method='independent',
-                                  shots=8192, rep_delay=None, counts_file=None):
+    def tensored_cals_from_system(self, qubits=None, shots=8192,  method='independent',
+                                  rep_delay=None, counts_file=None):
         """Grab calibration data from system.
 
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
-            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             shots (int): Number of shots per circuit. Default is 8192.
+            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             counts_file (str): Output path to write JSON calibration data to.
         """
@@ -135,14 +135,14 @@ class M3Mitigation():
                               shots=shots, rep_delay=rep_delay,
                               counts_file=counts_file)
 
-    def cals_from_system(self, qubits=None, method='independent',
-                         shots=8192, rep_delay=None, counts_file=None):
+    def cals_from_system(self, qubits=None, shots=8192, method='independent',
+                         rep_delay=None, counts_file=None):
         """Grab calibration data from system.
 
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
-            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             shots (int): Number of shots per circuit. Default is 8192.
+            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             counts_file (str): Output path to write JSON calibration data to.
         """
@@ -174,13 +174,13 @@ class M3Mitigation():
         warnings.warn("This method is deprecated, use 'cals_from_file' instead.")
         self.cals_from_file(counts_file)
 
-    def _grab_additional_cals(self, qubits, method='independent', shots=8192, rep_delay=None):
+    def _grab_additional_cals(self, qubits, shots=8192, method='independent', rep_delay=None):
         """Grab missing calibration data from backend.
 
         Parameters:
             qubits (array_like): List of measured qubits.
-            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             shots (int): Number of shots to take.
+            method (str): Type of calibration, 'independent' (default) or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
 
         Raises:
