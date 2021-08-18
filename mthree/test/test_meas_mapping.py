@@ -1,4 +1,4 @@
-# This code is part of Qiskit.
+# This code is part of Mthree.
 #
 # (C) Copyright IBM 2021.
 #
