@@ -14,25 +14,25 @@
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
 from mthree.utils import final_measurement_mapping
 
-def test_empty_circ(self):
+def test_empty_circ():
     """Empty circuit has no mapping"""
     qc = QuantumCircuit()
     assert final_measurement_mapping(qc) == {}
 
-def test_simple_circ(self):
+def test_simple_circ():
     """Just measures"""
     qc = QuantumCircuit(5)
     qc.measure_all()
     assert final_measurement_mapping(qc) == {0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
 
-def test_simple2_circ(self):
+def test_simple2_circ():
     """Meas followed by Hadamards"""
     qc = QuantumCircuit(5)
     qc.measure_all()
     qc.h(range(5))
     assert final_measurement_mapping(qc) == {}
 
-def test_multi_qreg(self):
+def test_multi_qreg():
     """Test multiple qregs"""
     qr1 = QuantumRegister(2, "q1")
     qr2 = QuantumRegister(3, "q2")
@@ -47,7 +47,7 @@ def test_multi_qreg(self):
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
 
-def test_multi_creg(self):
+def test_multi_creg():
     """Test multiple qregs"""
     qr1 = QuantumRegister(2, "q1")
     qr2 = QuantumRegister(3, "q2")
