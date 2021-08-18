@@ -15,6 +15,60 @@ import numpy as np
 from mthree.classes import QuasiDistribution
 
 
+def final_measurement_mapping(circuit):
+    """Return the final measurement mapping for the circuit.
+
+    Dict keys label measured qubits, whereas the values indicate the
+    classical bit onto which that qubits measurement result is stored.
+
+    Parameters:
+        circuit (QuantumCircuit): Input Qiskit QuantumCircuit.
+
+    Returns:
+        dict: Mapping of qubits to classical bits for final measurements.
+    """
+    active_qubits = list(range(circuit.num_qubits))
+    active_cbits = list(range(circuit.num_clbits))
+
+    # Map registers to ints
+    qint_map = {}
+    for idx, qq in enumerate(circuit.qubits):
+        qint_map[qq] = idx
+
+    cint_map = {}
+    for idx, qq in enumerate(circuit.clbits):
+        cint_map[qq] = idx
+
+    # Find final measurements starting in back
+    qmap = []
+    cmap = []
+    for item in circuit._data[::-1]:
+        if item[0].name == "measure":
+            cbit = cint_map[item[2][0]]
+            qbit = qint_map[item[1][0]]
+            if cbit in active_cbits and qbit in active_qubits:
+                qmap.append(qbit)
+                cmap.append(cbit)
+                active_cbits.remove(cbit)
+                active_qubits.remove(qbit)
+        elif item[0].name != "barrier":
+            for qq in item[1]:
+                _temp_qubit = qint_map[qq]
+                if _temp_qubit in active_qubits:
+                    active_qubits.remove(_temp_qubit)
+
+        if not active_cbits or not active_qubits:
+            break
+    mapping = {}
+    if cmap and qmap:
+        for idx, qubit in enumerate(qmap):
+            mapping[qubit] = cmap[idx]
+
+    # Sort so that classical bits are in numeric order low->high.
+    mapping = dict(sorted(mapping.items(), key=lambda item: item[1]))
+    return mapping
+
+
 def counts_to_vector(counts):
     """ Return probability vector from counts dict.
 
