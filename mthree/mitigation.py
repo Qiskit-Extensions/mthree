@@ -186,8 +186,11 @@ class M3Mitigation():
             rep_delay (float): Delay between circuits on IBM Quantum backends.
 
         Raises:
+            M3Error: Backend not set.
             M3Error: Faulty qubits found.
         """
+        if self.system is None:
+            raise M3Error("System is not set.  Use 'cals_from_file'.")
         if self.single_qubit_cals is None:
             self.single_qubit_cals = [None]*self.num_qubits
         if self.cal_shots is None:
