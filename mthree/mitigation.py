@@ -55,7 +55,7 @@ def _marg_meas_states(num_qubits):
 
 class M3Mitigation():
     """Main M3 calibration class."""
-    def __init__(self, system, iter_threshold=4096):
+    def __init__(self, system=None, iter_threshold=4096):
         """Main M3 calibration class.
 
         Parameters:
@@ -152,7 +152,7 @@ class M3Mitigation():
         self.rep_delay = rep_delay
         self._grab_additional_cals(qubits, shots=shots,  method=method,
                                    rep_delay=rep_delay)
-        if counts_file:
+        if cals_file:
             with open(cals_file, 'wb') as fd:
                 fd.write(orjson.dumps(self.single_qubit_cals,
                                       option=orjson.OPT_SERIALIZE_NUMPY))
