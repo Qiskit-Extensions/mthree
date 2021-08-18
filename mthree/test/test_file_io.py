@@ -12,6 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test cals file IO"""
+import numpy as np
 from qiskit import QuantumCircuit, execute
 from qiskit.test.mock import FakeAthens
 import mthree
@@ -37,4 +38,9 @@ def test_load_cals_from_file():
     mit2.cals_from_file(cals_file='cals.json')
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
 
-    assert mit2_counts is not None
+    # check that cals are identical
+    for idx, item in mit.single_qubit_cals:
+        if item is None:
+            assert mit2.single_qubit_cals[idx] is None
+        else:
+            asset np.allclose(item, mit2.single_qubit_cals[idx])
