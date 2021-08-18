@@ -150,7 +150,7 @@ class M3Mitigation():
             qubits = range(self.num_qubits)
         self.cal_method = method
         self.rep_delay = rep_delay
-        self._grab_additional_cals(qubits, method, shots)
+        self._grab_additional_cals(qubits, method, shots, rep_delay)
         if counts_file:
             with open(counts_file, 'wb') as fd:
                 fd.write(orjson.dumps(self.single_qubit_cals,
@@ -205,7 +205,7 @@ class M3Mitigation():
         else:
             circs = []
             for kk in qubits:
-                circs.extend(_tensor_meas_states(kk, self.num_qubits))
+                circs.extend(_tensor_meas_states(kk, num_cal_qubits))
 
             trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
