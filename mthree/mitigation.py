@@ -136,7 +136,7 @@ class M3Mitigation():
                               counts_file=counts_file)
 
     def cals_from_system(self, qubits=None, shots=8192, method='independent',
-                         rep_delay=None, counts_file=None):
+                         rep_delay=None, cals_file=None):
         """Grab calibration data from system.
 
         Parameters:
@@ -144,7 +144,7 @@ class M3Mitigation():
             shots (int): Number of shots per circuit. Default is 8192.
             method (str): Type of calibration, 'independent' (default) or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
-            counts_file (str): Output path to write JSON calibration data to.
+            cals_file (str): Output path to write JSON calibration data to.
         """
         if qubits is None:
             qubits = range(self.num_qubits)
@@ -153,18 +153,19 @@ class M3Mitigation():
         self._grab_additional_cals(qubits, shots=shots,  method=method,
                                    rep_delay=rep_delay)
         if counts_file:
-            with open(counts_file, 'wb') as fd:
+            with open(cals_file, 'wb') as fd:
                 fd.write(orjson.dumps(self.single_qubit_cals,
                                       option=orjson.OPT_SERIALIZE_NUMPY))
 
-    def cals_from_file(self, counts_file):
+    def cals_from_file(self, cals_file):
         """Generated the calibration data from a previous runs output
 
-            counts_file (str): A string path to the saved counts file from an
-                earlier run.
+            cals_file (str): A string path to the saved counts file from an
+                             earlier run.
         """
-        with open(counts_file, 'r') as fd:
-            self.single_qubit_cals = np.array(orjson.loads(fd.read()))
+        with open(cals_file, 'r') as fd:
+            self.single_qubit_cals = [np.asarray(cal) if cal else None \
+                                        for cal in orjson.loads(fd.read())]
 
     def tensored_cals_from_file(self, counts_file):
         """Generated the tensored calibration data from a previous runs output
