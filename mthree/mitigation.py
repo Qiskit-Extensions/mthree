@@ -120,7 +120,7 @@ class M3Mitigation():
         return sdd_check(counts, cals, num_bits, distance)
 
     def tensored_cals_from_system(self, qubits=None, shots=8192,  method='independent',
-                                  rep_delay=None, counts_file=None):
+                                  rep_delay=None, cals_file=None):
         """Grab calibration data from system.
 
         Parameters:
@@ -128,12 +128,12 @@ class M3Mitigation():
             shots (int): Number of shots per circuit. Default is 8192.
             method (str): Type of calibration, 'independent' (default) or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
-            counts_file (str): Output path to write JSON calibration data to.
+            cals_file (str): Output path to write JSON calibration data to.
         """
         warnings.warn("This method is deprecated, use 'cals_from_system' instead.")
         self.cals_from_system(qubits=qubits, shots=shots, method=method,
                               rep_delay=rep_delay,
-                              counts_file=counts_file)
+                              cals_file=cals_file)
 
     def cals_from_system(self, qubits=None, shots=8192, method='independent',
                          rep_delay=None, cals_file=None):
@@ -167,14 +167,14 @@ class M3Mitigation():
             self.single_qubit_cals = [np.asarray(cal) if cal else None \
                                         for cal in orjson.loads(fd.read())]
 
-    def tensored_cals_from_file(self, counts_file):
+    def tensored_cals_from_file(self, cals_file):
         """Generated the tensored calibration data from a previous runs output
 
-            counts_file (str): A string path to the saved counts file from an
-                earlier run.
+            cals_file (str): A string path to the saved counts file from an
+                             earlier run.
         """
         warnings.warn("This method is deprecated, use 'cals_from_file' instead.")
-        self.cals_from_file(counts_file)
+        self.cals_from_file(cals_file)
 
     def _grab_additional_cals(self, qubits, shots=8192, method='independent', rep_delay=None):
         """Grab missing calibration data from backend.
