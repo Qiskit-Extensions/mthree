@@ -4,7 +4,7 @@
 
 Matrix-free Measurement Mitigation (M3).
 
-M3 is a measurement mitigation technique that solves for corrected measurement probabilities using a dimensionality reduction step followed by either direct LU factorization or a preconditioned iterative method that nominally converges in O(1) steps, and can be computed in parallel.  For example, M3 can compute corrections on 42 qubit GHZ problems in under two seconds on a quad-core machine (depending on the number of unique bitstrings in the output).
+M3 is a measurement mitigation technique that solves for corrected measurement probabilities using a dimensionality reduction step followed by either direct LU factorization or a preconditioned iterative method that nominally converges in O(1) steps, and can be computed in parallel. For example, M3 can compute corrections on 42 qubit GHZ problems in under two seconds on a quad-core machine (depending on the number of unique bitstrings in the output).
 
 ## Installation
 
@@ -63,6 +63,8 @@ CC=clang CXX=clang python setup.py install --with-openmp
 
 ## Usage
 
+### Basic usage
+
 M3 is simple to use:
 
 ```python
@@ -83,7 +85,25 @@ For example the list `[4,3,1,2,0]` indicates that a measurement on physical qubi
 classical bit zero in the output bit-strings, physical qubit 3 maps to classical bit 1, etc.
 The fact that the zeroth bit is right-most in the bitstring is handled internally.
 
-The results of M3 mitigation are quasi-probabilities that contain small negative values.
+### Error bounds
+
+It is possible to compute error bounds in a similarly efficient manner.  This is not done
+by default, but rather turned on using:
+
+```python
+m3_quasi = mit.apply_correction(raw_counts, qubits, return_mitigation_overhead=True)
+```
+
+Then the distribution itself can be called to return things like the expectation value and the
+standard deviation:
+
+```python
+expval, stddev = quasi.expval_and_stddev()
+```
+
+### Closest probability distribution
+
+The results of M3 mitigation are quasi-probabilities that nominally contain small negative values.
 This is suitable for use in computing corrected expectation values.  However, if one needs
 a true probability distribution then it is possible to convert from quasi-probabilites to
 the closest true probability distribution in L2-norm using:
@@ -92,15 +112,18 @@ the closest true probability distribution in L2-norm using:
 closest_probs = m3_quasi.nearest_probability_distribution()
 ```
 
-An additional benefit of the way M3 works is that it is possible to compute the effect of mitigation when only
-looking at errors that are up to a given Hamming distance away.  This slightly increases the computational cost, but
-allows for investigating if large weight errors have much impact on the output.  This can be controlled by the `distance` keyword argument in `apply_correction`:
+### Truncating based on Hamming distance
+
+An additional benefit of the way M3 works is that it is possible to compute the effect of
+mitigation when only looking at errors that are up to a given Hamming distance away.
+This allows for investigating if large weight errors have much impact on the output.  This can be controlled by the `distance` keyword argument in `apply_correction`:
 
 ```python
 m3_quasi = mit.apply_correction(raw_counts, qubits, distance=DIST)
 ```
 
-By default, M3 computes errors out to the full distance.
+By default, M3 computes errors out to the full distance.  At large numbers of unique bit-strings
+truncating to small Hamming distance can have some performance benefits.
 
 ## License
 
