@@ -21,6 +21,9 @@ def final_measurement_mapping(circuit):
     Dict keys label measured qubits, whereas the values indicate the
     classical bit onto which that qubits measurement result is stored.
 
+    Parameters:
+        circuit (QuantumCircuit): Input Qiskit QuantumCircuit.
+
     Returns:
         dict: Mapping of qubits to classical bits for final measurements.
     """
