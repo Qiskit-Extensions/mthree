@@ -17,8 +17,8 @@ from qiskit.test.mock import FakeAthens
 import mthree
 
 
-def test_athens_sim():
-    """A simple check that the full pipeline does not break"""
+def test_load_cals_from_file():
+    """Check the cals can be loaded from a saved file"""
     backend = FakeAthens()
 
     qc = QuantumCircuit(5)
@@ -37,4 +37,4 @@ def test_athens_sim():
     mit2.cals_from_file(cals_file='cals.json')
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
 
-    assert mit_counts is not None
+    assert mit2_counts is not None
