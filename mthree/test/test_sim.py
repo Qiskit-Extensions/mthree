@@ -36,6 +36,7 @@ def test_athens_sim():
 
     assert mit_counts is not None
 
+
 def test_athens_sim_set_shots():
     """A simple check with shots setting"""
     backend = FakeAthens()
