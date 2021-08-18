@@ -70,7 +70,7 @@ def test_save_cals(tmp_path):
     backend = FakeAthens()
     cal_file = tmp_path / "cal.json"
     mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(counts_file=cal_file)
+    mit.cals_from_system(cals_file=cal_file)
     with open(cal_file, 'r') as fd:
         cals = np.array(orjson.loads(fd.read()))
     assert np.array_equal(mit.single_qubit_cals, cals)
@@ -81,7 +81,7 @@ def test_load_cals(tmp_path):
     cal_file = tmp_path / "cal.json"
     backend = FakeAthens()
     mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(counts_file=cal_file)
+    mit.cals_from_system(cals_file=cal_file)
     new_mit = mthree.M3Mitigation(backend)
     new_mit.cals_from_file(cal_file)
     assert np.array_equal(mit.single_qubit_cals, new_mit.single_qubit_cals)
