@@ -164,8 +164,8 @@ class M3Mitigation():
                              earlier run.
         """
         with open(cals_file, 'r') as fd:
-            self.single_qubit_cals = [np.asarray(cal) if cal else None \
-                                        for cal in orjson.loads(fd.read())]
+            self.single_qubit_cals = [np.asarray(cal) if cal else None
+                                      for cal in orjson.loads(fd.read())]
 
     def tensored_cals_from_file(self, cals_file):
         """Generated the tensored calibration data from a previous runs output
