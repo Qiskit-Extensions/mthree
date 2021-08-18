@@ -35,3 +35,23 @@ def test_athens_sim():
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5))
 
     assert mit_counts is not None
+
+
+def test_athens_sim_set_shots():
+    """A simple check with shots setting"""
+    backend = FakeAthens()
+
+    qc = QuantumCircuit(5)
+    qc.h(2)
+    qc.cx(2, 1)
+    qc.cx(2, 3)
+    qc.cx(1, 0)
+    qc.cx(3, 4)
+    qc.measure_all()
+
+    raw_counts = execute(qc, backend).result().get_counts()
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system(range(5), 7000)
+    mit_counts = mit.apply_correction(raw_counts, qubits=range(5))
+
+    assert mit_counts is not None
