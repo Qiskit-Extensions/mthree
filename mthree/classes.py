@@ -93,15 +93,12 @@ class QuasiDistribution(dict):
         Returns:
             float: Expectation value.
             float: Estimate of standard deviation upper-bound.
-
-        Raises:
-            M3Error: Missing shots or mitigation_overhead information.
         """
         if self.shots is None:
             raise M3Error('Quasi-dist is missing shots information.')
         if self.mitigation_overhead is None:
             raise M3Error('Quasi-dist is missing mitigation overhead.')
-        return exp_val(self), math.sqrt(self.mitigation_overhead / self.shots)
+        return exp_val(self), self.stddev()
 
     def nearest_probability_distribution(self, return_distance=False):
         """Takes a quasiprobability distribution and maps
