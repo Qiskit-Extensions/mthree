@@ -38,7 +38,7 @@ def test_load_cals_from_file():
     mit2.cals_from_file(cals_file='cals.json')
 
     # check that cals are identical
-    for idx, item in mit.single_qubit_cals:
+    for idx, item in enumerate(mit.single_qubit_cals):
         if item is None:
             assert mit2.single_qubit_cals[idx] is None
         else:
