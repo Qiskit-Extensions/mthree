@@ -285,7 +285,7 @@ class M3Mitigation():
             given_list = True
         if not given_list:
             counts = [counts]
-        
+
         quasi_out = [self._apply_correction(cnts, qubits=qubits,
                                             distance=distance,
                                             method=method,
