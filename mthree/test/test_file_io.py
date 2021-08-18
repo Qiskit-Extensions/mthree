@@ -42,7 +42,7 @@ def test_load_cals_from_file():
         if item is None:
             assert mit2.single_qubit_cals[idx] is None
         else:
-            asset np.allclose(item, mit2.single_qubit_cals[idx])
+            assert np.allclose(item, mit2.single_qubit_cals[idx])
 
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
     assert mit2_counts not None
