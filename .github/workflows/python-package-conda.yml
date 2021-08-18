@@ -1,5 +1,4 @@
-name: Mthree using Conda
-
+name: Linux - conda
 on: [push]
 
 jobs:
