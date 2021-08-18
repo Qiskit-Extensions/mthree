@@ -17,7 +17,7 @@ of equations is nominally much easier to solve.
 It is often the case that this linear equation is trivial to solve using LU decomposition,
 using only modest computing resources.  However, if the number of unique bistrings is large,
 and / or one has very tight memory constraints, then the problem can be solved in a matrix-free
-manner using an preconditioned interative linear solution method, e.g. the Generalized minimal
+manner using a preconditioned interative linear solution method, e.g. the Generalized minimal
 residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
 
 
@@ -32,4 +32,5 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     :caption: API Documentation
     :hidden:
  
-    Mitigation classes <apidocs/main>
+    Mitigation class <apidocs/main>
+    Distributions <apidocs/classes>

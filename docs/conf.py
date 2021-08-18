@@ -80,9 +80,6 @@ autosummary_generate = True
 # Autodoc
 # -----------------------------------------------------------------------------
 
-autodoc_default_options = {
-    'inherited-members': None,
-}
 
 autoclass_content = 'init'
 
