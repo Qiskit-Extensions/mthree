@@ -308,13 +308,13 @@ class M3Mitigation():
 
         # balanced calibration
         else:
-            cals = [np.zeros((2,2), dtype=float) for kk in range(N)]
+            cals = [np.zeros((2,2), dtype=float) for kk in range(num_cal_qubits)]
 
             for idx, count in enumerate(counts):
 
                 target = cal_strings[idx][::-1]
-                good_prep = np.zeros(N,dtype=float)
-                denom = shots * N
+                good_prep = np.zeros(num_cal_qubits, dtype=float)
+                denom = shots * num_cal_qubits
 
                 for key, val in count.items():
                     key = key[::-1]
