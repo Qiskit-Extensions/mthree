@@ -308,7 +308,7 @@ class M3Mitigation():
 
         # balanced calibration
         else:
-            cals = [np.zeros((2,2), dtype=float) for kk in range(num_cal_qubits)]
+            cals = [np.zeros((2, 2), dtype=float) for kk in range(num_cal_qubits)]
 
             for idx, count in enumerate(counts):
 
@@ -324,15 +324,15 @@ class M3Mitigation():
 
                 for kk, cal in enumerate(cals):
                     if target[kk] == '0':
-                        cal[0,0] += good_prep[kk] / denom
+                        cal[0, 0] += good_prep[kk] / denom
                     else:
-                        cal[1,1] += good_prep[kk] / denom
+                        cal[1, 1] += good_prep[kk] / denom
 
             for jj, cal in enumerate(cals):
-                cal[1,0] = 1.0 - cal[0,0]
-                cal[0,1] = 1.0 - cal[1,1]
+                cal[1, 0] = 1.0 - cal[0, 0]
+                cal[0, 1] = 1.0 - cal[1, 1]
 
-                if cal[0,1] >= cal[0,0]:
+                if cal[0, 1] >= cal[0, 0]:
                     bad_list.append(qubits[jj])
 
             for idx, qubit in enumerate(qubits):
