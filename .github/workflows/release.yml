@@ -20,9 +20,13 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 universal2
           CIBW_TEST_REQUIRES: pytest qiskit-aer
-          CIBW_TEST_COMMAND: pytest -p no:warnings /mthree_test
+          CIBW_TEST_COMMAND_LINUX: pytest -p no:warnings /mthree_test
+          CIBW_TEST_COMMAND_WINDOWS: pytest -p no:warnings /mthree_test
+          CIBW_TEST_COMMAND_MACOS:  pytest -p no:warnings /tmp/mthree_test
           CIBW_ENVIRONMENT: MTHREE_OPENMP=1
-          CIBW_BEFORE_TEST: cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
+          CIBW_BEFORE_TEST_LINUX: cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
+          CIBW_BEFORE_TEST_WINDOWS: cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
+          CIBW_BEFORE_TEST_MACOS: cp -r {project}/mthree/test /tmp/mthree_test && rm -f /tmp/mthree_test/test_converters.py && rm -f /tmp/mthree_test/test_columns.py
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
