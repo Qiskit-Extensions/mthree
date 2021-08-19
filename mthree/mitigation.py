@@ -273,12 +273,12 @@ class M3Mitigation():
                 self.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
                 # Counts 0 has all P00, P10 data, so do that here
                 prep0_counts = counts[2*idx]
-                P10 = prep0_counts.get('1', 0) / shots
+                P10 = prep0_counts.get('1', 0) / self.cal_shots
                 P00 = 1-P10
                 self.single_qubit_cals[qubit][:, 0] = [P00, P10]
                 # plus 1 here since zeros data at pos=0
                 prep1_counts = counts[2*idx+1]
-                P01 = prep1_counts.get('0', 0) / shots
+                P01 = prep1_counts.get('0', 0) / self.cal_shots
                 P11 = 1-P01
                 self.single_qubit_cals[qubit][:, 1] = [P01, P11]
                 if P01 >= P00:
@@ -293,14 +293,14 @@ class M3Mitigation():
                 for key, val in prep0_counts.items():
                     if key[index] == '0':
                         count_vals += val
-                P00 = count_vals / shots
+                P00 = count_vals / self.cal_shots
                 P10 = 1-P00
                 self.single_qubit_cals[qubit][:, 0] = [P00, P10]
                 count_vals = 0
                 for key, val in prep1_counts.items():
                     if key[index] == '1':
                         count_vals += val
-                P11 = count_vals / shots
+                P11 = count_vals / self.cal_shots
                 P01 = 1-P11
                 self.single_qubit_cals[qubit][:, 1] = [P01, P11]
                 if P01 >= P00:
@@ -314,7 +314,7 @@ class M3Mitigation():
 
                 target = cal_strings[idx][::-1]
                 good_prep = np.zeros(num_cal_qubits, dtype=float)
-                denom = shots * num_cal_qubits
+                denom = self.cal_shots * num_cal_qubits
 
                 for key, val in count.items():
                     key = key[::-1]
@@ -328,12 +328,12 @@ class M3Mitigation():
                     else:
                         cal[1,1] += good_prep[kk] / denom
 
-                for jj, cal in enumerate(cals):
-                    cal[1,0] = 1.0 - cal[0,0]
-                    cal[0,1] = 1.0 - cal[1,1]
+            for jj, cal in enumerate(cals):
+                cal[1,0] = 1.0 - cal[0,0]
+                cal[0,1] = 1.0 - cal[1,1]
 
-                    if cal[0,1] >= cal[0,0]:
-                        bad_list.append(qubits[jj])
+                if cal[0,1] >= cal[0,0]:
+                    bad_list.append(qubits[jj])
 
             for idx, qubit in enumerate(qubits):
                 self.single_qubit_cals[qubit] = cals[idx]
