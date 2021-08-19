@@ -1,29 +1,33 @@
 name: Release Artifacts
 on:
   push:
-    tags:
-      - '*'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 jobs:
-  wheel-build:
-    name: Build and Publish Release Artifacts
-    runs-on: ubuntu-latest
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2019, macos-10.15]
+
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        name: Install Python
-        with:
-          python-version: '3.9'
-      - name: Install Deps
-        run: pip install -U twine cython numpy
-      - name: Build Artifacts
-        run: |
-          python setup.py sdist
-        shell: bash
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.1.1
+        env:
+          CIBW_SKIP: "cp310-* pp*"
+          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64 *-win32 *-manylinux_i686 cp39-manylinux*"
+          CIBW_ARCHS_MACOS: x86_64 universal2
+          CIBW_TEST_REQUIRES: pytest qiskit-aer
+          CIBW_TEST_COMMAND_LINUX: pytest -p no:warnings /mthree_test
+          CIBW_TEST_COMMAND_WINDOWS: pytest -p no:warnings C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test
+          CIBW_TEST_COMMAND_MACOS:  pytest -p no:warnings /tmp/mthree_test
+          CIBW_ENVIRONMENT: MTHREE_OPENMP=1
+          CIBW_BEFORE_TEST_LINUX: rm -rf /mthree_test && cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
+          CIBW_BEFORE_TEST_WINDOWS: rm -rf C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && cp -r {project}/mthree/test C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_converters.py && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_columns.py && pip install --prefer-binary orjson
+          CIBW_BEFORE_TEST_MACOS: rm -rf /tmp/mthree_test && cp -r {project}/mthree/test /tmp/mthree_test && rm -f /tmp/mthree_test/test_converters.py && rm -f /tmp/mthree_test/test_columns.py
       - uses: actions/upload-artifact@v2
         with:
-          path: ./dist/mthree*
-      - name: Publish to PyPi
-        env:
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-          TWINE_USERNAME: nonhermitian
-        run: twine upload dist/mthree*
+          path: ./wheelhouse/*.whl
