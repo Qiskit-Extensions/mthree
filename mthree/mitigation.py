@@ -318,7 +318,7 @@ class M3Mitigation():
 
                 for key, val in count.items():
                     key = key[::-1]
-                    for kk in range(N):
+                    for kk in range(num_cal_qubits):
                         if key[kk] == target[kk]:
                             good_prep[kk] += val
 
