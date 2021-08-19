@@ -39,13 +39,8 @@ MICRO = 0
 ISRELEASED = False
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
-REQUIREMENTS = ['numpy>=1.17',
-                'scipy>=1.3',
-                'cython>=0.29',
-                'qiskit-terra>=0.16',
-                'qiskit-ibmq-provider>=0.11',
-                'psutil'
-               ]
+with open("requirements.txt") as f:
+    REQUIREMENTS = f.read().splitlines()
 
 PACKAGES = setuptools.find_packages()
 PACKAGE_DATA = {'mthree': ['*.pxd'],
