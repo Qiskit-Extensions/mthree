@@ -253,7 +253,7 @@ class M3Mitigation():
         elif method == 'balanced':
             cal_strings = _balanced_cal_strings(num_cal_qubits)
             circs = _balanced_cal_circuits(cal_strings)
-            trans_qcs = transpile(circs, self.system
+            trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         # Indeopendent
