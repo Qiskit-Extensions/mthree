@@ -68,13 +68,13 @@ for _arg in sys.argv:
     if _arg.startswith("--with-"):
         _options = _arg.split("--with-")[1].split(",")
         sys.argv.remove(_arg)
-        if "openmp" in _options:
+        if "openmp" in _options or os.getenv("MTHREE_OPENMP", False):
             if sys.platform == 'win32':
                 OPTIONAL_FLAGS = ['/openmp']
             else:
                 OPTIONAL_FLAGS = ['-fopenmp']
                 OPTIONAL_ARGS = OPTIONAL_FLAGS
-        if "native" in _options:
+        if "native" in _options or os.getenv("MTHREE_NATIVE", False):
             OPTIONAL_FLAGS.append('-march=native')
 
 INCLUDE_DIRS = [np.get_include()]
@@ -203,10 +203,9 @@ setuptools.setup(
     url="",
     author="Paul Nation",
     author_email="paul.nation@ibm.com",
-    license="For internal IBM Quantum use only.",
+    license="Apache 2.0",
     classifiers=[
-        "Environment :: Web Environment",
-        "License :: Other/Proprietary License",
+        "License :: OSI Approved :: Apache Software License",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
         "Operating System :: Microsoft :: Windows",
@@ -215,6 +214,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering",
     ],
     cmdclass={'lint': PylintCommand, 'style': StyleCommand},
