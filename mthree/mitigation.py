@@ -63,7 +63,7 @@ def _balanced_cal_strings(num_qubits):
         list: List of strings for balanced calibration circuits.
     """
     strings = []
-    for rep in range(1,num_qubits+1):
+    for rep in range(1, num_qubits+1):
         str1 = ''
         str2 = ''
         for jj in range(int(np.ceil(num_qubits / rep))):
