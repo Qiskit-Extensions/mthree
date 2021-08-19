@@ -22,7 +22,7 @@ jobs:
           CIBW_TEST_REQUIRES: pytest qiskit-aer
           CIBW_TEST_COMMAND: pytest -p no:warnings /mthree_test
           CIBW_ENVIRONMENT: MTHREE_OPENMP=1
-          CIBW_BEFORE_TEST: cp -r {project}/mthree/test /mthree_test && rm /mthree_test/test_converters.py && rm /mthree_test/test/test_columns.py
+          CIBW_BEFORE_TEST: cp -r {project}/mthree/test /mthree_test && rm /mthree_test/test_converters.py && rm /mthree_test/test_columns.py
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
