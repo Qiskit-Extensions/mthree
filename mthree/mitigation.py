@@ -335,8 +335,8 @@ class M3Mitigation():
                 if cal[0, 1] >= cal[0, 0]:
                     bad_list.append(qubits[jj])
 
-            for idx, qubit in enumerate(qubits):
-                self.single_qubit_cals[qubit] = cals[idx]
+            for idx, cal in enumerate(cals):
+                self.single_qubit_cals[qubits[idx]] = cal
 
         if any(bad_list):
             raise M3Error('Faulty qubits detected: {}'.format(bad_list))
