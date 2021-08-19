@@ -20,7 +20,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 universal2
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest -p no:warnings --pyargs {package}/mthree/tests
+          CIBW_TEST_COMMAND: pytest -p no:warnings --pyargs {package}/mthree/test
           CIBW_ENVIRONMENT: MTHREE_OPENMP=1
       - uses: actions/upload-artifact@v2
         with:
