@@ -9,7 +9,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-# pylint: disable=no-name-in-module
+# pylint: disable=no-name-in-module, invalid-name
 """Calibration data"""
 
 import warnings
@@ -55,10 +55,10 @@ def _marg_meas_states(num_qubits):
 
 def _balanced_cal_strings(num_qubits):
     """Compute the 2*num_qubits strings for balanced calibration.
-    
+
     Parameters:
         num_qubits (int): Number of qubits to be measured.
-        
+
     Returns:
         list: List of strings for balanced calibration circuits.
     """
@@ -315,7 +315,7 @@ class M3Mitigation():
                 target = cal_strings[idx][::-1]
                 good_prep = np.zeros(N,dtype=float)
                 denom = shots * N
-                
+
                 for key, val in count.items():
                     key = key[::-1]
                     for kk in range(N):
