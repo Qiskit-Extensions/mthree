@@ -19,10 +19,10 @@ jobs:
         uses: pypa/cibuildwheel@v2.1.1
         env:
           CIBW_ARCHS_MACOS: x86_64 universal2
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest -p no:warnings ./test
+          CIBW_TEST_REQUIRES: pytest qiskit-aer
+          CIBW_TEST_COMMAND: pytest -p no:warnings /mthree_test
           CIBW_ENVIRONMENT: MTHREE_OPENMP=1
-          CIBW_BEFORE_TEST: cp -r {project}/mthree/test . && rm ./test/test_converters.py && rm ./test/test_columns.py && pip install -r {project}/requirements-dev.txt
+          CIBW_BEFORE_TEST: cp -r {project}/mthree/test /mthree_test && rm /mthree_test/test_converters.py && rm /mthree_test/test/test_columns.py
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
