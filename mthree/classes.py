@@ -19,7 +19,6 @@ Distributions
 
    QuasiDistribution
    ProbDistribution
-
 """
 
 import math

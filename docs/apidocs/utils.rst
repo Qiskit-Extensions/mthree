@@ -1,6 +1,6 @@
-.. _mthree-classes:
+.. _mthree-utils:
 
-.. automodule:: mthree.classes
+.. automodule:: mthree.utils
    :no-members:
    :no-inherited-members:
    :no-special-members:

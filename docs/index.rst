@@ -26,6 +26,7 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     :hidden:
 
     self
+    Installation <installation>
 
 .. toctree::
     :maxdepth: 1
@@ -34,3 +35,4 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
  
     Mitigation class <apidocs/main>
     Distributions <apidocs/classes>
+    Utility functions <apidocs/utils>

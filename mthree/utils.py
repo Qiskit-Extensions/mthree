@@ -10,7 +10,16 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
-"""Utility functions"""
+"""
+Utility functions
+-----------------
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   final_measurement_mapping
+
+"""
 import numpy as np
 from mthree.classes import QuasiDistribution
 
