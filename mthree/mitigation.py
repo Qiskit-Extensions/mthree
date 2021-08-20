@@ -31,11 +31,13 @@ from mthree.exceptions import M3Error
 
 def _tensor_meas_states(qubit, num_qubits):
     """Construct |0> and |1> states
-    for marginal 1Q cals.
+    for independent 1Q cals.
     """
     qc0 = QuantumCircuit(num_qubits, 1)
+    qc0.reset(qubit)
     qc0.measure(qubit, 0)
     qc1 = QuantumCircuit(num_qubits, 1)
+    qc1.reset(qubit)
     qc1.x(qubit)
     qc1.measure(qubit, 0)
     return [qc0, qc1]
@@ -46,8 +48,10 @@ def _marg_meas_states(num_qubits):
     for marginal 1Q cals.
     """
     qc0 = QuantumCircuit(num_qubits)
+    qc0.reset(range(num_qubits))
     qc0.measure_all()
     qc1 = QuantumCircuit(num_qubits)
+    qc1.reset(range(num_qubits))
     qc1.x(range(num_qubits))
     qc1.measure_all()
     return [qc0, qc1]
@@ -88,6 +92,7 @@ def _balanced_cal_circuits(cal_strings):
     circs = []
     for string in cal_strings:
         qc = QuantumCircuit(num_qubits)
+        qc.reset(range(num_qubits))
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':
                 qc.x(idx)
@@ -162,14 +167,14 @@ class M3Mitigation():
         cals = self._form_cals(qubits)
         return sdd_check(counts, cals, num_bits, distance)
 
-    def tensored_cals_from_system(self, qubits=None, shots=8192,  method='independent',
+    def tensored_cals_from_system(self, qubits=None, shots=8192,  method='balanced',
                                   rep_delay=None, cals_file=None):
         """Grab calibration data from system.
 
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
             shots (int): Number of shots per circuit. Default is 8192.
-            method (str): Type of calibration, 'independent' (default), 'balanced', or 'marginal'.
+            method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
         """
@@ -178,14 +183,14 @@ class M3Mitigation():
                               rep_delay=rep_delay,
                               cals_file=cals_file)
 
-    def cals_from_system(self, qubits=None, shots=8192, method='independent',
+    def cals_from_system(self, qubits=None, shots=8192, method='balanced',
                          rep_delay=None, cals_file=None):
         """Grab calibration data from system.
 
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
             shots (int): Number of shots per circuit. Default is 8192.
-            method (str): Type of calibration, 'independent' (default), 'balanced', or 'marginal'.
+            method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
         """
@@ -219,13 +224,13 @@ class M3Mitigation():
         warnings.warn("This method is deprecated, use 'cals_from_file' instead.")
         self.cals_from_file(cals_file)
 
-    def _grab_additional_cals(self, qubits, shots=8192, method='independent', rep_delay=None):
+    def _grab_additional_cals(self, qubits, shots=8192, method='balanced', rep_delay=None):
         """Grab missing calibration data from backend.
 
         Parameters:
             qubits (array_like): List of measured qubits.
             shots (int): Number of shots to take.
-            method (str): Type of calibration, 'independent' (default) or 'marginal'.
+            method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
 
         Raises:
@@ -352,7 +357,7 @@ class M3Mitigation():
             counts (dict, list): Input counts dict or list of dicts.
             qubits (array_like): Qubits on which measurements applied.
             distance (int): Distance to correct for. Default=num_bits
-            method (str): Solution method: 'auto', 'iterative', 'direct'.
+            method (str): Solution method: 'auto', 'direct' or 'iterative'.
             max_iter (int): Max. number of iterations, Default=25.
             tol (float): Convergence tolerance of iterative method, Default=1e-5.
             return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
@@ -394,7 +399,7 @@ class M3Mitigation():
             counts (dict): Input counts dict.
             qubits (array_like): Qubits on which measurements applied.
             distance (int): Distance to correct for. Default=num_bits
-            method (str): Solution method: 'auto', 'iterative', 'direct'.
+            method (str): Solution method: 'auto', 'direct' or 'iterative'.
             max_iter (int): Max. number of iterations, Default=25.
             tol (float): Convergence tolerance of iterative method, Default=1e-5.
             return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
