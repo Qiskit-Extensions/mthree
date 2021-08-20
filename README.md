@@ -8,7 +8,7 @@ M3 is a measurement mitigation technique that solves for corrected measurement p
 
 ## Installation
 
-You can `pip` install M3 in serial mode using PyPi and a compiler via:
+You can `pip` install M3 in serial mode using PyPi via:
 
 ```bash
 pip install mthree
