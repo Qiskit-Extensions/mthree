@@ -10,9 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 
-"""mthree
-
-Matrix-free measurement mitigation
+"""M3: Matrix-free measurement mitigation
 """
 
 import os
@@ -47,7 +45,9 @@ PACKAGE_DATA = {'mthree': ['*.pxd'],
 }
 DOCLINES = __doc__.split('\n')
 DESCRIPTION = DOCLINES[0]
-LONG_DESCRIPTION = "\n".join(DOCLINES[2:])
+this_dir = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_dir, 'README.md'), encoding='utf-8') as readme:
+    LONG_DESCRIPTION = readme.read()
 
 CYTHON_EXTS = ['compute', 'converters', 'hamming', 'matrix', 'probability', 'matvec'] + \
               ['expval', 'column_testing', 'converters_testing']
@@ -195,6 +195,7 @@ setuptools.setup(
     packages=PACKAGES,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     url="",
     author="Paul Nation",
     author_email="paul.nation@ibm.com",
