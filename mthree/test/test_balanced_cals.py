@@ -15,7 +15,7 @@ from mthree.mitigation import _balanced_cal_strings
 
 
 def test_balanced_strings():
-    """Validate balanced cal strings sum to the num_qubits"""
+    """Validate balanced cal string pairs sum to the num_qubits"""
 
     for num_qubits in [1, 2, 5, 9, 22, 47, 102]:
         cal_strs = _balanced_cal_strings(num_qubits)
