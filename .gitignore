@@ -132,3 +132,4 @@ mthree/version.py
 *.cpp
 
 docs/stubs/*
+*.json
