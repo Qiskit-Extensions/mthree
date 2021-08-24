@@ -34,6 +34,7 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     :hidden:
  
     Basic usage <basic_usage>
+    Transpiled circuits <transpiled>
 
 .. toctree::
     :maxdepth: 1
