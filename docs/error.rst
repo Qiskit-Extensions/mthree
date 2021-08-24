@@ -68,3 +68,6 @@ It is also possible to return both the expectation value and standard deviation 
 .. jupyter-execute::
 
     quasis.expval_and_stddev()
+
+Although this standard deviation is an upper-bound, it is usually a tight upper-bound that can be
+faithfully used futher analysis.
