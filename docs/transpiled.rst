@@ -17,6 +17,7 @@ For example consider the Berstein-Vazarani circuit
     import mthree
 
     qc = QuantumCircuit(5, 4)
+    qc.reset(range(5))
     qc.x(4)
     qc.h(range(5))
     qc.cx(range(4), 4)
