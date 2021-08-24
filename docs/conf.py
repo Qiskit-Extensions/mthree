@@ -71,6 +71,8 @@ html_css_files = ['gallery.css']
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
+jupyter_execute_kwargs = dict(allow_errors=False)
+
 # -----------------------------------------------------------------------------
 # Autosummary
 # -----------------------------------------------------------------------------
