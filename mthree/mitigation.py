@@ -211,7 +211,7 @@ class M3Mitigation():
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
         """
-        with open(cals_file, 'r') as fd:
+        with open(cals_file, 'r', encoding='utf-8') as fd:
             self.single_qubit_cals = [np.asarray(cal) if cal else None
                                       for cal in orjson.loads(fd.read())]
 
