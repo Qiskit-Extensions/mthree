@@ -37,4 +37,5 @@ done in linear time.
 
     quasis = mit.apply_correction(raw_counts, range(6))
 
+    # Here is where the conversion happens
     quasis.nearest_probability_distribution()
