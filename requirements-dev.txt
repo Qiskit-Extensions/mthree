@@ -5,6 +5,7 @@ pycodestyle
 Sphinx==3.3
 qiskit_sphinx_theme
 matplotlib
+pylatexenc
 jupyter-sphinx
 nbsphinx
 psutil
