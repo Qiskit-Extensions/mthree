@@ -34,5 +34,6 @@ jobs:
         pytest -p no:warnings --pyargs mthree/test
     - name: Build docs
       run: |
+        conda install matplotlib
         cd docs
         make html
