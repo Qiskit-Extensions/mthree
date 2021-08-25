@@ -27,6 +27,7 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
 
     self
     Installation <installation>
+    Citing <citing>
 
 .. toctree::
     :maxdepth: 1
