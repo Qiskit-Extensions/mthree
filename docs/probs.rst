@@ -9,7 +9,7 @@ but none the less sum to one.  This is useful for mitigaing expectation values, 
 be situations where a true probability distribution is useful / needed.  To tbis end, it is
 possible to find the closest probability distribution to a quasi-probability distribution in
 terms of :math:`L2`-norm using:
-:meth:`mthree.classes.QuasiDistribution.nearest_probability_distribution`.  Thing conversion is
+:meth:`mthree.classes.QuasiDistribution.nearest_probability_distribution`.  This conversion is
 done in linear time.
 
 .. jupyter-execute::
