@@ -13,7 +13,6 @@ Let us first calibrate the mitigator and get raw results:
 
 .. jupyter-execute::
 
-    import numpy as np
     from qiskit import *
     from qiskit.test.mock.backends import FakeCasablanca
     import mthree

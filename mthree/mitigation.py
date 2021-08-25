@@ -120,7 +120,7 @@ class M3Mitigation():
         self.num_qubits = system.configuration().num_qubits if system else None
         self.iter_threshold = iter_threshold
         self.cal_shots = None
-        self.cal_method = 'marginal'
+        self.cal_method = 'balanced'
         self.rep_delay = None
 
     def _form_cals(self, qubits):
