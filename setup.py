@@ -31,7 +31,7 @@ except ImportError:
 
 
 MAJOR = 0
-MINOR = 12
+MINOR = 13
 MICRO = 0
 
 ISRELEASED = False
