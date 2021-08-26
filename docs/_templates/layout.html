@@ -88,18 +88,11 @@
 
       <div class="main-menu">
         <ul>
-          <li {%- if pagename == 'getting_started' %} class="active"{% endif %}>
-            <a href="{{ pathto('getting_started') }}">Getting started</a>
-          </li>
-
-          <li {%- if pagename == 'tutorials' %} class="active"{% endif %}>
-            <a href="{{ pathto('tutorials') }}">Tutorials</a>
-          </li>
-          <li>
-            <a href="{{ theme_variables.external_urls['api'] }}">REST API</a>
-          </li>
           <li>
             <a href="{{ theme_variables.external_urls['docs'] }}" target="_blank">Qiskit documentation</a>
+          </li>
+          <li>
+            <a href="{{ theme_variables.external_urls['partners'] }}">Partners documentation</a>
           </li>
           <li>
             <a href="{{ theme_variables.external_urls['github'] }}" target="_blank">Github</a>
@@ -278,16 +271,10 @@
       <div class="main-menu">
         <ul>
           <li>
-            <a href="{{ pathto('getting_started') }}">Getting Started</a>
-          </li>
-          <li>
-            <a href="{{ pathto('tutorials') }}">Tutorials</a>
-          </li>
-          <li>
-            <a href="{{ theme_variables.external_urls['api'] }}">REST API</a>
-          </li>
-          <li>
             <a href="{{ theme_variables.external_urls['docs'] }}">Qiskit documentation</a>
+          </li>
+          <li>
+            <a href="{{ theme_variables.external_urls['partners'] }}">Partners documentation</a>
           </li>
           <li>
             <a href="{{ theme_variables.external_urls['github'] }}">Github</a>
