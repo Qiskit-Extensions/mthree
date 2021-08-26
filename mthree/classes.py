@@ -40,13 +40,17 @@ class ProbDistribution(dict):
         self.shots = shots
         super().__init__(data)
 
-    def expval(self):
+    def expval(self, exp_ops=''):
         """Compute expectation value from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self)
+        return exp_val(self, exp_ops)
 
     def stddev(self):
         """Compute standard deviation from distribution.
@@ -56,14 +60,18 @@ class ProbDistribution(dict):
         """
         return self.expval_and_stddev()[1]
 
-    def expval_and_stddev(self):
+    def expval_and_stddev(self, exp_ops=''):
         """Compute expectation value and standard deviation from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Standard deviation.
         """
-        return exp_val_and_stddev(self)
+        return exp_val_and_stddev(self, exp_ops)
 
 
 class QuasiDistribution(dict):
@@ -81,13 +89,17 @@ class QuasiDistribution(dict):
         self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
-    def expval(self):
+    def expval(self, exp_ops=''):
         """Compute expectation value from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self)
+        return exp_val(self, exp_ops)
 
     def stddev(self):
         """Compute standard deviation estimate from distribution.
@@ -104,14 +116,18 @@ class QuasiDistribution(dict):
             raise M3Error('Quasi-dist is missing mitigation overhead.')
         return math.sqrt(self.mitigation_overhead / self.shots)
 
-    def expval_and_stddev(self):
+    def expval_and_stddev(self, exp_ops=''):
         """Compute expectation value and standard deviation estimate from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Estimate of standard deviation upper-bound.
         """
-        return exp_val(self), self.stddev()
+        return exp_val(self, exp_ops), self.stddev()
 
     def nearest_probability_distribution(self, return_distance=False):
         """Takes a quasiprobability distribution and maps
