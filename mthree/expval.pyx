@@ -23,8 +23,6 @@ cdef unordered_map[Py_UCS4, vector[int]] oper_map
 
 oper_map['I'] = [1, 1]
 oper_map['Z'] = [1, -1]
-oper_map['0'] = [1, 0]
-oper_map['1'] = [0, 1]
 
 @cython.boundscheck(False)
 def exp_val(object quasi, unicode exp_ops=''):
