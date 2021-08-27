@@ -31,6 +31,7 @@ Distribution collections
 """
 
 import math
+import numpy as np
 from mthree.probability import quasi_to_probs
 from mthree.expval import exp_val
 from mthree.exceptions import M3Error
@@ -174,7 +175,7 @@ class QuasiCollection(list):
             if not isinstance(dd, QuasiDistribution):
                 raise TypeError('QuasiCollection requires QuasiDistribution instances.')
         super().__init__(data)
-        
+
     def expval(self, exp_ops=''):
         """Expectation value over entire collection.
 
@@ -185,7 +186,7 @@ class QuasiCollection(list):
             ndarray: Array of expectation values.
         """
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
-    
+
     def expval_and_stddev(self, exp_ops=''):
         """Expectation value and standard deviation over entire collection.
 
@@ -196,7 +197,7 @@ class QuasiCollection(list):
             list: Tuples of expval and stddev pairs.
         """
         return [item.expval_and_stddev(exp_ops) for item in self]
-    
+
     def stddev(self):
         """Standard deviation over entire collection.
 
@@ -204,7 +205,7 @@ class QuasiCollection(list):
             ndarray: Array of standard deviations.
         """
         return np.array([item.stddev() for item in self], dtype=float)
-    
+
     def nearest_probability_distribution(self):
         """Nearest probability distribution over collection
 
@@ -213,7 +214,7 @@ class QuasiCollection(list):
         """
         return ProbCollection([item.nearest_probability_distribution() for item in self])
 
-    
+
 class ProbCollection(list):
     """A list subclass that makes handling multiple probability-distributions easier.
     """
@@ -230,7 +231,7 @@ class ProbCollection(list):
             if not isinstance(dd, ProbDistribution):
                 raise TypeError('ProbCollection requires ProbDistribution instances.')
         super().__init__(data)
-        
+
     def expval(self, exp_ops=''):
         """Expectation value over entire collection.
 
@@ -241,7 +242,7 @@ class ProbCollection(list):
             ndarray: Array of expectation values.
         """
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
-    
+
     def expval_and_stddev(self, exp_ops=''):
         """Expectation value and standard deviation over entire collection.
 
@@ -252,7 +253,7 @@ class ProbCollection(list):
             list: Tuples of expval and stddev pairs.
         """
         return [item.expval_and_stddev(exp_ops) for item in self]
-    
+
     def stddev(self):
         """Standard deviation over entire collection.
 
