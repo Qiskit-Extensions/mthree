@@ -184,6 +184,9 @@ class QuasiCollection(list):
 
         Returns:
             ndarray: Array of expectation values.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -202,6 +205,9 @@ class QuasiCollection(list):
 
         Returns:
             list: Tuples of expval and stddev pairs.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -254,6 +260,9 @@ class ProbCollection(list):
 
         Returns:
             ndarray: Array of expectation values.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -272,6 +281,9 @@ class ProbCollection(list):
 
         Returns:
             list: Tuples of expval and stddev pairs.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
