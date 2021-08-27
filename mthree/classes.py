@@ -19,6 +19,15 @@ Distributions
 
    QuasiDistribution
    ProbDistribution
+
+Distribution collections
+------------------------
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   QuasiCollection
+   ProbCollection
 """
 
 import math
@@ -147,3 +156,107 @@ class QuasiDistribution(dict):
         if return_distance:
             return ProbDistribution(probs, self.shots), dist
         return ProbDistribution(probs, self.shots)
+
+
+class QuasiCollection(list):
+    """A list subclass that makes handling multiple quasi-distributions easier.
+    """
+    def __init__(self, data):
+        """QuasiCollection constructor.
+
+        Parameters:
+            data (list or QuasiCollection): List of QuasiDistribution instances.
+
+        Raises:
+            TypeError: Must be list of QuasiDistribution only.
+        """
+        for dd in data:
+            if not isinstance(dd, QuasiDistribution):
+                raise TypeError('QuasiCollection requires QuasiDistribution instances.')
+        super().__init__(data)
+        
+    def expval(self, exp_ops=''):
+        """Expectation value over entire collection.
+
+        Parameters:
+            exp_ops (str): Diagonal operators over which to compute expval.
+
+        Returns:
+            ndarray: Array of expectation values.
+        """
+        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+    
+    def expval_and_stddev(self, exp_ops=''):
+        """Expectation value and standard deviation over entire collection.
+
+        Parameters:
+            exp_ops (str): Diagonal operators over which to compute expval.
+
+        Returns:
+            list: Tuples of expval and stddev pairs.
+        """
+        return [item.expval_and_stddev(exp_ops) for item in self]
+    
+    def stddev(self):
+        """Standard deviation over entire collection.
+
+        Returns:
+            ndarray: Array of standard deviations.
+        """
+        return np.array([item.stddev() for item in self], dtype=float)
+    
+    def nearest_probability_distribution(self):
+        """Nearest probability distribution over collection
+
+        Returns:
+            ProbCollection: Collection of ProbDistributions.
+        """
+        return ProbCollection([item.nearest_probability_distribution() for item in self])
+
+    
+class ProbCollection(list):
+    """A list subclass that makes handling multiple probability-distributions easier.
+    """
+    def __init__(self, data):
+        """ProbCollection constructor.
+
+        Parameters:
+            data (list or ProbCollection): List of ProbDistribution instances.
+
+        Raises:
+            TypeError: Must be list of ProbDistribution only.
+        """
+        for dd in data:
+            if not isinstance(dd, ProbDistribution):
+                raise TypeError('ProbCollection requires ProbDistribution instances.')
+        super().__init__(data)
+        
+    def expval(self, exp_ops=''):
+        """Expectation value over entire collection.
+
+        Parameters:
+            exp_ops (str): Diagonal operators over which to compute expval.
+
+        Returns:
+            ndarray: Array of expectation values.
+        """
+        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+    
+    def expval_and_stddev(self, exp_ops=''):
+        """Expectation value and standard deviation over entire collection.
+
+        Parameters:
+            exp_ops (str): Diagonal operators over which to compute expval.
+
+        Returns:
+            list: Tuples of expval and stddev pairs.
+        """
+        return [item.expval_and_stddev(exp_ops) for item in self]
+    
+    def stddev(self):
+        """Standard deviation over entire collection.
+
+        Returns:
+            ndarray: Array of standard deviations.
+        """
+        return np.array([item.stddev() for item in self], dtype=float)
