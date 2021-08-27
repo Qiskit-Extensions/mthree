@@ -9,3 +9,4 @@ pylatexenc
 jupyter-sphinx
 nbsphinx
 psutil
+pandoc
