@@ -2,7 +2,7 @@ qiskit>=0.24
 pytest
 pylint
 pycodestyle
-Sphinx==3.3
+Sphinx==3.5.4
 qiskit_sphinx_theme
 matplotlib
 pylatexenc

@@ -23,9 +23,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import shutil
+from distutils.dir_util import copy_tree
 
 import mthree as m3
 
@@ -63,6 +63,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.extlinks',
+    'nbsphinx',
     'jupyter_sphinx'
 ]
 html_static_path = ['_static']
@@ -82,9 +83,7 @@ autosummary_generate = True
 # Autodoc
 # -----------------------------------------------------------------------------
 
-
 autoclass_content = 'init'
-
 
 # If true, figures, tables and code-blocks are automatically numbered if they
 # have a caption.
@@ -128,3 +127,21 @@ html_theme = "qiskit_sphinx_theme"
 
 #html_sidebars = {'**': ['globaltoc.html']}
 html_last_updated_fmt = '%Y/%m/%d'
+
+
+def load_tutorials(app):
+    dest_dir = os.path.join(app.srcdir, 'tutorials')
+    source_dir = os.path.dirname(app.srcdir)+'/tutorials'
+
+    try:
+        copy_tree(source_dir, dest_dir)
+    except FileNotFoundError:
+        warnings.warn('Copy tutorials failed.', RuntimeWarning)
+
+def clean_tutorials(app, exc):
+    tutorials_dir = os.path.join(app.srcdir, 'tutorials')
+    shutil.rmtree(tutorials_dir)
+
+def setup(app):
+    load_tutorials(app)
+    app.connect('build-finished', clean_tutorials)
