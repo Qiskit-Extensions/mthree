@@ -69,6 +69,8 @@ extensions = [
 html_static_path = ['_static']
 templates_path = ['_templates']
 html_css_files = ['gallery.css']
+nbsphinx_timeout = 300
+nbsphinx_execute = 'always'
 
 exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
