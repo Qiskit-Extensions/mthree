@@ -23,7 +23,7 @@ Distributions
 
 import math
 from mthree.probability import quasi_to_probs
-from mthree.expval import exp_val, exp_val_and_stddev
+from mthree.expval import exp_val
 from mthree.exceptions import M3Error
 
 
@@ -71,7 +71,7 @@ class ProbDistribution(dict):
             float: Expectation value.
             float: Standard deviation.
         """
-        return exp_val_and_stddev(self, exp_ops)
+        return exp_val(self, exp_ops, 1)
 
 
 class QuasiDistribution(dict):

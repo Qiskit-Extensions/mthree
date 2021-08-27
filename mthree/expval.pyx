@@ -12,87 +12,56 @@
 # pylint: disable=no-name-in-module
 # cython: c_string_type=unicode, c_string_encoding=UTF-8
 """mthree expectation value"""
+import numpy as np
+cimport numpy as cnp
 from mthree.exceptions import M3Error
 
 cimport cython
+from libcpp cimport bool
 from libc.math cimport sqrt
-from libcpp.unordered_map cimport unordered_map
-from libcpp.vector cimport vector
 from libcpp.string cimport string
-cdef unordered_map[Py_UCS4, vector[int]] oper_map
 
-oper_map['I'] = [1, 1]
-oper_map['Z'] = [1, -1]
-oper_map['0'] = [1, 0]
-oper_map['1'] = [0, 1]
+OP_CONVERT = {'Z' : 0, 'I': 1, '0': 2, '1': 3}
+cdef int[8] OPER_MAP = [1, -1, 1, 1, 1, 0, 0, 1]
+
 
 @cython.boundscheck(False)
-def exp_val(object quasi, unicode exp_ops=''):
+@cython.cdivision(True)
+def exp_val(object dist, str exp_ops, bool compute_stddev=0):
     """Computes expectation values in computational basis for a supplied
     list of operators (Default is all Z).
 
     Parameters:
         quasi (dict): Input quasi-probability distribution.
         exp_ops (str): String representation of qubit operators to compute.
+        compute_stddev (bool): Return stddev if passed a ProbDistribution
 
     Returns:
         float: Expectation value.
+        float: Sandard deviation (optionally)
     """
-    cdef int bits_len = len(next(iter(quasi)))
-    if exp_ops == '':
-        exp_ops = 'Z'*bits_len
-    else:
-        exp_ops = exp_ops.upper()
-        if len(exp_ops) != bits_len:
-            raise M3Error('exp_ops length does not equal number of bits.')
+
+    cdef unsigned int bits_len = len(next(iter(dist)))
+    cdef unsigned char[::1] ops = np.array([OP_CONVERT[item] for item in exp_ops.upper()], dtype=np.uint8)
+    if ops.shape[0] != bits_len:
+        raise M3Error('exp_ops length does not equal number of bits.')
+    
     # Find normalization to probs
     cdef double exp_val = 0
-    cdef unicode key
-    cdef double val
+    cdef string key
+    cdef double val, stddev, exp2 = 0
     cdef int oper_prod = 1
     cdef size_t kk
-    for key, val in quasi.items():
+    cdef unsigned int shots
+    for key, val in dist.items():
         oper_prod = 1
         for kk in range(bits_len):
-            oper_prod *= oper_map[exp_ops[kk]][<int>key[bits_len-kk-1]-48]
-        exp_val += val * oper_prod
-    return exp_val
-
-@cython.boundscheck(False)
-def exp_val_and_stddev(object probs, unicode exp_ops=''):
-    """Computes expectation value and standard deviation in computational basis
-    for a given probability distribution (not quasi-probs).
-
-    Parameters:
-        probs (dict): Input probability distribution.
-        exp_ops (str): String representation of qubit operators to compute.
-
-    Returns:
-        float: Expectation value.
-        float: Standard deviation.
-    """
-    # Find normalization to probs
-    cdef int bits_len = len(next(iter(probs)))
-    if exp_ops == '':
-        exp_ops = 'Z'*bits_len
-    else:
-        exp_ops = exp_ops.upper()
-        if len(exp_ops) != bits_len:
-            raise M3Error('exp_ops length does not equal number of bits')
-    # Find normalization to probs
-    cdef double exp_val = 0
-    cdef unicode key
-    cdef double val
-    cdef int oper_prod = 1
-    cdef double stddev, exp2 = 0
-    cdef size_t kk
-    for key, val in probs.items():
-        oper_prod = 1
-        for kk in range(bits_len):
-            oper_prod *= oper_map[exp_ops[kk]][<int>key[bits_len-kk-1]-48]
+            oper_prod *= OPER_MAP[2*ops[kk] + <int>(key[bits_len-kk-1])-48]
         exp_val += val * oper_prod
         exp2 += val
     
-    stddev = sqrt((exp2 - exp_val*exp_val) / probs.shots)
-    
-    return exp_val, stddev
+    if compute_stddev:
+        shots = dist.shots
+        stddev = sqrt((exp2 - exp_val*exp_val) / shots)
+        return exp_val, stddev
+    return exp_val
