@@ -19,11 +19,21 @@ Distributions
 
    QuasiDistribution
    ProbDistribution
+
+Distribution collections
+------------------------
+
+.. autosummary::
+   :toctree: ../stubs/
+
+   QuasiCollection
+   ProbCollection
 """
 
 import math
+import numpy as np
 from mthree.probability import quasi_to_probs
-from mthree.expval import exp_val, exp_val_and_stddev
+from mthree.expval import exp_val
 from mthree.exceptions import M3Error
 
 
@@ -40,13 +50,17 @@ class ProbDistribution(dict):
         self.shots = shots
         super().__init__(data)
 
-    def expval(self):
+    def expval(self, exp_ops=''):
         """Compute expectation value from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self)
+        return exp_val(self, exp_ops)
 
     def stddev(self):
         """Compute standard deviation from distribution.
@@ -56,14 +70,18 @@ class ProbDistribution(dict):
         """
         return self.expval_and_stddev()[1]
 
-    def expval_and_stddev(self):
+    def expval_and_stddev(self, exp_ops=''):
         """Compute expectation value and standard deviation from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Standard deviation.
         """
-        return exp_val_and_stddev(self)
+        return exp_val(self, exp_ops, 1)
 
 
 class QuasiDistribution(dict):
@@ -81,13 +99,17 @@ class QuasiDistribution(dict):
         self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
-    def expval(self):
+    def expval(self, exp_ops=''):
         """Compute expectation value from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self)
+        return exp_val(self, exp_ops)
 
     def stddev(self):
         """Compute standard deviation estimate from distribution.
@@ -104,14 +126,18 @@ class QuasiDistribution(dict):
             raise M3Error('Quasi-dist is missing mitigation overhead.')
         return math.sqrt(self.mitigation_overhead / self.shots)
 
-    def expval_and_stddev(self):
+    def expval_and_stddev(self, exp_ops=''):
         """Compute expectation value and standard deviation estimate from distribution.
+
+        Parameters:
+            exp_ops (str): String representation of diagonal qubit operators
+                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Estimate of standard deviation upper-bound.
         """
-        return exp_val(self), self.stddev()
+        return exp_val(self, exp_ops), self.stddev()
 
     def nearest_probability_distribution(self, return_distance=False):
         """Takes a quasiprobability distribution and maps
@@ -131,3 +157,147 @@ class QuasiDistribution(dict):
         if return_distance:
             return ProbDistribution(probs, self.shots), dist
         return ProbDistribution(probs, self.shots)
+
+
+class QuasiCollection(list):
+    """A list subclass that makes handling multiple quasi-distributions easier.
+    """
+    def __init__(self, data):
+        """QuasiCollection constructor.
+
+        Parameters:
+            data (list or QuasiCollection): List of QuasiDistribution instances.
+
+        Raises:
+            TypeError: Must be list of QuasiDistribution only.
+        """
+        for dd in data:
+            if not isinstance(dd, QuasiDistribution):
+                raise TypeError('QuasiCollection requires QuasiDistribution instances.')
+        super().__init__(data)
+
+    def expval(self, exp_ops=''):
+        """Expectation value over entire collection.
+
+        Parameters:
+            exp_ops (str or list): Diagonal operators over which to compute expval.
+
+        Returns:
+            ndarray: Array of expectation values.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
+        """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval(exp_ops[idx]))
+            return np.array(out, dtype=float)
+        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+
+    def expval_and_stddev(self, exp_ops=''):
+        """Expectation value and standard deviation over entire collection.
+
+        Parameters:
+            exp_ops (str or list): Diagonal operators over which to compute expval.
+
+        Returns:
+            list: Tuples of expval and stddev pairs.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
+        """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval_and_stddev(exp_ops[idx]))
+            return out
+        return [item.expval_and_stddev(exp_ops) for item in self]
+
+    def stddev(self):
+        """Standard deviation over entire collection.
+
+        Returns:
+            ndarray: Array of standard deviations.
+        """
+        return np.array([item.stddev() for item in self], dtype=float)
+
+    def nearest_probability_distribution(self):
+        """Nearest probability distribution over collection
+
+        Returns:
+            ProbCollection: Collection of ProbDistributions.
+        """
+        return ProbCollection([item.nearest_probability_distribution() for item in self])
+
+
+class ProbCollection(list):
+    """A list subclass that makes handling multiple probability-distributions easier.
+    """
+    def __init__(self, data):
+        """ProbCollection constructor.
+
+        Parameters:
+            data (list or ProbCollection): List of ProbDistribution instances.
+
+        Raises:
+            TypeError: Must be list of ProbDistribution only.
+        """
+        for dd in data:
+            if not isinstance(dd, ProbDistribution):
+                raise TypeError('ProbCollection requires ProbDistribution instances.')
+        super().__init__(data)
+
+    def expval(self, exp_ops=''):
+        """Expectation value over entire collection.
+
+        Parameters:
+            exp_ops (str or list): Diagonal operators over which to compute expval.
+
+        Returns:
+            ndarray: Array of expectation values.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
+        """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval(exp_ops[idx]))
+            return np.array(out, dtype=float)
+        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+
+    def expval_and_stddev(self, exp_ops=''):
+        """Expectation value and standard deviation over entire collection.
+
+        Parameters:
+            exp_ops (str or list): Diagonal operators over which to compute expval.
+
+        Returns:
+            list: Tuples of expval and stddev pairs.
+
+        Raises:
+            M3Error: Length of passes operators does not match container length.
+        """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval_and_stddev(exp_ops[idx]))
+            return out
+        return [item.expval_and_stddev(exp_ops) for item in self]
+
+    def stddev(self):
+        """Standard deviation over entire collection.
+
+        Returns:
+            ndarray: Array of standard deviations.
+        """
+        return np.array([item.stddev() for item in self], dtype=float)

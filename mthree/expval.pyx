@@ -10,54 +10,60 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
+# cython: c_string_type=unicode, c_string_encoding=UTF-8
 """mthree expectation value"""
+import numpy as np
+cimport numpy as cnp
+from mthree.exceptions import M3Error
+
 cimport cython
+from libcpp cimport bool
 from libc.math cimport sqrt
+from libcpp.string cimport string
+
+OP_CONVERT = {'Z' : 0, 'I': 1, '0': 2, '1': 3}
+cdef int[8] OPER_MAP = [1, -1, 1, 1, 1, 0, 0, 1]
 
 
 @cython.boundscheck(False)
-def exp_val(object quasi):
-    """Computes expectation value in computational basis.
+@cython.cdivision(True)
+def exp_val(object dist, str exp_ops='', bool compute_stddev=0):
+    """Computes expectation values in computational basis for a supplied
+    list of operators (Default is all Z).
 
     Parameters:
         quasi (dict): Input quasi-probability distribution.
+        exp_ops (str): String representation of qubit operators to compute.
+        compute_stddev (bool): Return stddev if passed a ProbDistribution
 
     Returns:
         float: Expectation value.
+        float: Sandard deviation (optionally)
     """
+
+    cdef unsigned int bits_len = len(next(iter(dist)))
+    if not exp_ops:
+        exp_ops = 'Z'*bits_len
+    cdef unsigned char[::1] ops = np.array([OP_CONVERT[item] for item in exp_ops.upper()], dtype=np.uint8)
+    if ops.shape[0] != bits_len:
+        raise M3Error('exp_ops length does not equal number of bits.')
+    
     # Find normalization to probs
     cdef double exp_val = 0
-    cdef str key
-    cdef double val
-    cdef unsigned int one_count
-    for key, val in quasi.items():
-        one_count = key.count('1') % 2
-        exp_val += val * (-1 if one_count else 1)
-    return exp_val
-
-@cython.boundscheck(False)
-def exp_val_and_stddev(object probs):
-    """Computes expectation value and standard deviation in computational basis
-    for a given probability distribution (not quasi-probs).
-
-    Parameters:
-        probs (dict): Input probability distribution.
-
-    Returns:
-        float: Expectation value.
-        float: Standard deviation.
-    """
-    # Find normalization to probs
-    cdef double exp_val = 0
-    cdef double stddev, exp2 = 0
-    cdef str key
-    cdef double val
-    cdef unsigned int one_count
-    for key, val in probs.items():
-        one_count = key.count('1') % 2
-        exp_val += val * (-1 if one_count else 1)
+    cdef string key
+    cdef double val, stddev, exp2 = 0
+    cdef int oper_prod = 1
+    cdef size_t kk
+    cdef unsigned int shots
+    for key, val in dist.items():
+        oper_prod = 1
+        for kk in range(bits_len):
+            oper_prod *= OPER_MAP[2*ops[kk] + <int>(key[bits_len-kk-1])-48]
+        exp_val += val * oper_prod
         exp2 += val
     
-    stddev = sqrt((exp2 - exp_val*exp_val) / probs.shots)
-    
-    return exp_val, stddev
+    if compute_stddev:
+        shots = dist.shots
+        stddev = sqrt((exp2 - exp_val*exp_val) / shots)
+        return exp_val, stddev
+    return exp_val

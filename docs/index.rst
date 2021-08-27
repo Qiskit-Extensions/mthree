@@ -42,6 +42,14 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     Advanced usage <advanced>
 
 .. toctree::
+    :maxdepth: 2
+    :caption: Tutorials
+    :hidden:
+    :glob:
+
+    tutorials/*
+
+.. toctree::
     :maxdepth: 1
     :caption: API Documentation
     :hidden:

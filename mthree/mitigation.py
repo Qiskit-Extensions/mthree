@@ -27,6 +27,7 @@ from mthree.utils import counts_to_vector, vector_to_quasiprobs
 from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
+from mthree.classes import QuasiCollection
 
 
 def _tensor_meas_states(qubit, num_qubits):
@@ -364,9 +365,9 @@ class M3Mitigation():
             details (bool): Return extra info, default=False.
 
         Returns:
-            QuasiDistribution or list: Dictionary of quasiprobabilities if
-                                       input is a single dict, else a list
-                                       of quasiprobabilities.
+            QuasiDistribution or QuasiCollection: Dictionary of quasiprobabilities if
+                                                  input is a single dict, else a collection
+                                                  of quasiprobabilities.
 
         Raises:
             M3Error: Bitstring length does not match number of qubits given.
@@ -386,7 +387,7 @@ class M3Mitigation():
 
         if not given_list:
             return quasi_out[0]
-        return quasi_out
+        return QuasiCollection(quasi_out)
 
     def _apply_correction(self, counts, qubits, distance=None,
                           method='auto',
