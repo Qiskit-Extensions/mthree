@@ -180,22 +180,36 @@ class QuasiCollection(list):
         """Expectation value over entire collection.
 
         Parameters:
-            exp_ops (str): Diagonal operators over which to compute expval.
+            exp_ops (str or list): Diagonal operators over which to compute expval.
 
         Returns:
             ndarray: Array of expectation values.
         """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval(exp_ops[idx]))
+            return np.array(out, dtype=float)
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
 
     def expval_and_stddev(self, exp_ops=''):
         """Expectation value and standard deviation over entire collection.
 
         Parameters:
-            exp_ops (str): Diagonal operators over which to compute expval.
+            exp_ops (str or list): Diagonal operators over which to compute expval.
 
         Returns:
             list: Tuples of expval and stddev pairs.
         """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval_and_stddev(exp_ops[idx]))
+            return out
         return [item.expval_and_stddev(exp_ops) for item in self]
 
     def stddev(self):
@@ -236,22 +250,36 @@ class ProbCollection(list):
         """Expectation value over entire collection.
 
         Parameters:
-            exp_ops (str): Diagonal operators over which to compute expval.
+            exp_ops (str or list): Diagonal operators over which to compute expval.
 
         Returns:
             ndarray: Array of expectation values.
         """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval(exp_ops[idx]))
+            return np.array(out, dtype=float)
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
 
     def expval_and_stddev(self, exp_ops=''):
         """Expectation value and standard deviation over entire collection.
 
         Parameters:
-            exp_ops (str): Diagonal operators over which to compute expval.
+            exp_ops (str or list): Diagonal operators over which to compute expval.
 
         Returns:
             list: Tuples of expval and stddev pairs.
         """
+        if isinstance(exp_ops, list):
+            if len(exp_ops) != len(self):
+                raise M3Error('exp_ops length does not match container length')
+            out = []
+            for idx, item in enumerate(self):
+                out.append(item.expval_and_stddev(exp_ops[idx]))
+            return out
         return [item.expval_and_stddev(exp_ops) for item in self]
 
     def stddev(self):
