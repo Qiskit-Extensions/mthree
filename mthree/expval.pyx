@@ -27,7 +27,7 @@ cdef int[8] OPER_MAP = [1, -1, 1, 1, 1, 0, 0, 1]
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-def exp_val(object dist, str exp_ops, bool compute_stddev=0):
+def exp_val(object dist, str exp_ops='', bool compute_stddev=0):
     """Computes expectation values in computational basis for a supplied
     list of operators (Default is all Z).
 
@@ -42,6 +42,8 @@ def exp_val(object dist, str exp_ops, bool compute_stddev=0):
     """
 
     cdef unsigned int bits_len = len(next(iter(dist)))
+    if not exp_ops:
+        exp_ops = 'Z'*bits_len
     cdef unsigned char[::1] ops = np.array([OP_CONVERT[item] for item in exp_ops.upper()], dtype=np.uint8)
     if ops.shape[0] != bits_len:
         raise M3Error('exp_ops length does not equal number of bits.')
