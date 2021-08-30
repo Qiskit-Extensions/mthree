@@ -176,6 +176,15 @@ class QuasiCollection(list):
                 raise TypeError('QuasiCollection requires QuasiDistribution instances.')
         super().__init__(data)
 
+    @property
+    def mitigation_overhead(self):
+        """Mitigation overhead over entire collection.
+
+        Returns:
+            ndarray: Array of mitigation overhead values.
+        """
+        return np.array([item.mitigation_overhead for item in self], dtype=float)
+
     def expval(self, exp_ops=''):
         """Expectation value over entire collection.
 
