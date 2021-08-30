@@ -244,7 +244,6 @@ class QuasiCollection(list):
         return ProbCollection([item.nearest_probability_distribution() for item in self])
 
 
-
 class ProbCollection(list):
     """A list subclass that makes handling multiple probability-distributions easier.
     """
