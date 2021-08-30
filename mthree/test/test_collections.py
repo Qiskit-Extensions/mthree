@@ -36,5 +36,5 @@ def test_mit_overhead():
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5),
                                       return_mitigation_overhead=True)
 
-    ind_overheads = np.asarray([cnt.mitigation_overhead for mit in mit_counts])
+    ind_overheads = np.asarray([cnt.mitigation_overhead for cnt in mit_counts])
     assert np.allclose(mit_counts.mitigation_overhead, ind_overheads)
