@@ -379,7 +379,7 @@ class M3Mitigation():
             counts = [counts]
 
         if not any(isinstance(qq, (list, tuple, np.ndarray)) for qq in qubits):
-            qubits = [qubits]
+            qubits = [qubits]*len(counts)
 
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
