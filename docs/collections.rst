@@ -1,7 +1,7 @@
 .. _collections:
 
 ##############################
-Using Distribution Collections
+Using distribution collections
 ##############################
 
 When you mitigate over multiple circuits the return object is a :class:`mthree.classes.QuasiCollection`

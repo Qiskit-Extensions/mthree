@@ -36,9 +36,10 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
  
     Basic usage <basic>
     Transpiled circuits <transpiled>
+    Using collections <collections>
+    Expectation values <expvals>
     Error analysis <error>
     Obtaining probabilities <probs>
-    Using Collections <collections>
     Saving and loading calibrations <cal_io>
     Advanced usage <advanced>
 
