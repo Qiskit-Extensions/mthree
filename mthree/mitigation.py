@@ -387,7 +387,7 @@ class M3Mitigation():
         quasi_out = []
 
         for idx, cnts in enumerate(counts):
-            
+
             quasi_out.append(
                 self._apply_correction(cnts, qubits=qubits[idx],
                                        distance=distance,
