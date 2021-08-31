@@ -26,7 +26,7 @@ When you mitigate over multiple circuits the return object is a :class:`mthree.c
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(6))
 
-    trans_qc = transpile([qc, backend)
+    trans_qc = transpile([qc]*10, backend)
     raw_counts = backend.run(trans_qc, shots=4000).result().get_counts()
 
     quasis = mit.apply_correction(raw_counts, range(6), return_mitigation_overhead=True)
