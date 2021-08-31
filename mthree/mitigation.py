@@ -378,12 +378,24 @@ class M3Mitigation():
         if not given_list:
             counts = [counts]
 
-        quasi_out = [self._apply_correction(cnts, qubits=qubits,
-                                            distance=distance,
-                                            method=method,
-                                            max_iter=max_iter, tol=tol,
-                                            return_mitigation_overhead=return_mitigation_overhead,
-                                            details=details) for cnts in counts]
+        if not any(isinstance(qq, (list, tuple, np.ndarray)) for qq in qubits):
+            qubits = [qubits]
+
+        if len(qubits) != len(counts):
+            raise M3Error('Length of counts does not match length of qubits.')
+
+        quasi_out = []
+
+        for idx, cnts in enumerate(counts):
+            
+            quasi_out.append(
+                self._apply_correction(cnts, qubits=qubits[idx],
+                                       distance=distance,
+                                       method=method,
+                                       max_iter=max_iter, tol=tol,
+                                       return_mitigation_overhead=return_mitigation_overhead,
+                                       details=details)
+                            )
 
         if not given_list:
             return quasi_out[0]
