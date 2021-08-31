@@ -177,6 +177,15 @@ class QuasiCollection(list):
         super().__init__(data)
 
     @property
+    def shots(self):
+        """Number of shots taken over collection.
+
+        Returns:
+            ndarray: Array of shots values.
+        """
+        return np.array([item.shots for item in self], dtype=int)
+
+    @property
     def mitigation_overhead(self):
         """Mitigation overhead over entire collection.
 
@@ -260,6 +269,15 @@ class ProbCollection(list):
             if not isinstance(dd, ProbDistribution):
                 raise TypeError('ProbCollection requires ProbDistribution instances.')
         super().__init__(data)
+
+    @property
+    def shots(self):
+        """Number of shots taken over collection.
+
+        Returns:
+            ndarray: Array of shots values.
+        """
+        return np.array([item.shots for item in self], dtype=int)
 
     def expval(self, exp_ops=''):
         """Expectation value over entire collection.
