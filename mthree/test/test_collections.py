@@ -51,7 +51,7 @@ def test_shots():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute([qc]*10, backend).result().get_counts()
+    raw_counts = execute([qc]*10, backend, shots=4321).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5),
@@ -59,3 +59,5 @@ def test_shots():
 
     assert np.allclose(mit_counts.nearest_probability_distribution().shots,
                        mit_counts.shots)
+
+    assert np.all(mit_counts.shots == 4321)
