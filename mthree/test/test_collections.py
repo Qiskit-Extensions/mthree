@@ -39,6 +39,7 @@ def test_mit_overhead():
     ind_overheads = np.asarray([cnt.mitigation_overhead for cnt in mit_counts])
     assert np.allclose(mit_counts.mitigation_overhead, ind_overheads)
 
+
 def test_shots():
     """Test if shots works over collections
     """
