@@ -30,32 +30,32 @@ from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
 
 
-def _tensor_meas_states(qubit, num_qubits, initial_resets=False):
+def _tensor_meas_states(qubit, num_qubits, initial_reset=False):
     """Construct |0> and |1> states
     for independent 1Q cals.
     """
     qc0 = QuantumCircuit(num_qubits, 1)
-    if initial_resets:
+    if initial_reset:
         qc0.reset(qubit)
     qc0.measure(qubit, 0)
     qc1 = QuantumCircuit(num_qubits, 1)
-    if initial_resets:
+    if initial_reset:
         qc1.reset(qubit)
     qc1.x(qubit)
     qc1.measure(qubit, 0)
     return [qc0, qc1]
 
 
-def _marg_meas_states(num_qubits, initial_resets=False):
+def _marg_meas_states(num_qubits, initial_reset=False):
     """Construct all zeros and all ones states
     for marginal 1Q cals.
     """
     qc0 = QuantumCircuit(num_qubits)
-    if initial_resets:
+    if initial_reset:
         qc0.reset(range(num_qubits))
     qc0.measure_all()
     qc1 = QuantumCircuit(num_qubits)
-    if initial_resets:
+    if initial_reset:
         qc1.reset(range(num_qubits))
     qc1.x(range(num_qubits))
     qc1.measure_all()
@@ -84,7 +84,7 @@ def _balanced_cal_strings(num_qubits):
     return strings
 
 
-def _balanced_cal_circuits(cal_strings, initial_resets=False):
+def _balanced_cal_circuits(cal_strings, initial_reset=False):
     """Build balanced calibration circuits.
 
     Parameters:
@@ -97,7 +97,7 @@ def _balanced_cal_circuits(cal_strings, initial_resets=False):
     circs = []
     for string in cal_strings:
         qc = QuantumCircuit(num_qubits)
-        if initial_resets:
+        if initial_reset:
             qc.reset(range(num_qubits))
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':
@@ -190,14 +190,14 @@ class M3Mitigation():
                               cals_file=cals_file)
 
     def cals_from_system(self, qubits=None, shots=8192, method='balanced',
-                         initial_resets=False, rep_delay=None, cals_file=None):
+                         initial_reset=False, rep_delay=None, cals_file=None):
         """Grab calibration data from system.
 
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
             shots (int): Number of shots per circuit. Default is 8192.
             method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
-            initial_resets (bool): Use resets at beginning of calibration circuits, default=False.
+            initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
         """
@@ -206,7 +206,7 @@ class M3Mitigation():
         self.cal_method = method
         self.rep_delay = rep_delay
         self._grab_additional_cals(qubits, shots=shots,  method=method,
-                                   rep_delay=rep_delay, initial_resets=initial_resets)
+                                   rep_delay=rep_delay, initial_reset=initial_reset)
         if cals_file:
             with open(cals_file, 'wb') as fd:
                 fd.write(orjson.dumps(self.single_qubit_cals,
@@ -232,7 +232,7 @@ class M3Mitigation():
         self.cals_from_file(cals_file)
 
     def _grab_additional_cals(self, qubits, shots=8192, method='balanced', rep_delay=None,
-                              initial_resets=False):
+                              initial_reset=False):
         """Grab missing calibration data from backend.
 
         Parameters:
@@ -240,7 +240,7 @@ class M3Mitigation():
             shots (int): Number of shots to take.
             method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
-            initial_resets (bool): Use resets at beginning of calibration circuits, default=False.
+            initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
 
         Raises:
             M3Error: Backend not set.
@@ -260,13 +260,13 @@ class M3Mitigation():
 
         num_cal_qubits = len(qubits)
         if method == 'marginal':
-            circs = _marg_meas_states(num_cal_qubits, initial_resets=initial_resets)
+            circs = _marg_meas_states(num_cal_qubits, initial_reset=initial_reset)
             trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         elif method == 'balanced':
             cal_strings = _balanced_cal_strings(num_cal_qubits)
-            circs = _balanced_cal_circuits(cal_strings, initial_resets=initial_resets)
+            circs = _balanced_cal_circuits(cal_strings, initial_reset=initial_reset)
             trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
@@ -275,7 +275,7 @@ class M3Mitigation():
             circs = []
             for kk in qubits:
                 circs.extend(_tensor_meas_states(kk, self.num_qubits,
-                                                 initial_resets=initial_resets))
+                                                 initial_reset=initial_reset))
 
             trans_qcs = transpile(circs, self.system, optimization_level=0)
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
