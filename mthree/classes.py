@@ -40,7 +40,7 @@ from mthree.exceptions import M3Error
 class ProbDistribution(dict):
     """A generic dict-like class for probability distributions.
     """
-    def __init__(self, data, shots=None):
+    def __init__(self, data, shots=None, mitigation_overhead=None):
         """A generic dict-like class for probability distributions.
 
         Parameters:
@@ -48,6 +48,7 @@ class ProbDistribution(dict):
             shots (int): Number shots taken to form distribution.
         """
         self.shots = shots
+        self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
     def expval(self, exp_ops=''):
@@ -71,7 +72,11 @@ class ProbDistribution(dict):
         Returns:
             float: Standard deviation.
         """
-        return self.expval_and_stddev()[1]
+        if self.shots is None:
+            raise M3Error('Prob-dist is missing shots information.')
+        if self.mitigation_overhead is None:
+            raise M3Error('Prob-dist is missing mitigation overhead.')
+        return math.sqrt(self.mitigation_overhead / self.shots)
 
     def expval_and_stddev(self, exp_ops=''):
         """Compute expectation value and standard deviation from distribution.
@@ -84,10 +89,7 @@ class ProbDistribution(dict):
             float: Expectation value.
             float: Standard deviation.
         """
-        if isinstance(exp_ops, str):
-            return exp_val(self, exp_ops=exp_ops, compute_stddev=1)
-        else:
-            return exp_val(self, dict_ops=exp_ops, compute_stddev=1)
+        return self.expval(exp_ops), self.stddev()
 
 
 class QuasiDistribution(dict):
@@ -164,8 +166,8 @@ class QuasiDistribution(dict):
         """
         probs, dist = quasi_to_probs(self)
         if return_distance:
-            return ProbDistribution(probs, self.shots), dist
-        return ProbDistribution(probs, self.shots)
+            return ProbDistribution(probs, self.shots, self.mitigation_overhead), dist
+        return ProbDistribution(probs, self.shots, self.mitigation_overhead)
 
 
 class QuasiCollection(list):
@@ -287,6 +289,15 @@ class ProbCollection(list):
             ndarray: Array of shots values.
         """
         return np.array([item.shots for item in self], dtype=int)
+
+    @property
+    def mitigation_overhead(self):
+        """Mitigation overhead over entire collection.
+
+        Returns:
+            ndarray: Array of mitigation overhead values.
+        """
+        return np.array([item.mitigation_overhead for item in self], dtype=float)
 
     def expval(self, exp_ops=''):
         """Expectation value over entire collection.

@@ -27,18 +27,17 @@ cdef int[8] OPER_MAP = [1, -1, 1, 1, 1, 0, 0, 1]
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-def exp_val(object dist, str exp_ops='', dict dict_ops={}, bool compute_stddev=0):
+def exp_val(object dist, str exp_ops='', dict dict_ops={}):
     """Computes expectation values in computational basis for a supplied
     list of operators (Default is all Z).
 
     Parameters:
         quasi (dict): Input quasi-probability distribution.
-        exp_ops (str): String representation of qubit operators to compute.
-        compute_stddev (bool): Return stddev if passed a ProbDistribution
+        exp_ops (str): String representation of qubit operator to compute.
+        dict_ops (dict): Dict representation of qubit operator to compute.
 
     Returns:
         float: Expectation value.
-        float: Sandard deviation (optionally)
     """
 
     cdef unsigned int bits_len = len(next(iter(dist)))
@@ -58,7 +57,7 @@ def exp_val(object dist, str exp_ops='', dict dict_ops={}, bool compute_stddev=0
     # Find normalization to probs
     cdef double exp_val = 0
     cdef string key
-    cdef double val, stddev, exp2 = 0
+    cdef double val
     cdef int oper_prod = 1
     cdef size_t kk
     cdef unsigned int shots
@@ -71,11 +70,5 @@ def exp_val(object dist, str exp_ops='', dict dict_ops={}, bool compute_stddev=0
                 oper_prod *= OPER_MAP[2*ops[kk] + <int>(key[bits_len-kk-1])-48]
 
         exp_val += val * oper_prod
-        if oper_prod:
-            exp2 += val
     
-    if compute_stddev:
-        shots = dist.shots
-        stddev = sqrt((exp2 - exp_val*exp_val) / shots)
-        return exp_val, stddev
     return exp_val
