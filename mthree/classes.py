@@ -54,13 +54,16 @@ class ProbDistribution(dict):
         """Compute expectation value from distribution.
 
         Parameters:
-            exp_ops (str): String representation of diagonal qubit operators
-                           used in computing the expectation value.
+            exp_ops (stror dict ): String representation of diagonal qubit operators
+                                   used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self, exp_ops)
+        if isinstance(exp_ops, str):
+            return exp_val(self, exp_ops=exp_ops)
+        else:
+            return exp_val(self, dict_ops=exp_ops)
 
     def stddev(self):
         """Compute standard deviation from distribution.
@@ -74,14 +77,17 @@ class ProbDistribution(dict):
         """Compute expectation value and standard deviation from distribution.
 
         Parameters:
-            exp_ops (str): String representation of diagonal qubit operators
-                           used in computing the expectation value.
+            exp_ops (str or dict): String or dict representation of diagonal qubit operators
+                                   used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Standard deviation.
         """
-        return exp_val(self, exp_ops, 1)
+        if isinstance(exp_ops, str):
+            return exp_val(self, exp_ops=exp_ops, compute_stddev=1)
+        else:
+            return exp_val(self, dict_ops=exp_ops, compute_stddev=1)
 
 
 class QuasiDistribution(dict):
@@ -103,13 +109,16 @@ class QuasiDistribution(dict):
         """Compute expectation value from distribution.
 
         Parameters:
-            exp_ops (str): String representation of diagonal qubit operators
-                           used in computing the expectation value.
+            exp_ops (str or dict): String or dict representation of diagonal qubit operators
+                                   used in computing the expectation value.
 
         Returns:
             float: Expectation value.
         """
-        return exp_val(self, exp_ops)
+        if isinstance(exp_ops, str):
+            return exp_val(self, exp_ops=exp_ops)
+        else:
+            return exp_val(self, dict_ops=exp_ops)
 
     def stddev(self):
         """Compute standard deviation estimate from distribution.
@@ -130,14 +139,14 @@ class QuasiDistribution(dict):
         """Compute expectation value and standard deviation estimate from distribution.
 
         Parameters:
-            exp_ops (str): String representation of diagonal qubit operators
-                           used in computing the expectation value.
+            exp_ops (str or dict): String or dict representation of diagonal qubit operators
+                                   used in computing the expectation value.
 
         Returns:
             float: Expectation value.
             float: Estimate of standard deviation upper-bound.
         """
-        return exp_val(self, exp_ops), self.stddev()
+        return self.expval(exp_ops), self.stddev()
 
     def nearest_probability_distribution(self, return_distance=False):
         """Takes a quasiprobability distribution and maps
@@ -198,7 +207,7 @@ class QuasiCollection(list):
         """Expectation value over entire collection.
 
         Parameters:
-            exp_ops (str or list): Diagonal operators over which to compute expval.
+            exp_ops (str or dict or list): Diagonal operators over which to compute expval.
 
         Returns:
             ndarray: Array of expectation values.
@@ -219,7 +228,7 @@ class QuasiCollection(list):
         """Expectation value and standard deviation over entire collection.
 
         Parameters:
-            exp_ops (str or list): Diagonal operators over which to compute expval.
+            exp_ops (str or dict or list): Diagonal operators over which to compute expval.
 
         Returns:
             list: Tuples of expval and stddev pairs.
@@ -283,7 +292,7 @@ class ProbCollection(list):
         """Expectation value over entire collection.
 
         Parameters:
-            exp_ops (str or list): Diagonal operators over which to compute expval.
+            exp_ops (str or dict or list): Diagonal operators over which to compute expval.
 
         Returns:
             ndarray: Array of expectation values.
@@ -304,7 +313,7 @@ class ProbCollection(list):
         """Expectation value and standard deviation over entire collection.
 
         Parameters:
-            exp_ops (str or list): Diagonal operators over which to compute expval.
+            exp_ops (str or dict or list): Diagonal operators over which to compute expval.
 
         Returns:
             list: Tuples of expval and stddev pairs.
