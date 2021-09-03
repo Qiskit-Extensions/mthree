@@ -461,13 +461,9 @@ class M3Mitigation():
             self._grab_additional_cals(missing_qubits, method=self.cal_method)
 
         if method == 'auto':
-            current_free_mem = psutil.virtual_memory().available
+            current_free_mem = psutil.virtual_memory().available / 1024**3
             # First check if direct method can be run
             if num_elems <= self.iter_threshold \
-                    and ((num_elems**2+num_elems)*8/1024**3 < current_free_mem/1.5):
-                method = 'direct'
-            # If readout is not so good try direct if memory allows
-            elif np.min(self.readout_fidelity(qubits)) < 0.85 \
                     and ((num_elems**2+num_elems)*8/1024**3 < current_free_mem/1.5):
                 method = 'direct'
             else:
