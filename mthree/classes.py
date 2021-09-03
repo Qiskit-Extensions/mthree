@@ -71,6 +71,9 @@ class ProbDistribution(dict):
 
         Returns:
             float: Standard deviation.
+
+        Raises:
+            M3Error: Distribution is missing info.
         """
         if self.shots is None:
             raise M3Error('Prob-dist is missing shots information.')
