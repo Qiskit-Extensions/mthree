@@ -464,7 +464,7 @@ class M3Mitigation():
             current_free_mem = psutil.virtual_memory().available / 1024**3
             # First check if direct method can be run
             if num_elems <= self.iter_threshold \
-                    and ((num_elems**2+num_elems)*8/1024**3 < current_free_mem/1.5):
+                    and ((num_elems**2+num_elems)*8/1024**3 < current_free_mem/2):
                 method = 'direct'
             else:
                 method = 'iterative'
