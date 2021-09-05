@@ -133,3 +133,4 @@ mthree/version.py
 
 docs/stubs/*
 *.json
+docs/tutorials/
