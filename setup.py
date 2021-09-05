@@ -122,7 +122,7 @@ def write_version_py(filename='mthree/version.py'):
 # pylint: disable=missing-module-docstring
 short_version = '%(version)s'
 version = '%(fullversion)s'
-openmp =  %(with_omp)s
+openmp = %(with_omp)s
 """
     a = open(filename, 'w')
     try:
