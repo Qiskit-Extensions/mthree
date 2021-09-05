@@ -55,16 +55,24 @@ class ProbDistribution(dict):
         """Compute expectation value from distribution.
 
         Parameters:
-            exp_ops (stror dict ): String representation of diagonal qubit operators
-                                   used in computing the expectation value.
+            exp_ops (str or dict or list): String representation of diagonal
+                                           qubit operators
+                                           used in computing the expectation value.
 
         Returns:
             float: Expectation value.
+
+        Raises:
+            M3Error: Invalid type passed to exp_ops
         """
         if isinstance(exp_ops, str):
             return exp_val(self, exp_ops=exp_ops)
-        else:
+        elif isinstance(exp_ops, dict):
             return exp_val(self, dict_ops=exp_ops)
+        elif isinstance(exp_ops, list):
+            return np.array([self.expval(item) for item in exp_ops], dtype=float)
+        else:
+            raise M3Error('Invalid type passed to exp_ops')
 
     def stddev(self):
         """Compute standard deviation from distribution.
@@ -114,16 +122,26 @@ class QuasiDistribution(dict):
         """Compute expectation value from distribution.
 
         Parameters:
-            exp_ops (str or dict): String or dict representation of diagonal qubit operators
-                                   used in computing the expectation value.
+            exp_ops (str or dict or list): String or dict representation
+                                           of diagonal qubit operators
+                                           used in computing the expectation
+                                           value.
 
         Returns:
             float: Expectation value.
+
+        Raises:
+            M3Error: Invalid type passed to exp_ops.
         """
         if isinstance(exp_ops, str):
             return exp_val(self, exp_ops=exp_ops)
-        else:
+        elif isinstance(exp_ops, dict):
             return exp_val(self, dict_ops=exp_ops)
+        elif isinstance(exp_ops, list):
+            return np.array([self.expval(item) for item in exp_ops], dtype=float)
+        else:
+            raise M3Error('Invalid type passed to exp_ops')
+
 
     def stddev(self):
         """Compute standard deviation estimate from distribution.
