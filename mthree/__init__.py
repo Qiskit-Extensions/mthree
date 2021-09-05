@@ -23,8 +23,10 @@ Mitigation classes
 
 try:
     from .version import version as __version__
+    from .version import openmp
 except ImportError:
     __version__ = '0.0.0'
+    openmp = False
 
 from .mitigation import M3Mitigation
 
@@ -35,5 +37,7 @@ def about():
     print('='*80)
     print('# Matrix-free Measurement Mitigation (M3) version {}'.format(__version__))
     print('# (C) Copyright IBM 2021.')
-    print('# Paul D. Nation, Hwajung Kang, Neereja Sundaresan, and Jay Gambetta')
+    print('# Paul Nation, Hwajung Kang, Neereja Sundaresan')
+    print('# Jay Gambetta, and Matthew Treinish.')
+    print('# Compiled with OpenMP: {}'.format(openmp))
     print('='*80)
