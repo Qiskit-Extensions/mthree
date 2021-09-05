@@ -142,7 +142,6 @@ class QuasiDistribution(dict):
         else:
             raise M3Error('Invalid type passed to exp_ops')
 
-
     def stddev(self):
         """Compute standard deviation estimate from distribution.
 
