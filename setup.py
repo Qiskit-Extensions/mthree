@@ -59,11 +59,13 @@ CYTHON_SOURCE_DIRS = ['mthree']*7 + \
 # Add openmp flags
 OPTIONAL_FLAGS = []
 OPTIONAL_ARGS = []
+WITH_OMP = False
 for _arg in sys.argv:
     if _arg.startswith("--with-"):
         _options = _arg.split("--with-")[1].split(",")
         sys.argv.remove(_arg)
         if "openmp" in _options or os.getenv("MTHREE_OPENMP", False):
+            WITH_OMP = True
             if sys.platform == 'win32':
                 OPTIONAL_FLAGS = ['/openmp']
             else:
@@ -120,12 +122,12 @@ def write_version_py(filename='mthree/version.py'):
 # pylint: disable=missing-module-docstring
 short_version = '%(version)s'
 version = '%(fullversion)s'
-release = %(isrelease)s
+openmp = %(with_omp)s
 """
     a = open(filename, 'w')
     try:
-        a.write(cnt % {'version': VERSION, 'fullversion':
-                       FULLVERSION, 'isrelease': str(ISRELEASED)})
+        a.write(cnt % {'version': VERSION, 'fullversion':FULLVERSION,
+                       'with_omp': str(WITH_OMP)})
     finally:
         a.close()
 
