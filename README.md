@@ -1,6 +1,7 @@
 # mthree
 
 ![workflow](https://github.com/Qiskit-Partners/mthree/actions/workflows/python-package-conda.yml/badge.svg)
+[![pypi](https://img.shields.io/pypi/dm/mthree.svg)](https://pypi.org/project/mthree/)
 
 Matrix-free Measurement Mitigation (M3).
 
