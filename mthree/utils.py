@@ -46,6 +46,7 @@ def final_measurement_mapping(circuit):
 
     if not given_list:
         return maps_out[0]
+    return maps_out
 
 
 def _final_measurement_mapping(circuit):
