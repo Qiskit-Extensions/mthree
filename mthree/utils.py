@@ -31,6 +31,30 @@ def final_measurement_mapping(circuit):
     classical bit onto which that qubits measurement result is stored.
 
     Parameters:
+        circuit (QuantumCircuit or list): Input Qiskit QuantumCircuit or circuits.
+
+    Returns:
+        dict or list: Mapping of qubits to classical bits for final measurements.
+    """
+    given_list = False
+    if isinstance(circuit, (list, np.ndarray)):
+        given_list = True
+    if not given_list:
+        circuit = [circuit]
+
+    maps_out = [_final_measurement_mapping(circ) for circ in circuit]
+
+    if not given_list:
+        return maps_out[0]
+
+
+def _final_measurement_mapping(circuit):
+    """Return the final measurement mapping for the circuit.
+
+    Dict keys label measured qubits, whereas the values indicate the
+    classical bit onto which that qubits measurement result is stored.
+
+    Parameters:
         circuit (QuantumCircuit): Input Qiskit QuantumCircuit.
 
     Returns:

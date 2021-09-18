@@ -12,6 +12,7 @@
 
 """Test QuantumCircuit final measurement mapping"""
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit.test.mock.backends import FakeCasablanca
 from mthree.utils import final_measurement_mapping
 
 
@@ -67,3 +68,21 @@ def test_multi_creg():
     qc.barrier(range(5))
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
+
+
+def test_mapping_list():
+    """Test that final mapping works for list input"""
+    qc = QuantumCircuit(5, 4)
+    qc.reset(range(5))
+    qc.x(4)
+    qc.h(range(5))
+    qc.cx(range(4), 4)
+    qc.draw()
+    qc.h(range(4))
+    qc.barrier()
+    qc.measure(range(4), range(4))
+
+    backend = FakeCasablanca()
+    circs = transpile([qc]*5, backend)
+    maps = final_measurement_mapping(qc)
+    assert len(maps) == 5
