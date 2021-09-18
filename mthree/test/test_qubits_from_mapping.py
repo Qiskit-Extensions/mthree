@@ -11,7 +11,7 @@
 # that they have been altered from the originals.
 
 """Test QuantumCircuit final measurement mapping"""
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
+from qiskit import QuantumCircuit, transpile
 from qiskit.test.mock.backends import FakeCasablanca
 import mthree
 from mthree.utils import final_measurement_mapping
@@ -41,4 +41,4 @@ def test_cals_mappings():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(maps)
     for qu in qubits:
-        assert mit.single_qubit_cals[qu] != None
+        assert mit.single_qubit_cals[qu] is not None
