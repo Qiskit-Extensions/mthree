@@ -399,8 +399,15 @@ class M3Mitigation():
         if not given_list:
             counts = [counts]
 
-        if not any(isinstance(qq, (list, tuple, np.ndarray)) for qq in qubits):
+        if isinstance(qubits, dict):
+            # If a mapping was given for qubits
+            qubits = list(qubits)
+        elif not any(isinstance(qq, (list, tuple, np.ndarray, dict)) for qq in qubits):
             qubits = [qubits]*len(counts)
+        else:
+            if isinstance(qubits[0], dict):
+                # assuming passed a list of mappings
+                qubits = [list(qu) for qu in qubits]
 
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
