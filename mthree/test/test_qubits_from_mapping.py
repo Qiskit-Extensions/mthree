@@ -41,4 +41,4 @@ def test_cals_mappings():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(maps)
     for qu in qubits:
-        assert mit.single_qubit_cals[qu] not None
+        assert mit.single_qubit_cals[qu] != None
