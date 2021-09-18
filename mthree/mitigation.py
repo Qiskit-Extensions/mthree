@@ -258,6 +258,18 @@ class M3Mitigation():
         if method not in ['independent', 'balanced', 'marginal']:
             raise M3Error('Invalid calibration method.')
 
+        if isinstance(qubits, dict):
+            # Assuming passed a mapping
+            qubits = list(qubits)
+        elif isinstance(qubits, list):
+            # Check if passed a list of mappings
+            if isinstance(qubits[0], dict):
+                # Assuming list of mappings, need to get unique elements
+                _qubits = []
+                for item in qubits:
+                    _qubits.extend(list(item))
+                qubits = list(set(_qubits))
+
         num_cal_qubits = len(qubits)
         if method == 'marginal':
             circs = _marg_meas_states(num_cal_qubits, initial_reset=initial_reset)
