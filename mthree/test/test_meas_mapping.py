@@ -11,7 +11,7 @@
 # that they have been altered from the originals.
 
 """Test QuantumCircuit final measurement mapping"""
-from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
 from qiskit.test.mock.backends import FakeCasablanca
 from mthree.utils import final_measurement_mapping
 
