@@ -84,6 +84,21 @@ option.
     mit.cals_from_system(range(5), rep_delay=400e-6)
 
 
+``initial_reset``
+-----------------
+
+.. caution::
+
+    Do not set this unless you know what you are doing.
+
+A boolean value that specifies whether reset instructions should be used at the beginning of the
+calibration circuits.  Ideally this helps to supress any residual state prep errors that occur from
+imperfect reset of the qubits.  Can be used in concert with, or as an alternative to ``rep_delay``.
+Note that, in order for this to work, the circuits that need to be mitigated must also have reset
+instructions at the beginning.  Otherwise you are calibrating for no state-prep errors, but the
+actual circuits may still suffer from these errors.
+
+
 Options when applying corrections
 ---------------------------------
 
