@@ -55,3 +55,11 @@ values show which classical bit they map to.  Using this mapping in M3 is easy:
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(list(mapping))
+
+Alternatively, you can let M3 take care of converting a mapping to a list internally,
+which allows for simply calling:
+
+.. jupyter-execute::
+
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system(mapping)
