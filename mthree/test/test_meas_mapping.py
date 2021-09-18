@@ -84,5 +84,8 @@ def test_mapping_list():
 
     backend = FakeCasablanca()
     circs = transpile([qc]*5, backend)
-    maps = final_measurement_mapping(qc)
+    maps = final_measurement_mapping(circs)
     assert len(maps) == 5
+
+    maps = final_measurement_mapping(qc)
+    assert not isinstance(maps, list)
