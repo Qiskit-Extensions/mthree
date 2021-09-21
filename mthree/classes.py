@@ -32,6 +32,8 @@ Distribution collections
 
 import math
 import numpy as np
+from qiskit.result import Counts
+
 from mthree.probability import quasi_to_probs
 from mthree.expval import exp_val
 from mthree.exceptions import M3Error
@@ -44,11 +46,25 @@ class ProbDistribution(dict):
         """A generic dict-like class for probability distributions.
 
         Parameters:
-            data (dict): Input data.
+            data (dict or Counts): Input data.
             shots (int): Number shots taken to form distribution.
+
+        Raises:
+            M3Error: Input not derived from discrete samples.
         """
-        self.shots = shots
-        self.mitigation_overhead = mitigation_overhead
+        if isinstance(data, Counts):
+            # Convert Counts to probs
+            self.shots = sum(data.values())
+            if abs(self.shots-1) < 1e-12:
+                raise M3Error('Input must come from discrete samples.')
+            self.mitigation_overhead = 1
+            _data = {}
+            for key, val, in data.items():
+                _data[key] = val / self.shots
+            data = _data
+        else:
+            self.shots = shots
+            self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
     def expval(self, exp_ops=''):
