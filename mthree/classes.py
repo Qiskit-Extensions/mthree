@@ -46,13 +46,14 @@ class ProbDistribution(dict):
         """A generic dict-like class for probability distributions.
 
         Parameters:
-            data (dict or Counts): Input data.
+            data (dict or Counts or ProbDistribution or QuasiDistribution): Input data.
             shots (int): Number shots taken to form distribution.
 
         Raises:
             M3Error: Input not derived from discrete samples.
         """
-        if isinstance(data, Counts):
+        if isinstance(data, Counts) or \
+            not isinstance(data, (ProbDistribution, QuasiDistribution)):
             # Convert Counts to probs
             self.shots = sum(data.values())
             if abs(self.shots-1) < 1e-12:
