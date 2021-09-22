@@ -53,7 +53,7 @@ class ProbDistribution(dict):
             M3Error: Input not derived from discrete samples.
         """
         if isinstance(data, Counts) or \
-            not isinstance(data, (ProbDistribution, QuasiDistribution)):
+                not isinstance(data, (ProbDistribution, QuasiDistribution)):
             # Convert Counts to probs
             self.shots = sum(data.values())
             if abs(self.shots-1) < 1e-12:
