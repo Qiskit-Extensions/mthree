@@ -195,7 +195,7 @@ def expval(items, exp_ops=''):
         Returns:
             float : Expectation value.
             ndarray: Array of expectation values
-            
+
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
         """
@@ -212,7 +212,7 @@ def stddev(items):
         Returns:
             float : Expectation value.
             ndarray: Array of expectation values
-            
+
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
         """
@@ -232,7 +232,7 @@ def expval_and_stddev(items, exp_ops=''):
         Returns:
             float : Expectation value.
             ndarray: Array of expectation values
-        
+
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
         """
