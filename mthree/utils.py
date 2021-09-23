@@ -21,6 +21,7 @@ Utility functions
 
 """
 import numpy as np
+from mthree.exceptions import M3Error
 from mthree.classes import QuasiDistribution
 
 
@@ -101,6 +102,140 @@ def _final_measurement_mapping(circuit):
     # Sort so that classical bits are in numeric order low->high.
     mapping = dict(sorted(mapping.items(), key=lambda item: item[1]))
     return mapping
+
+
+def _expval_std(items, exp_ops='', method=0):
+    """Compute expectation values from distributions.
+
+    Parameters:
+       items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
+            distributions.
+
+       exp_ops (str or dict or list): String or dict representation of diagonal qubit
+                                      operators used in computing the expectation value.
+
+        method (int): 0=expvals, 1=stddev, 2=expval and stddev.
+
+    Returns:
+        float : Expectation value.
+        tuple: Expectation value and stddev.
+        ndarray: Array of expectation values or stddev
+        list: List of expvals and stddev tuples.
+
+    Raises:
+        M3Error: Not a valid method.
+        """
+    if method not in [0,1,2]:
+        raise M3Error('Invalid method int {} passed.'.format(method))
+        
+    got_list = False
+    if isinstance(items, list):
+        got_list = True
+    else:
+        items = [items]
+        
+    if isinstance(exp_ops, list):
+        if not len(exp_ops) == len(items):
+            raise M3Error(('exp_ops length ({}) does not match number ' +
+                          'of items passed ({}).').format(len(exp_ops), len(items)))
+    else:
+        exp_ops = [exp_ops]*len(items)
+
+    if isinstance(items[0], (ProbCollection, QuasiCollection)):
+        if method == 0:
+            out = items.expval(exp_ops)
+        elif method == 1:
+            out = items.stddev()
+        else:
+            out = items.expval_and_stddev(exp_ops)
+    elif not isinstance(items[0], (ProbDistribution, QuasiDistribution)):
+        out = []
+        if method == 0:
+            for idx, it in enumerate(items):
+                out.append(ProbDistribution(it).expval(exp_ops[idx]))
+            out = np.asarray(out, dtype=float)
+        elif method == 1:
+            for _, it in enumerate(items):
+                out.append(ProbDistribution(it).stddev())
+            out = np.asarray(out, dtype=float)
+        else:
+            for idx, it in enumerate(items):
+                out.append(ProbDistribution(it).expval_and_stddev(exp_ops[idx]))
+    else:
+        out = []
+        if method == 0:
+            for idx, it in enumerate(items):
+                out.append(it.expval(exp_ops[idx]))
+            out = np.asarray(out, dtype=float)
+        elif method == 1:
+            for _, it in enumerate(items):
+                out.append(it.stddev())
+            out = np.asarray(out, dtype=float)
+        else:
+            for idx, it in enumerate(items):
+                out.append(it.expval_and_stddev(exp_ops[idx]))
+    
+    if not got_list:
+        return out[0]
+    return out
+
+
+def expval(items, exp_ops=''):
+    """Compute expectation values from distributions.
+
+        Parameters:
+           items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
+                distributions.
+
+           exp_ops (str or dict or list): String or dict representation of diagonal
+                                          qubit operators used in computing the expectation
+                                          value.
+
+        Returns:
+            float : Expectation value.
+            ndarray: Array of expectation values
+            
+        Notes:
+            Cannot mix Counts and dicts with M3 Distributions in the same call.
+        """
+    return _expval_std(items, exp_ops=exp_ops, method=0)
+
+
+def stddev(items):
+    """Compute expectation values from distributions.
+
+        Parameters:
+           items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
+                distributions.
+
+        Returns:
+            float : Expectation value.
+            ndarray: Array of expectation values
+            
+        Notes:
+            Cannot mix Counts and dicts with M3 Distributions in the same call.
+        """
+    return _expval_std(items, method=1)
+
+
+def expval_and_stddev(items, exp_ops=''):
+    """Compute expectation values from distributions.
+
+        Parameters:
+           items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
+                distributions.
+
+           exp_ops (str or dict or list): String or dict representation of diagonal qubit
+                                          operators used in computing the expectation value.
+
+        Returns:
+            float : Expectation value.
+            ndarray: Array of expectation values
+        
+        Notes:
+            Cannot mix Counts and dicts with M3 Distributions in the same call.
+        """
+    return _expval_std(items, exp_ops=exp_ops, method=2)
 
 
 def counts_to_vector(counts):
