@@ -128,13 +128,13 @@ def _expval_std(items, exp_ops='', method=0):
         """
     if method not in [0,1,2]:
         raise M3Error('Invalid method int {} passed.'.format(method))
-        
+
     got_list = False
     if isinstance(items, list):
         got_list = True
     else:
         items = [items]
-        
+
     if isinstance(exp_ops, list):
         if not len(exp_ops) == len(items):
             raise M3Error(('exp_ops length ({}) does not match number ' +
@@ -175,7 +175,7 @@ def _expval_std(items, exp_ops='', method=0):
         else:
             for idx, it in enumerate(items):
                 out.append(it.expval_and_stddev(exp_ops[idx]))
-    
+
     if not got_list:
         return out[0]
     return out
