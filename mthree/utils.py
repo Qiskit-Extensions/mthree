@@ -126,7 +126,7 @@ def _expval_std(items, exp_ops='', method=0):
     Raises:
         M3Error: Not a valid method.
         """
-    if method not in [0,1,2]:
+    if method not in [0, 1, 2]:
         raise M3Error('Invalid method int {} passed.'.format(method))
 
     got_list = False
