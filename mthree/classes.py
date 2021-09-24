@@ -65,7 +65,7 @@ class ProbDistribution(dict):
             if shots is None:
                 self.shots = int(sum(data.values()))
                 self.mitigation_overhead = 1
-                if self.shots == 1:
+                if self.shots != 1:
                     _data = {}
                     for key, val, in data.items():
                         _data[key] = val / self.shots

@@ -18,7 +18,7 @@ from qiskit.test.mock import FakeAthens
 import mthree
 
 
-def test_raw_exp():
+def test_gen():
     """Verify that expval of 1 circuit raw counts gives same as dist=0 solution."""
     backend = FakeAthens()
     qc = QuantumCircuit(4)
@@ -40,7 +40,7 @@ def test_raw_exp():
     assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
 
 
-def test_raw_exp_multi():
+def test_gen_multi():
     """Verify that expval of multi circuit raw counts gives same as dist=0 solution."""
     backend = FakeAthens()
     qc = QuantumCircuit(4)
