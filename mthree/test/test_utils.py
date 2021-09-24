@@ -12,6 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test utils functions"""
+import numpy as np
 from qiskit import QuantumCircuit, execute
 from qiskit.test.mock import FakeAthens
 import mthree
