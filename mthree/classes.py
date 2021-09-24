@@ -52,20 +52,27 @@ class ProbDistribution(dict):
         Raises:
             M3Error: Input not derived from discrete samples.
         """
-        if isinstance(data, Counts) or \
-                not isinstance(data, (ProbDistribution, QuasiDistribution)):
+        # _gen_call means being called from the general utils function
+        if isinstance(data, Counts):
             # Convert Counts to probs
-            self.shots = sum(data.values())
-            if abs(self.shots-1) < 1e-12:
-                raise M3Error('Input must come from discrete samples.')
+            self.shots = int(sum(data.values()))
             self.mitigation_overhead = 1
             _data = {}
             for key, val, in data.items():
                 _data[key] = val / self.shots
             data = _data
         else:
-            self.shots = shots
-            self.mitigation_overhead = mitigation_overhead
+            if shots is None:
+                self.shots = int(sum(data.values()))
+                self.mitigation_overhead = 1
+                if self.shots == 1:
+                    _data = {}
+                    for key, val, in data.items():
+                        _data[key] = val / self.shots
+                    data = _data
+            else:
+                self.shots = shots
+                self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
     def expval(self, exp_ops=''):
