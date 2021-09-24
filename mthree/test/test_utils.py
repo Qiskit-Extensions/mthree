@@ -38,8 +38,6 @@ def test_raw_exp():
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
-    dicts = [dict(rc) for rc in raw_counts]
-    assert np.allclose(mthree.utils.expval(dicts), mit_counts.expval())
 
 
 def test_raw_exp_multi():
