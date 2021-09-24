@@ -139,8 +139,8 @@ class QuasiDistribution(dict):
             shots (int): Number shots taken to form quasi-distribution.
             mitigation_overhead (float): Overhead from performing mitigation.
         """
-            self.shots = shots
-            self.mitigation_overhead = mitigation_overhead
+        self.shots = shots
+        self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
     def expval(self, exp_ops=''):
