@@ -37,6 +37,7 @@ def test_raw_exp():
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
+    assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
 
 
 def test_raw_exp_multi():
@@ -58,3 +59,4 @@ def test_raw_exp_multi():
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
+    assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
