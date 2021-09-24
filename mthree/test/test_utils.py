@@ -32,10 +32,11 @@ def test_raw_exp():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                    return_mitigation_overhead=True,
-                                    distance=0)
+                                      return_mitigation_overhead=True,
+                                      distance=0)
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
+    assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
 
 
 def test_raw_exp_multi():
@@ -52,7 +53,8 @@ def test_raw_exp_multi():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                    return_mitigation_overhead=True,
-                                    distance=0)
+                                      return_mitigation_overhead=True,
+                                      distance=0)
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
+    assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
