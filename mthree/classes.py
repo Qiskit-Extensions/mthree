@@ -64,6 +64,7 @@ class ProbDistribution(dict):
         else:
             if shots is None:
                 self.shots = int(sum(data.values()))
+                print(self.shots)
                 self.mitigation_overhead = 1
                 if self.shots != 1:
                     _data = {}
@@ -138,8 +139,20 @@ class QuasiDistribution(dict):
             shots (int): Number shots taken to form quasi-distribution.
             mitigation_overhead (float): Overhead from performing mitigation.
         """
-        self.shots = shots
-        self.mitigation_overhead = mitigation_overhead
+        if shots is None:
+            self.shots = int(sum(data.values()))
+            if mitigation_overhead is None:
+                self.mitigation_overhead = 1
+            else:
+                self.mitigation_overhead = mitigation_overhead
+            if self.shots != 1:
+                _data = {}
+                for key, val, in data.items():
+                    _data[key] = val / self.shots
+                data = _data
+        else:
+            self.shots = shots
+            self.mitigation_overhead = mitigation_overhead
         super().__init__(data)
 
     def expval(self, exp_ops=''):
