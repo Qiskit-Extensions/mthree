@@ -187,6 +187,8 @@ def _expval_std(items, exp_ops='', method=0):
 def expval(items, exp_ops=''):
     """Compute expectation values from distributions.
 
+    .. versionadded:: 0.16.0
+
         Parameters:
            items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
                 distributions.
@@ -208,6 +210,8 @@ def expval(items, exp_ops=''):
 def stddev(items):
     """Compute expectation values from distributions.
 
+    .. versionadded:: 0.16.0
+
         Parameters:
            items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
                 distributions.
@@ -224,6 +228,8 @@ def stddev(items):
 
 def expval_and_stddev(items, exp_ops=''):
     """Compute expectation values from distributions.
+
+    .. versionadded:: 0.16.0
 
         Parameters:
            items (list or dict or Counts or ProbDistribution or QuasiDistribution): Input
