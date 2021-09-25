@@ -76,6 +76,30 @@ def test_gen_full_dist():
     qc.cx(1, 0)
     qc.measure_all()
 
+    raw_counts = execute(qc, backend).result().get_counts()
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system()
+    mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
+                                      return_mitigation_overhead=True)
+
+    assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
+    assert np.allclose(mthree.utils.stddev(mit_counts), mit_counts.stddev())
+
+    probs = mit_counts.nearest_probability_distribution()
+    assert np.allclose(mthree.utils.expval(probs), probs.expval())
+    assert np.allclose(mthree.utils.stddev(probs), probs.stddev())
+
+
+def test_gen_multi_full_dist():
+    """Verify that things work for non-trivial mitigation of multi circuits"""
+    backend = FakeAthens()
+    qc = QuantumCircuit(4)
+    qc.h(2)
+    qc.cx(2, 1)
+    qc.cx(2, 3)
+    qc.cx(1, 0)
+    qc.measure_all()
+
     raw_counts = execute([qc]*5, backend).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
