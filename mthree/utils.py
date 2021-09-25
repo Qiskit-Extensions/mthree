@@ -18,6 +18,9 @@ Utility functions
    :toctree: ../stubs/
 
    final_measurement_mapping
+   expval
+   stddev
+   expval_and_stddev
 
 """
 import numpy as np

@@ -41,6 +41,7 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     Error analysis <error>
     Obtaining probabilities <probs>
     Saving and loading calibrations <cal_io>
+    Utility functions <utils>
     Advanced usage <advanced>
 
 .. toctree::
