@@ -401,7 +401,7 @@ class M3Mitigation():
 
         if isinstance(qubits, dict):
             # If a mapping was given for qubits
-            qubits = list(qubits)
+            qubits = [list(qubits)]
         elif not any(isinstance(qq, (list, tuple, np.ndarray, dict)) for qq in qubits):
             qubits = [qubits]*len(counts)
         else:
