@@ -20,7 +20,8 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit import QuantumCircuit, transpile
+from qiskit import QuantumCircuit, transpile, execute
+from qiskit.providers import BaseBackend
 
 from mthree.matrix import _reduced_cal_matrix, sdd_check
 from mthree.utils import counts_to_vector, vector_to_quasiprobs
@@ -275,13 +276,11 @@ class M3Mitigation():
             circs = _marg_meas_states(num_cal_qubits, initial_reset=initial_reset)
             trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
-            job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         elif method == 'balanced':
             cal_strings = _balanced_cal_strings(num_cal_qubits)
             circs = _balanced_cal_circuits(cal_strings, initial_reset=initial_reset)
             trans_qcs = transpile(circs, self.system,
                                   initial_layout=qubits, optimization_level=0)
-            job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         # Indeopendent
         else:
             circs = []
@@ -290,6 +289,12 @@ class M3Mitigation():
                                                  initial_reset=initial_reset))
 
             trans_qcs = transpile(circs, self.system, optimization_level=0)
+
+        # This BaseBackend check is here for Qiskit direct access.  Should be removed later.
+        if isinstance(self.system, BaseBackend):
+            job = execute(trans_qcs, self.system, optimization_level=0,
+                          shots=self.cal_shots, rep_delay=self.rep_delay)
+        else:
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
         counts = job.result().get_counts()
 
