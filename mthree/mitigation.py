@@ -287,7 +287,6 @@ class M3Mitigation():
             for kk in qubits:
                 circs.extend(_tensor_meas_states(kk, self.num_qubits,
                                                  initial_reset=initial_reset))
-
             trans_qcs = transpile(circs, self.system, optimization_level=0)
 
         # This BaseBackend check is here for Qiskit direct access.  Should be removed later.
