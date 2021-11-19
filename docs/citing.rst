@@ -6,6 +6,6 @@ Citing
 
 If you find M3 useful, we would be delighted if you cite it in your work:
 
-    "Scalable mitigation of measurement errors on quantum computers",
+    "Scalable Mitigation of Measurement Errors on Quantum Computers",
     Paul D. Nation, Hwajung Kang, Neereja Sundaresan, and Jay M. Gambetta,
-    `arXiv:2108.12518 <https://arxiv.org/abs/2108.12518>`_.
+    `PRX Quantum 2, 040326 (2021) <https://doi.org/10.1103/PRXQuantum.2.040326>`_.
