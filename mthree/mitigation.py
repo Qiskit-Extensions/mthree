@@ -399,6 +399,8 @@ class M3Mitigation():
         Raises:
             M3Error: Bitstring length does not match number of qubits given.
         """
+        if not any(counts):
+            raise M3Error('Input counts is any empty dict.')
         given_list = False
         if isinstance(counts, (list, np.ndarray)):
             given_list = True
