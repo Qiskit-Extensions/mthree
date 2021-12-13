@@ -16,9 +16,9 @@ from qiskit import QuantumCircuit, execute
 from qiskit.test.mock import FakeAthens
 import mthree
 
-
 LOW_SHOTS = 543
 HIGH_SHOTS = 100000
+
 
 def test_athens_mod_shots1():
     """Check that default shots works properly for low settings"""
@@ -40,6 +40,7 @@ def test_athens_mod_shots1():
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5))
 
     assert mit_counts.shots == LOW_SHOTS
+
 
 def test_athens_mod_shots2():
     """Check that default shots works properly for high settings"""
