@@ -61,4 +61,3 @@ def test_athens_mod_shots2():
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5))
 
     assert mit_counts.shots == 10000
-
