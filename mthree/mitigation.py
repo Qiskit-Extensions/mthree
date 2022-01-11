@@ -135,6 +135,10 @@ class M3Mitigation():
         self._job_error = None
 
     def __getattribute__(self, attr):
+        """This allows for checking the status of the threaded cals call
+
+        For certain attr this will join the thread and/or raise an error.
+        """
         __dict__ = super().__getattribute__('__dict__')
         if attr in __dict__:
             if attr in ['single_qubit_cals', 'apply_correction', '_form_cals']:
