@@ -286,6 +286,7 @@ class M3Mitigation():
                 qubits = list(set(_qubits))
 
         num_cal_qubits = len(qubits)
+        cal_strings = []
         if method == 'marginal':
             circs = _marg_meas_states(num_cal_qubits, initial_reset=initial_reset)
             trans_qcs = transpile(circs, self.system,
