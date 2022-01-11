@@ -359,7 +359,7 @@ class M3Mitigation():
             self._thread.join()
             self._thread = None
         if self._job_error:
-            raise self._job_error # pylint: disable=raising-bad-type
+            raise self._job_error  # pylint: disable=raising-bad-type
 
         quasi_out = []
 
@@ -621,6 +621,7 @@ class M3Mitigation():
             else:
                 fids.append(None)
         return fids
+
 
 def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
     try:
