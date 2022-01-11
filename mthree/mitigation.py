@@ -137,7 +137,7 @@ class M3Mitigation():
     def __getattribute__(self, attr):
         __dict__ = super().__getattribute__('__dict__')
         if attr in __dict__:
-            if attr in ['single_qubit_cals']:
+            if attr in ['single_qubit_cals', 'apply_correction', '_form_cals']:
                 self._thread_check()
         return super().__getattribute__(attr)
 
@@ -150,7 +150,6 @@ class M3Mitigation():
         Returns:
             ndarray: 1D Array of float cals data.
         """
-        self._thread_check()
         qubits = np.asarray(qubits, dtype=int)
         cals = np.zeros(4*qubits.shape[0], dtype=float)
 
@@ -371,10 +370,7 @@ class M3Mitigation():
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
 
-        self._thread_check()
-
         quasi_out = []
-
         for idx, cnts in enumerate(counts):
 
             quasi_out.append(
