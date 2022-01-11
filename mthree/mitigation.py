@@ -135,12 +135,11 @@ class M3Mitigation():
         self._job_error = None
 
     def __getattribute__(self, attr):
-        __dict__ = super(M3Mitigation, self).__getattribute__('__dict__')
+        __dict__ = super().__getattribute__('__dict__')
         if attr in __dict__:
             if attr in ['single_qubit_cals']:
                 self._thread_check()
-            return super(M3Mitigation, self).__getattribute__(attr)
-        return super(M3Mitigation, self).__getattribute__(attr)
+        return super().__getattribute__(attr)
 
     def _form_cals(self, qubits):
         """Form the 1D cals array from tensored cals data
@@ -632,7 +631,7 @@ class M3Mitigation():
 
         Raise an error if one is given.
         """
-        if self._thread and not self._thread == threading.current_thread():
+        if self._thread and self._thread != threading.current_thread():
             self._thread.join()
             self._thread = None
         if self._job_error:
