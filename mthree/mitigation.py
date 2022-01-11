@@ -13,6 +13,7 @@
 """Calibration data"""
 
 import warnings
+import threading
 from time import perf_counter
 
 import psutil
@@ -129,6 +130,9 @@ class M3Mitigation():
         self.cal_shots = None
         self.cal_method = 'balanced'
         self.rep_delay = None
+        # attributes for handling threaded job
+        self._thread = None
+        self._job_error = None
 
     def _form_cals(self, qubits):
         """Form the 1D cals array from tensored cals data
@@ -297,82 +301,13 @@ class M3Mitigation():
                           shots=self.cal_shots, rep_delay=self.rep_delay)
         else:
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
-        counts = job.result().get_counts()
-
-        # A list of qubits with bad meas cals
-        bad_list = []
-        if method == 'independent':
-            for idx, qubit in enumerate(qubits):
-                self.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
-                # Counts 0 has all P00, P10 data, so do that here
-                prep0_counts = counts[2*idx]
-                P10 = prep0_counts.get('1', 0) / self.cal_shots
-                P00 = 1-P10
-                self.single_qubit_cals[qubit][:, 0] = [P00, P10]
-                # plus 1 here since zeros data at pos=0
-                prep1_counts = counts[2*idx+1]
-                P01 = prep1_counts.get('0', 0) / self.cal_shots
-                P11 = 1-P01
-                self.single_qubit_cals[qubit][:, 1] = [P01, P11]
-                if P01 >= P00:
-                    bad_list.append(qubit)
-        elif method == 'marginal':
-            prep0_counts = counts[0]
-            prep1_counts = counts[1]
-            for idx, qubit in enumerate(qubits):
-                self.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
-                count_vals = 0
-                index = num_cal_qubits-idx-1
-                for key, val in prep0_counts.items():
-                    if key[index] == '0':
-                        count_vals += val
-                P00 = count_vals / self.cal_shots
-                P10 = 1-P00
-                self.single_qubit_cals[qubit][:, 0] = [P00, P10]
-                count_vals = 0
-                for key, val in prep1_counts.items():
-                    if key[index] == '1':
-                        count_vals += val
-                P11 = count_vals / self.cal_shots
-                P01 = 1-P11
-                self.single_qubit_cals[qubit][:, 1] = [P01, P11]
-                if P01 >= P00:
-                    bad_list.append(qubit)
-
-        # balanced calibration
-        else:
-            cals = [np.zeros((2, 2), dtype=float) for kk in range(num_cal_qubits)]
-
-            for idx, count in enumerate(counts):
-
-                target = cal_strings[idx][::-1]
-                good_prep = np.zeros(num_cal_qubits, dtype=float)
-                denom = self.cal_shots * num_cal_qubits
-
-                for key, val in count.items():
-                    key = key[::-1]
-                    for kk in range(num_cal_qubits):
-                        if key[kk] == target[kk]:
-                            good_prep[kk] += val
-
-                for kk, cal in enumerate(cals):
-                    if target[kk] == '0':
-                        cal[0, 0] += good_prep[kk] / denom
-                    else:
-                        cal[1, 1] += good_prep[kk] / denom
-
-            for jj, cal in enumerate(cals):
-                cal[1, 0] = 1.0 - cal[0, 0]
-                cal[0, 1] = 1.0 - cal[1, 1]
-
-                if cal[0, 1] >= cal[0, 0]:
-                    bad_list.append(qubits[jj])
-
-            for idx, cal in enumerate(cals):
-                self.single_qubit_cals[qubits[idx]] = cal
-
-        if any(bad_list):
-            raise M3Error('Faulty qubits detected: {}'.format(bad_list))
+        
+        # Execute job and cal building in new theread.
+        self._job_error = None
+        thread = threading.Thread(target=_job_thread, args=(job, self, method, qubits,
+                                                            num_cal_qubits, cal_strings))
+        self._thread = thread
+        self._thread.start()
 
     def apply_correction(self, counts, qubits, distance=None,
                          method='auto',
@@ -419,6 +354,12 @@ class M3Mitigation():
 
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
+
+        if self._thread():
+            self._thread.join()
+            self._thread = None
+        if self._job_error:
+            raise self._job_error
 
         quasi_out = []
 
@@ -680,3 +621,84 @@ class M3Mitigation():
             else:
                 fids.append(None)
         return fids
+
+def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
+    try:
+        counts = job.result().get_counts()
+    except Exception as error:
+        mit._job_error = error
+        return
+    # A list of qubits with bad meas cals
+    bad_list = []
+    if method == 'independent':
+        for idx, qubit in enumerate(qubits):
+            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
+            # Counts 0 has all P00, P10 data, so do that here
+            prep0_counts = counts[2*idx]
+            P10 = prep0_counts.get('1', 0) / mit.cal_shots
+            P00 = 1-P10
+            mit.single_qubit_cals[qubit][:, 0] = [P00, P10]
+            # plus 1 here since zeros data at pos=0
+            prep1_counts = counts[2*idx+1]
+            P01 = prep1_counts.get('0', 0) / mit.cal_shots
+            P11 = 1-P01
+            mit.single_qubit_cals[qubit][:, 1] = [P01, P11]
+            if P01 >= P00:
+                bad_list.append(qubit)
+    elif method == 'marginal':
+        prep0_counts = counts[0]
+        prep1_counts = counts[1]
+        for idx, qubit in enumerate(qubits):
+            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
+            count_vals = 0
+            index = num_cal_qubits-idx-1
+            for key, val in prep0_counts.items():
+                if key[index] == '0':
+                    count_vals += val
+            P00 = count_vals / mit.cal_shots
+            P10 = 1-P00
+            mit.single_qubit_cals[qubit][:, 0] = [P00, P10]
+            count_vals = 0
+            for key, val in prep1_counts.items():
+                if key[index] == '1':
+                    count_vals += val
+            P11 = count_vals / mit.cal_shots
+            P01 = 1-P11
+            mit.single_qubit_cals[qubit][:, 1] = [P01, P11]
+            if P01 >= P00:
+                bad_list.append(qubit)
+
+    # balanced calibration
+    else:
+        cals = [np.zeros((2, 2), dtype=float) for kk in range(num_cal_qubits)]
+
+        for idx, count in enumerate(counts):
+
+            target = cal_strings[idx][::-1]
+            good_prep = np.zeros(num_cal_qubits, dtype=float)
+            denom = mit.cal_shots * num_cal_qubits
+
+            for key, val in count.items():
+                key = key[::-1]
+                for kk in range(num_cal_qubits):
+                    if key[kk] == target[kk]:
+                        good_prep[kk] += val
+
+            for kk, cal in enumerate(cals):
+                if target[kk] == '0':
+                    cal[0, 0] += good_prep[kk] / denom
+                else:
+                    cal[1, 1] += good_prep[kk] / denom
+
+        for jj, cal in enumerate(cals):
+            cal[1, 0] = 1.0 - cal[0, 0]
+            cal[0, 1] = 1.0 - cal[1, 1]
+
+            if cal[0, 1] >= cal[0, 0]:
+                bad_list.append(qubits[jj])
+
+        for idx, cal in enumerate(cals):
+            mit.single_qubit_cals[qubits[idx]] = cal
+
+    if any(bad_list):
+        mit._job_error = M3Error('Faulty qubits detected: {}'.format(bad_list))
