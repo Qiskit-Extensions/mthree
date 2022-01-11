@@ -213,7 +213,12 @@ class M3Mitigation():
             initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
+
+        Raises:
+            M3Error: Called while a calibration currently in progress.
         """
+        if self._thread:
+            raise M3Error('Calibration currently in progress.')
         if qubits is None:
             qubits = range(self.num_qubits)
         self.cal_method = method
@@ -231,6 +236,8 @@ class M3Mitigation():
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
         """
+        if self._thread:
+            raise M3Error('Calibration currently in progress.')
         with open(cals_file, 'r', encoding='utf-8') as fd:
             self.single_qubit_cals = [np.asarray(cal) if cal else None
                                       for cal in orjson.loads(fd.read())]
@@ -640,6 +647,15 @@ class M3Mitigation():
 
 
 def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
+    """Run the calibration job in a different thread and post-process
+
+    Parameters:
+        mit (M3Mitigator): The mitigator instance
+        method (str): The type of calibration
+        qubits (list): List of qubits used
+        num_cal_qubits (int): Number of calibration qubits
+        cal_strings (list): List of cal strings for balanced cals
+    """
     try:
         counts = job.result().get_counts()
     # pylint: disable=broad-except
