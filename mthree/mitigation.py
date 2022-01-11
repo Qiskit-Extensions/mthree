@@ -143,6 +143,7 @@ class M3Mitigation():
         Returns:
             ndarray: 1D Array of float cals data.
         """
+        self._thread_check()
         qubits = np.asarray(qubits, dtype=int)
         cals = np.zeros(4*qubits.shape[0], dtype=float)
 
@@ -355,11 +356,7 @@ class M3Mitigation():
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
 
-        if self._thread:
-            self._thread.join()
-            self._thread = None
-        if self._job_error:
-            raise self._job_error  # pylint: disable=raising-bad-type
+        self._thread_check()
 
         quasi_out = []
 
@@ -621,6 +618,17 @@ class M3Mitigation():
             else:
                 fids.append(None)
         return fids
+
+    def _thread_check(self):
+        """Check if a thread is running and join it.
+
+        Raise an error if one is given.
+        """
+        if self._thread:
+            self._thread.join()
+            self._thread = None
+        if self._job_error:
+            raise self._job_error  # pylint: disable=raising-bad-type
 
 
 def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
