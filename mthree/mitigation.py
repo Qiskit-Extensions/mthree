@@ -301,7 +301,7 @@ class M3Mitigation():
                           shots=self.cal_shots, rep_delay=self.rep_delay)
         else:
             job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
-        
+
         # Execute job and cal building in new theread.
         self._job_error = None
         thread = threading.Thread(target=_job_thread, args=(job, self, method, qubits,
@@ -359,7 +359,7 @@ class M3Mitigation():
             self._thread.join()
             self._thread = None
         if self._job_error:
-            raise self._job_error
+            raise self._job_error # pylint: disable=raising-bad-type
 
         quasi_out = []
 
