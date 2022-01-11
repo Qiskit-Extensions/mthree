@@ -355,7 +355,7 @@ class M3Mitigation():
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
 
-        if self._thread():
+        if self._thread:
             self._thread.join()
             self._thread = None
         if self._job_error:
