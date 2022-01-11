@@ -625,6 +625,7 @@ class M3Mitigation():
 def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
     try:
         counts = job.result().get_counts()
+    # pylint: disable=broad-except
     except Exception as error:
         mit._job_error = error
         return
