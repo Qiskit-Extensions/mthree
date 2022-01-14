@@ -22,11 +22,6 @@ or,
 
 .. jupyter-execute::
 
-    from qiskit.test.mock.backends import FakeCasablanca
-    import mthree
-
-    backend = FakeCasablanca()
-
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system([1, 3, 5])
     mit.cals_to_file('my_cals.json')
