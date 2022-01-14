@@ -229,9 +229,7 @@ class M3Mitigation():
         self._grab_additional_cals(qubits, shots=shots,  method=method,
                                    rep_delay=rep_delay, initial_reset=initial_reset)
         if cals_file:
-            with open(cals_file, 'wb') as fd:
-                fd.write(orjson.dumps(self.single_qubit_cals,
-                                      option=orjson.OPT_SERIALIZE_NUMPY))
+            self.cals_to_file(cals_file)
 
     def cals_from_file(self, cals_file):
         """Generated the calibration data from a previous runs output
