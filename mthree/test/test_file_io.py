@@ -12,6 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test cals file IO"""
+import os
 import numpy as np
 from qiskit import QuantumCircuit, execute
 from qiskit.test.mock import FakeAthens
@@ -48,6 +49,8 @@ def test_load_cals_from_file():
 
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
     assert mit2_counts is not None
+    # Check that timestamps got set
+    assert mit2.cal_timestamp == mit.cal_timestamp
 
 
 def test_load_cals_from_file2():
@@ -81,3 +84,13 @@ def test_load_cals_from_file2():
 
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
     assert mit2_counts is not None
+
+
+def test_load_old_cals():
+    """Check old cals can be loaded"""
+
+    _dir = os.path.dirname(os.path.abspath(__file__))
+    mit = mthree.M3Mitigation()
+    mit.cals_from_file(_dir+'/data/8Qcal_Hanoi.json')
+
+    assert len(mit.single_qubit_cals) == 27
