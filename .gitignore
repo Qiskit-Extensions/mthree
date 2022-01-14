@@ -130,7 +130,6 @@ dmypy.json
 .DS_Store
 mthree/version.py
 *.cpp
-
+docs/*.json
 docs/stubs/*
-*.json
 docs/tutorials/
