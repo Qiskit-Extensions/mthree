@@ -86,7 +86,7 @@ def test_load_cals_from_file2():
 
 def test_load_old_cals():
     """Check old cals can be loaded"""
-  
+
     mit = mthree.M3Mitigation()
     mit.cals_from_file('data/8Qcal_Hanoi.json')
 
