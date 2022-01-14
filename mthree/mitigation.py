@@ -17,6 +17,7 @@ import threading
 from time import perf_counter
 
 import psutil
+import datetime
 import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
@@ -129,6 +130,7 @@ class M3Mitigation():
         self.iter_threshold = iter_threshold
         self.cal_shots = None
         self.cal_method = 'balanced'
+        self.cal_timestamp = None  # The time at which the cals result was generated
         self.rep_delay = None
         # attributes for handling threaded job
         self._thread = None
@@ -226,6 +228,7 @@ class M3Mitigation():
             qubits = range(self.num_qubits)
         self.cal_method = method
         self.rep_delay = rep_delay
+        self.cal_timestamp = None
         self._grab_additional_cals(qubits, shots=shots,  method=method,
                                    rep_delay=rep_delay, initial_reset=initial_reset)
         if cals_file:
@@ -242,8 +245,16 @@ class M3Mitigation():
         if self._thread:
             raise M3Error('Calibration currently in progress.')
         with open(cals_file, 'r', encoding='utf-8') as fd:
-            self.single_qubit_cals = [np.asarray(cal) if cal else None
-                                      for cal in orjson.loads(fd.read())]
+            loaded_data = orjson.loads(fd.read())
+            if isinstance(loaded_data, dict):
+                self.single_qubit_cals = [np.asarray(cal) if cal else None
+                                      for cal in loaded_data['cals']]
+                self.cal_timestamp = loaded_data['timestamp']
+            else:
+                warnings.warn('Loading from old M3 file format.  Save again to update.')
+                self.cal_timestamp = None
+                self.single_qubit_cals = [np.asarray(cal) if cal else None
+                                          for cal in loaded_data]
 
     def cals_to_file(self, cals_file=None):
         """Save calibration data to JSON file.
@@ -259,8 +270,11 @@ class M3Mitigation():
             raise M3Error('cals_file must be explicitly set.')
         if not self.single_qubit_cals:
             raise M3Error('Mitigator is not calibrated.')
+        save_dict = {'timestamp': self.cal_timestamp,
+                     'backend': self.system.name(),
+                     'cals': self.single_qubit_cals}
         with open(cals_file, 'wb') as fd:
-            fd.write(orjson.dumps(self.single_qubit_cals,
+            fd.write(orjson.dumps(save_dict,
                                   option=orjson.OPT_SERIALIZE_NUMPY))
 
     def tensored_cals_from_file(self, cals_file):
@@ -675,11 +689,18 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
         cal_strings (list): List of cal strings for balanced cals
     """
     try:
-        counts = job.result().get_counts()
+        res = job.result()
     # pylint: disable=broad-except
     except Exception as error:
         mit._job_error = error
         return
+    counts = res.get_counts()
+    # attach timestamp
+    timestamp = res.date
+    # Needed since Aer result date is str but IBMQ job is datetime
+    if isinstance(timestamp, datetime.datetime):
+        timestamp = timestamp.isoformat()
+    mit.cal_timestamp = timestamp
     # A list of qubits with bad meas cals
     bad_list = []
     if method == 'independent':
@@ -719,7 +740,6 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
             mit.single_qubit_cals[qubit][:, 1] = [P01, P11]
             if P01 >= P00:
                 bad_list.append(qubit)
-
     # balanced calibration
     else:
         cals = [np.zeros((2, 2), dtype=float) for kk in range(num_cal_qubits)]
