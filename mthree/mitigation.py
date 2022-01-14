@@ -236,6 +236,8 @@ class M3Mitigation():
 
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
+            Raises:
+                M3Error: Calibration in progress.
         """
         if self._thread:
             raise M3Error('Calibration currently in progress.')
