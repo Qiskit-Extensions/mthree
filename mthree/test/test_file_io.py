@@ -84,6 +84,7 @@ def test_load_cals_from_file2():
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
     assert mit2_counts is not None
 
+
 def test_load_old_cals():
     """Check old cals can be loaded"""
 

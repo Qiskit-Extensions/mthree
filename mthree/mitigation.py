@@ -248,7 +248,7 @@ class M3Mitigation():
             loaded_data = orjson.loads(fd.read())
             if isinstance(loaded_data, dict):
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
-                                      for cal in loaded_data['cals']]
+                                          for cal in loaded_data['cals']]
                 self.cal_timestamp = loaded_data['timestamp']
             else:
                 warnings.warn('Loading from old M3 file format.  Save again to update.')
