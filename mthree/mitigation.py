@@ -141,7 +141,7 @@ class M3Mitigation():
         """
         __dict__ = super().__getattribute__('__dict__')
         if attr in __dict__:
-            if attr in ['single_qubit_cals', 'apply_correction', '_form_cals']:
+            if attr in ['single_qubit_cals']:
                 self._thread_check()
         return super().__getattribute__(attr)
 
