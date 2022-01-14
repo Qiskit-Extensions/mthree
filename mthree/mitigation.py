@@ -14,10 +14,10 @@
 
 import warnings
 import threading
+import datetime
 from time import perf_counter
 
 import psutil
-import datetime
 import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
