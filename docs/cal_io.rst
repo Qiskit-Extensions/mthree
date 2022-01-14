@@ -18,6 +18,14 @@ Let us generate some calibration data and save it.
     mit.cals_from_system([1, 3, 5], cals_file='my_cals.json')
     mit.single_qubit_cals
 
+or,
+
+.. jupyter-execute::
+
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system([1, 3, 5])
+    mit.cals_to_file('my_cals.json')
+
 We can then load this data at a later point in time using:
 
 
