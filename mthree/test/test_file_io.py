@@ -48,3 +48,36 @@ def test_load_cals_from_file():
 
     mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
     assert mit2_counts is not None
+
+
+def test_load_cals_from_file2():
+    """Check the cals can be loaded from a saved file later"""
+    backend = FakeAthens()
+
+    qc = QuantumCircuit(5)
+    qc.h(2)
+    qc.cx(2, 1)
+    qc.cx(2, 3)
+    qc.cx(1, 0)
+    qc.cx(3, 4)
+    qc.measure_all()
+
+    raw_counts = execute(qc, backend).result().get_counts()
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system()
+    mit.cals_to_file('cals.json')
+
+    mit2 = mthree.M3Mitigation()
+    mit2.cals_from_file(cals_file='cals.json')
+
+    assert len(mit.single_qubit_cals) == len(mit2.single_qubit_cals)
+
+    # check that cals are identical
+    for idx, item in enumerate(mit.single_qubit_cals):
+        if item is None:
+            assert mit2.single_qubit_cals[idx] is None
+        else:
+            assert np.allclose(item, mit2.single_qubit_cals[idx])
+
+    mit2_counts = mit.apply_correction(raw_counts, qubits=range(5))
+    assert mit2_counts is not None

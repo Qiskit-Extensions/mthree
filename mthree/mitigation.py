@@ -245,6 +245,24 @@ class M3Mitigation():
             self.single_qubit_cals = [np.asarray(cal) if cal else None
                                       for cal in orjson.loads(fd.read())]
 
+    def cals_to_file(self, cals_file=None):
+        """Save calibration data to JSON file.
+
+            Parameters:
+                cals_file (str): File in which to store calibrations.
+
+            Raises:
+                M3Error: Calibration filename missing.
+                M3Error: Mitigator is not calibrated.
+        """
+        if not cals_file:
+            raise M3Error('cals_file must be explicitly set.')
+        if not self.single_qubit_cals:
+            raise M3Error('Mitigator is not calibrated.')
+        with open(cals_file, 'wb') as fd:
+            fd.write(orjson.dumps(self.single_qubit_cals,
+                                  option=orjson.OPT_SERIALIZE_NUMPY))
+
     def tensored_cals_from_file(self, cals_file):
         """Generated the tensored calibration data from a previous runs output
 
