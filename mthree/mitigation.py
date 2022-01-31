@@ -32,8 +32,6 @@ from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
 
-from .calibration import grab_additional_cals
-
 class M3Mitigation():
     """Main M3 calibration class."""
     def __init__(self, system=None, iter_threshold=4096):
@@ -146,6 +144,8 @@ class M3Mitigation():
         Raises:
             M3Error: Called while a calibration currently in progress.
         """
+        from .calibration import grab_additional_cals
+
         if self._thread:
             raise M3Error('Calibration currently in progress.')
         if qubits is None:
