@@ -158,8 +158,21 @@ class M3Mitigation():
         if cals_file:
             self.cals_to_file(cals_file)
 
+    def cals_from_matrices(self, matrices):
+        """Generates the calibration data from given precomputed assignment matrices
+
+            matrices(List): A list of calibration matrices
+
+            Raises:
+                M3Error: Calibration in progress.
+        """
+
+        if self._thread:
+            raise M3Error('Calibration currently in progress.')
+        self.single_qubit_cals = matrices
+
     def cals_from_file(self, cals_file):
-        """Generated the calibration data from a previous runs output
+        """Generates the calibration data from a previous runs output
 
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
