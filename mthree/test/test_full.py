@@ -25,7 +25,7 @@ def test_full_problem():
     # Compute using M3
     qubits = [1, 4, 7, 10, 12, 2, 3, 5]
     mit = M3Mitigation(None)
-    mit.single_qubit_cals = CALS
+    mit.cals_from_matrices(CALS)
     mit_counts = mit.apply_correction(COUNTS, qubits, tol=1e-10, method='iterative')
 
     # Compute using LU solver
