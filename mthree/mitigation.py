@@ -286,6 +286,32 @@ class M3Mitigation():
         warnings.warn("This method is deprecated, use 'cals_from_file' instead.")
         self.cals_from_file(cals_file)
 
+    def cals_from_matrices(self, matrices):
+        """Init calibration data from list of NumPy arrays.
+
+        Missing entires are set to None elements.
+
+        Parameters:
+            matrices (list_like): List of cals as NumPy arrays
+
+        Raises:
+            M3Error: If system set error if list length != num_qubits on system
+        """
+        matrices = list(matrices)
+        if self.num_qubits:
+            if len(matrices) != self.num_qubits:
+                raise M3Error('Input list length not equal to'
+                              ' number of qubits {} != {}'.format(len(matrices), self.num_qubits))
+        self.single_qubit_cals = matrices
+
+    def cals_to_matrices(self):
+        """Return single qubit cals as list of NumPy arrays
+
+        Returns:
+            list: List of cals as NumPy arrays
+        """
+        return self.single_qubit_cals.copy()
+
     def _grab_additional_cals(self, qubits, shots=None, method='balanced', rep_delay=None,
                               initial_reset=False):
         """Grab missing calibration data from backend.

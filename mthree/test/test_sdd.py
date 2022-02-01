@@ -21,7 +21,7 @@ def test_bad_A_matrix_sdd():
     """Test a bad A-matrix for SDD"""
 
     mit = mthree.M3Mitigation(None)
-    mit.single_qubit_cals = BAD_CALS
+    mit.cals_from_matrices(BAD_CALS)
     is_sdd = mit._check_sdd(COUNTS, range(5))
     assert not is_sdd
 
@@ -30,7 +30,7 @@ def test_goood_A_matrix_sdd():
     """Test a bad A-matrix for SDD"""
 
     mit = mthree.M3Mitigation(None)
-    mit.single_qubit_cals = GOOD_CALS
+    mit.cals_from_matrices(GOOD_CALS)
     is_sdd = mit._check_sdd(COUNTS, range(5))
     assert is_sdd
 

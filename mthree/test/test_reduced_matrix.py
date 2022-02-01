@@ -23,7 +23,7 @@ def test_reduced_matrix():
     # Compute using M3
     qubits = [1, 4, 7, 10, 12, 2, 3, 5]
     mit = M3Mitigation(None)
-    mit.single_qubit_cals = CALS
+    mit.cals_from_matrices(CALS)
     M = mit.reduced_cal_matrix(COUNTS, qubits)[0]
     # Compute using LU solver
     A = np.kron(mit.single_qubit_cals[qubits[1]], mit.single_qubit_cals[qubits[0]])
