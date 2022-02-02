@@ -58,7 +58,7 @@ def exp_val(object dist, str exp_ops='', dict dict_ops={}):
     cdef double exp_val = 0
     cdef string key
     cdef double val
-    cdef int oper_prod = 1
+    cdef double oper_prod = 1
     cdef size_t kk
     cdef unsigned int shots
     for key, val in dist.items():
