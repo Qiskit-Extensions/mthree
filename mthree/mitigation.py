@@ -237,9 +237,10 @@ class M3Mitigation():
     def cals_from_file(self, cals_file):
         """Generated the calibration data from a previous runs output
 
+        Parameters:
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
-            Raises:
+        Raises:
                 M3Error: Calibration in progress.
         """
         if self._thread:
@@ -259,12 +260,12 @@ class M3Mitigation():
     def cals_to_file(self, cals_file=None):
         """Save calibration data to JSON file.
 
-            Parameters:
-                cals_file (str): File in which to store calibrations.
+        Parameters:
+            cals_file (str): File in which to store calibrations.
 
-            Raises:
-                M3Error: Calibration filename missing.
-                M3Error: Mitigator is not calibrated.
+        Raises:
+            M3Error: Calibration filename missing.
+            M3Error: Mitigator is not calibrated.
         """
         if not cals_file:
             raise M3Error('cals_file must be explicitly set.')
@@ -280,6 +281,7 @@ class M3Mitigation():
     def tensored_cals_from_file(self, cals_file):
         """Generated the tensored calibration data from a previous runs output
 
+        Parameters:
             cals_file (str): A string path to the saved counts file from an
                              earlier run.
         """
