@@ -1,7 +1,9 @@
 # mthree
 
-![workflow](https://github.com/Qiskit-Partners/mthree/actions/workflows/python-package-conda.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
+[![PyPI version](https://badge.fury.io/py/mthree.svg)](https://badge.fury.io/py/mthree)
 [![pypi](https://img.shields.io/pypi/dm/mthree.svg)](https://pypi.org/project/mthree/)
+![workflow](https://github.com/Qiskit-Partners/mthree/actions/workflows/python-package-conda.yml/badge.svg)
 
 Matrix-free Measurement Mitigation (M3).
 
@@ -132,4 +134,4 @@ truncating to small Hamming distance can have some performance benefits.
 
 ## License
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
