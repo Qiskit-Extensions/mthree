@@ -47,7 +47,7 @@ prepared :math:`N` times and averaged over.  For example, the balanced bit-strin
 
 .. jupyter-execute::
 
-    mthree.mitigation._balanced_cal_strings(4)
+    mthree.circuits.balanced_cal_strings(4)
 
 The ``independent`` method also sends :math:`2N` circuits but measures only a single qubit at a time.
 As such, this is a truely uncorrelated calibration process.
