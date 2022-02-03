@@ -74,6 +74,7 @@ def balanced_cal_circuits(cal_strings, initial_reset=False):
 
     Parameters:
         cal_strings (list): List of strings for balanced cal circuits.
+        initial_rest (bool): Use resets at beginning of circuit.
 
     Returns:
         list: List of balanced cal circuits.
@@ -83,6 +84,9 @@ def balanced_cal_circuits(cal_strings, initial_reset=False):
     for string in cal_strings:
         qc = QuantumCircuit(num_qubits)
         if initial_reset:
+            qc.barrier()
+            qc.reset(range(num_qubits))
+            qc.reset(range(num_qubits))
             qc.reset(range(num_qubits))
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':

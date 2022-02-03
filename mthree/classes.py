@@ -131,7 +131,7 @@ class ProbDistribution(dict):
         Returns:
             float: Expectation value.
             float: Standard deviation.
-        
+
         Notes:
             The dict operator format is a sparse diagonal format
             using bitstrings as the keys.
@@ -221,6 +221,7 @@ class QuasiDistribution(dict):
         Returns:
             ProbDistribution: Nearest probability distribution.
             float: Euclidean (L2) distance of distributions.
+
         Notes:
             Method from Smolin et al., Phys. Rev. Lett. 108, 070502 (2012).
         """
