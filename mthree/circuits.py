@@ -74,7 +74,7 @@ def balanced_cal_circuits(cal_strings, initial_reset=False):
 
     Parameters:
         cal_strings (list): List of strings for balanced cal circuits.
-        initial_rest (bool): Use resets at beginning of circuit.
+        initial_reset (bool): Use resets at beginning of circuit.
 
     Returns:
         list: List of balanced cal circuits.
