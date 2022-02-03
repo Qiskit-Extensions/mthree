@@ -11,14 +11,14 @@
 # that they have been altered from the originals.
 
 """Test balanced cals"""
-from mthree.mitigation import _balanced_cal_strings
+from mthree.circuits import balanced_cal_strings
 
 
 def test_balanced_strings():
     """Validate balanced cal string pairs sum to the num_qubits"""
 
     for num_qubits in [1, 2, 5, 9, 22, 47, 102]:
-        cal_strs = _balanced_cal_strings(num_qubits)
+        cal_strs = balanced_cal_strings(num_qubits)
         for kk in range(num_qubits):
             _sum = 0
             str1 = cal_strs[2*kk]
