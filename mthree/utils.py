@@ -128,7 +128,7 @@ def _expval_std(items, exp_ops='', method=0):
 
     Raises:
         M3Error: Not a valid method.
-        """
+    """
     if method not in [0, 1, 2]:
         raise M3Error('Invalid method int {} passed.'.format(method))
 
@@ -203,7 +203,10 @@ def expval(items, exp_ops=''):
 
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
-        """
+
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
+    """
     return _expval_std(items, exp_ops=exp_ops, method=0)
 
 
@@ -222,7 +225,7 @@ def stddev(items):
 
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
-        """
+    """
     return _expval_std(items, method=1)
 
 
@@ -244,7 +247,10 @@ def expval_and_stddev(items, exp_ops=''):
 
         Notes:
             Cannot mix Counts and dicts with M3 Distributions in the same call.
-        """
+
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
+    """
     return _expval_std(items, exp_ops=exp_ops, method=2)
 
 

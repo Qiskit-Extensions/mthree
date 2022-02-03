@@ -88,6 +88,10 @@ class ProbDistribution(dict):
 
         Raises:
             M3Error: Invalid type passed to exp_ops
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if isinstance(exp_ops, str):
             return exp_val(self, exp_ops=exp_ops)
@@ -106,6 +110,10 @@ class ProbDistribution(dict):
 
         Raises:
             M3Error: Distribution is missing info.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if self.shots is None:
             raise M3Error('Prob-dist is missing shots information.')
@@ -123,6 +131,10 @@ class ProbDistribution(dict):
         Returns:
             float: Expectation value.
             float: Standard deviation.
+        
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         return self.expval(exp_ops), self.stddev()
 
@@ -191,6 +203,10 @@ class QuasiDistribution(dict):
         Returns:
             float: Expectation value.
             float: Estimate of standard deviation upper-bound.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         return self.expval(exp_ops), self.stddev()
 
@@ -260,6 +276,10 @@ class QuasiCollection(list):
 
         Raises:
             M3Error: Length of passes operators does not match container length.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -281,6 +301,10 @@ class QuasiCollection(list):
 
         Raises:
             M3Error: Length of passes operators does not match container length.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -354,6 +378,10 @@ class ProbCollection(list):
 
         Raises:
             M3Error: Length of passes operators does not match container length.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
@@ -375,6 +403,10 @@ class ProbCollection(list):
 
         Raises:
             M3Error: Length of passes operators does not match container length.
+
+        Notes:
+            The dict operator format is a sparse diagonal format
+            using bitstrings as the keys.
         """
         if isinstance(exp_ops, list):
             if len(exp_ops) != len(self):
