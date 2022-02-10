@@ -13,7 +13,6 @@
 
 """Test utils functions"""
 from qiskit import Aer, QuantumCircuit, transpile
-from qiskit.test.mock import FakeAthens
 import mthree
 
 
