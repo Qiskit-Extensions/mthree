@@ -36,6 +36,10 @@ def ainv_onenorm_est_lu(A, LU=None):
     """
     dims = A.shape[0]
 
+    # If only a single bitstring then there is no overhead
+    if dims == 1:
+        return 1.0
+
     # Starting vec
     v = (1.0/dims)*np.ones(dims, dtype=float)
 
@@ -121,6 +125,10 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
     P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec)
 
     dims = M.num_elems
+
+    # If only a single bitstring then there is no overhead
+    if dims == 1:
+        return 1.0
 
     # Starting vec
     v = (1.0/dims)*np.ones(dims, dtype=float)
