@@ -27,8 +27,9 @@ def test_basic_expvals():
     # flipping one to I makes even GHZ 0.0
     assert np.allclose(exp_val({'00': 0.5, '11': 0.5}, 'IZ'), 0.0)
     assert np.allclose(exp_val({'00': 0.5, '11': 0.5}, 'ZI'), 0.0)
-    #Generic Z on PROBS
+    # Generic Z on PROBS
     assert np.allclose(exp_val(PROBS, 'ZZZZ'), 0.7554)
+
 
 def test_asym_operators():
     """Test that asym exp values work"""
