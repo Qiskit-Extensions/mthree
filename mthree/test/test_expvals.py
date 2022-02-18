@@ -30,8 +30,8 @@ def test_basic_expvals():
 
 def test_asym_operators():
     """Test that asym exp values work"""
-    assert np.allclose(exp_val(PROBS, '0III', 0.5318))
-    assert np.allclose(exp_val(PROBS, 'III0', 0.5285))
+    assert np.allclose(exp_val(PROBS, '0III'), 0.5318)
+    assert np.allclose(exp_val(PROBS, 'III0'), 0.5285)
 
 PROBS = {'1000': 0.0022,
          '1001': 0.0045,
