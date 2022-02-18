@@ -67,7 +67,7 @@ def exp_val(object dist, str exp_ops='', dict dict_ops={}):
         else:
             oper_prod = 1
             for kk in range(bits_len):
-                oper_prod *= OPER_MAP[2*ops[kk] + <int>(key[bits_len-kk-1])-48]
+                oper_prod *= OPER_MAP[2*ops[kk] + <int>(key[kk])-48]
 
         exp_val += val * oper_prod
     
