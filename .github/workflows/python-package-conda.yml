@@ -1,4 +1,4 @@
-name: Linux - conda
+name: Conda - tests
 on:
   push:
     branches: [main]
