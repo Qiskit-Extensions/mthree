@@ -85,8 +85,8 @@ else:
     COMPILER_FLAGS = ['-O3', '-ffast-math', '-std=c++17']
     if sys.platform == 'darwin':
         # These are needed for compiling on OSX 10.14+
-        COMPILER_FLAGS.append('-mmacosx-version-min=10.14')
-        LINK_FLAGS.append('-mmacosx-version-min=10.14')
+        COMPILER_FLAGS.append('-mmacosx-version-min=11')
+        LINK_FLAGS.append('-mmacosx-version-min=11')
 
 
 EXT_MODULES = []
