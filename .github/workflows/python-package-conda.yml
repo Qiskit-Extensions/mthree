@@ -5,7 +5,8 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  build-linux:
+  conda-test:
+    name: Conda tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 5
