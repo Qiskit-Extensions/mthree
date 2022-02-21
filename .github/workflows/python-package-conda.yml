@@ -1,4 +1,4 @@
-name: Conda - tests
+name: Pytest
 on:
   push:
     branches: [main]
