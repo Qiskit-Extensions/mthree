@@ -36,5 +36,5 @@ def test_test_call_cals_twice():
     maps = final_measurement_mapping(circs)
     mit = mthree.M3Mitigation(backend)
     with pytest.raises(M3Error):
-        mit.cals_from_system(maps)
-        mit.cals_from_system(maps)
+        mit.cals_from_system(maps, async_cal=True)
+        mit.cals_from_system(maps, async_cal=True)
