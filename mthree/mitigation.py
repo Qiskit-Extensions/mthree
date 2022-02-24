@@ -133,7 +133,8 @@ class M3Mitigation():
                               cals_file=cals_file)
 
     def cals_from_system(self, qubits=None, shots=None, method='balanced',
-                         initial_reset=False, rep_delay=None, cals_file=None):
+                         initial_reset=False, rep_delay=None, cals_file=None,
+                         async_cal=False):
         """Grab calibration data from system.
 
         Parameters:
@@ -143,6 +144,7 @@ class M3Mitigation():
             initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
+            async_cal (bool): Do calibration async in a separate thread, default is False.
 
         Raises:
             M3Error: Called while a calibration currently in progress.
@@ -155,7 +157,8 @@ class M3Mitigation():
         self.rep_delay = rep_delay
         self.cal_timestamp = None
         self._grab_additional_cals(qubits, shots=shots,  method=method,
-                                   rep_delay=rep_delay, initial_reset=initial_reset)
+                                   rep_delay=rep_delay, initial_reset=initial_reset,
+                                   async_cal=async_cal)
         if cals_file:
             self.cals_to_file(cals_file)
 
@@ -240,7 +243,7 @@ class M3Mitigation():
         return self.single_qubit_cals.copy()
 
     def _grab_additional_cals(self, qubits, shots=None, method='balanced', rep_delay=None,
-                              initial_reset=False):
+                              initial_reset=False, async_cal=False):
         """Grab missing calibration data from backend.
 
         Parameters:
@@ -249,6 +252,7 @@ class M3Mitigation():
             method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
+            async_cal (bool): Do calibration async in a separate thread, default is False.
 
         Raises:
             M3Error: Backend not set.
@@ -308,10 +312,13 @@ class M3Mitigation():
 
         # Execute job and cal building in new theread.
         self._job_error = None
-        thread = threading.Thread(target=_job_thread, args=(job, self, method, qubits,
-                                                            num_cal_qubits, cal_strings))
-        self._thread = thread
-        self._thread.start()
+        if async_cal:
+            thread = threading.Thread(target=_job_thread, args=(job, self, method, qubits,
+                                                                num_cal_qubits, cal_strings))
+            self._thread = thread
+            self._thread.start()
+        else:
+            _job_thread(job, self, method, qubits, num_cal_qubits, cal_strings)
 
     def apply_correction(self, counts, qubits, distance=None,
                          method='auto',
