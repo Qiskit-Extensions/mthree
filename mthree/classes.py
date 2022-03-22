@@ -55,7 +55,7 @@ class ProbDistribution(dict):
         # _gen_call means being called from the general utils function
         if isinstance(data, Counts):
             # Convert Counts to probs
-            self.shots = int(sum(data.values()))
+            self.shots = sum(data.values())
             self.mitigation_overhead = 1
             _data = {}
             for key, val, in data.items():
@@ -63,7 +63,7 @@ class ProbDistribution(dict):
             data = _data
         else:
             if shots is None:
-                self.shots = int(sum(data.values()))
+                self.shots = sum(data.values())
                 self.mitigation_overhead = 1
                 if self.shots != 1:
                     _data = {}
