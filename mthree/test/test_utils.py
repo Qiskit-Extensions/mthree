@@ -114,6 +114,7 @@ def test_gen_multi_full_dist():
     assert np.allclose(mthree.utils.expval(probs), probs.expval())
     assert np.allclose(mthree.utils.stddev(probs), probs.stddev())
 
+
 def test_statevector_probs():
     """Verify that probabilities from statevectors work"""
     N = 4
