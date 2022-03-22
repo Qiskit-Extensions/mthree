@@ -14,6 +14,7 @@
 """Test utils functions"""
 import numpy as np
 from qiskit import QuantumCircuit, execute
+from qiskit.quantum_info import Statevector
 from qiskit.test.mock import FakeAthens
 import mthree
 
@@ -112,3 +113,17 @@ def test_gen_multi_full_dist():
     probs = mit_counts.nearest_probability_distribution()
     assert np.allclose(mthree.utils.expval(probs), probs.expval())
     assert np.allclose(mthree.utils.stddev(probs), probs.stddev())
+
+def test_statevector_probs():
+    """Verify that probabilities from statevectors work"""
+    N = 4
+    qc = QuantumCircuit(N)
+    qc.x(range(4))
+    qc.h(range(4))
+    qc.ch(2, 1)
+    qc.ch(1, 0)
+    qc.ch(2, 3)
+
+    st = Statevector.from_instruction(qc)
+    probs = st.probabilities_dict()
+    assert np.allclose(mthree.utils.expval(probs), 0.5)
