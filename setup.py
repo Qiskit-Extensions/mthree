@@ -23,7 +23,7 @@ from Cython.Build import cythonize
 
 
 MAJOR = 0
-MINOR = 21
+MINOR = 22
 MICRO = 0
 
 ISRELEASED = False
