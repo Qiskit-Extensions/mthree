@@ -10,3 +10,4 @@ jupyter-sphinx
 nbsphinx
 psutil
 ipykernel<6
+Jinja2<3.1
