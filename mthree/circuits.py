@@ -69,28 +69,29 @@ def balanced_cal_strings(num_qubits):
     return strings
 
 
-def balanced_cal_circuits(cal_strings, initial_reset=False):
+def balanced_cal_circuits(cal_strings, layout, system_qubits, initial_reset=False):
     """Build balanced calibration circuits.
 
     Parameters:
         cal_strings (list): List of strings for balanced cal circuits.
+        layout (list): Logical to physical qubit layout
         initial_reset (bool): Use resets at beginning of circuit.
+        system_qubits (int): Number of qubits in system
 
     Returns:
         list: List of balanced cal circuits.
     """
-    num_qubits = len(cal_strings[0])
     circs = []
     for string in cal_strings:
-        qc = QuantumCircuit(num_qubits)
+        qc = QuantumCircuit(system_qubits)
         if initial_reset:
             qc.barrier()
-            qc.reset(range(num_qubits))
-            qc.reset(range(num_qubits))
-            qc.reset(range(num_qubits))
+            qc.reset(range(system_qubits))
+            qc.reset(range(system_qubits))
+            qc.reset(range(system_qubits))
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':
-                qc.x(idx)
+                qc.x(layout[idx])
         qc.measure_all()
         circs.append(qc)
     return circs

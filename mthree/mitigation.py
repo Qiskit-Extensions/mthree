@@ -295,9 +295,9 @@ class M3Mitigation():
                                   initial_layout=qubits, optimization_level=0)
         elif method == 'balanced':
             cal_strings = balanced_cal_strings(num_cal_qubits)
-            circs = balanced_cal_circuits(cal_strings, initial_reset=initial_reset)
-            trans_qcs = transpile(circs, self.system,
-                                  initial_layout=qubits, optimization_level=0)
+            trans_qcs = balanced_cal_circuits(cal_strings, qubits,
+                                              self.num_qubits,
+                                              initial_reset=initial_reset)
         # Indeopendent
         else:
             circs = []
