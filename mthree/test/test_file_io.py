@@ -67,13 +67,14 @@ def test_load_cals_from_file2():
 
     raw_counts = execute(qc, backend).result().get_counts()
     mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system()
+    mit.cals_from_system(shots=12345)
     mit.cals_to_file('cals.json')
 
     mit2 = mthree.M3Mitigation()
     mit2.cals_from_file(cals_file='cals.json')
 
     assert len(mit.single_qubit_cals) == len(mit2.single_qubit_cals)
+    assert mit.cal_shots == mit2.cal_shots
 
     # check that cals are identical
     for idx, item in enumerate(mit.single_qubit_cals):
