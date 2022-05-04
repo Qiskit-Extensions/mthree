@@ -21,7 +21,7 @@ def test_simulator_overhead():
     qc = QuantumCircuit(6)
     qc.measure_all()
 
-    backend = Aer.get_backend("statevector_simulator")
+    backend = Aer.get_backend("aer_simulator")
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(6))
 
