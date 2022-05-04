@@ -82,8 +82,9 @@ def balanced_cal_circuits(cal_strings, layout, system_qubits, initial_reset=Fals
         list: List of balanced cal circuits.
     """
     circs = []
+    num_active_qubits = len(cal_strings[0])
     for string in cal_strings:
-        qc = QuantumCircuit(system_qubits)
+        qc = QuantumCircuit(system_qubits, num_active_qubits)
         if initial_reset:
             qc.barrier()
             qc.reset(range(system_qubits))
@@ -92,6 +93,6 @@ def balanced_cal_circuits(cal_strings, layout, system_qubits, initial_reset=Fals
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':
                 qc.x(layout[idx])
-        qc.measure_all()
+        qc.measure(layout, range(num_active_qubits))
         circs.append(qc)
     return circs
