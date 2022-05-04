@@ -179,9 +179,11 @@ class M3Mitigation():
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
                                           for cal in loaded_data['cals']]
                 self.cal_timestamp = loaded_data['timestamp']
+                self.cal_shots = loaded_data.get('shots', None)
             else:
                 warnings.warn('Loading from old M3 file format.  Save again to update.')
                 self.cal_timestamp = None
+                self.cal_shots = None
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
                                           for cal in loaded_data]
 
