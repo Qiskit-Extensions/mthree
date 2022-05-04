@@ -179,9 +179,11 @@ class M3Mitigation():
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
                                           for cal in loaded_data['cals']]
                 self.cal_timestamp = loaded_data['timestamp']
+                self.cal_shots = loaded_data.get('shots', None)
             else:
                 warnings.warn('Loading from old M3 file format.  Save again to update.')
                 self.cal_timestamp = None
+                self.cal_shots = None
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
                                           for cal in loaded_data]
 
@@ -201,6 +203,7 @@ class M3Mitigation():
             raise M3Error('Mitigator is not calibrated.')
         save_dict = {'timestamp': self.cal_timestamp,
                      'backend': self.system.name(),
+                     'shots': self.cal_shots,
                      'cals': self.single_qubit_cals}
         with open(cals_file, 'wb') as fd:
             fd.write(orjson.dumps(save_dict,
@@ -660,7 +663,11 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
     # Needed since Aer result date is str but IBMQ job is datetime
     if isinstance(timestamp, datetime.datetime):
         timestamp = timestamp.isoformat()
-    mit.cal_timestamp = timestamp
+    # Go to UTC times because we are going to use this for
+    # resultsDB storage as well
+    dt = datetime.datetime.fromisoformat(timestamp)
+    dt_utc = dt.astimezone(datetime.timezone.utc)
+    mit.cal_timestamp = dt_utc.isoformat()
     # A list of qubits with bad meas cals
     bad_list = []
     if method == 'independent':
