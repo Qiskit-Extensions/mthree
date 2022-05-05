@@ -15,7 +15,7 @@ Using M3 involves three steps (steps one and two can usually be done in reverse 
 
 Simple example
 --------------
-Here we use use a noisy simulator to perform the three steps above.  First we import the
+Here we use a noisy simulator to perform the three steps above.  First we import the
 needed modules, and construct a circuit of interest.
 
 .. jupyter-execute::
