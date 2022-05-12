@@ -22,7 +22,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_SKIP: "cp36-* pp*"
-          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64 *-win32 *-manylinux_i686"
+          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64 *-win32 *-manylinux_i686 cp310-manylinux*"
           CIBW_ARCHS_MACOS: x86_64 universal2
           CIBW_TEST_REQUIRES: pytest qiskit-aer
           CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64:latest
