@@ -297,13 +297,12 @@ class M3Mitigation():
             trans_qcs = balanced_cal_circuits(cal_strings, qubits,
                                               self.num_qubits,
                                               initial_reset=initial_reset)
-        # Indeopendent
+        # Independent
         else:
-            circs = []
+            trans_qcs = []
             for kk in qubits:
-                circs.extend(_tensor_meas_states(kk, self.num_qubits,
-                                                 initial_reset=initial_reset))
-            trans_qcs = transpile(circs, self.system, optimization_level=0)
+                trans_qcs.extend(_tensor_meas_states(kk, self.num_qubits,
+                                                     initial_reset=initial_reset))
 
         # This Backend check is here for Qiskit direct access.  Should be removed later.
         if self.system.__class__.__name__ == 'DirectBackend':
