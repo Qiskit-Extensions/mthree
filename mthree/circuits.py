@@ -31,19 +31,20 @@ def _tensor_meas_states(qubit, num_qubits, initial_reset=False):
     return [qc0, qc1]
 
 
-def _marg_meas_states(num_qubits, initial_reset=False):
+def _marg_meas_states(qubits, num_system_qubits, initial_reset=False):
     """Construct all zeros and all ones states
     for marginal 1Q cals.
     """
-    qc0 = QuantumCircuit(num_qubits)
+    num_qubits = len(qubits)
+    qc0 = QuantumCircuit(num_system_qubits, num_qubits)
     if initial_reset:
-        qc0.reset(range(num_qubits))
-    qc0.measure_all()
-    qc1 = QuantumCircuit(num_qubits)
+        qc0.reset(qubits)
+    qc0.measure(qubits, range(num_qubits))
+    qc1 = QuantumCircuit(num_system_qubits, num_qubits)
     if initial_reset:
-        qc1.reset(range(num_qubits))
-    qc1.x(range(num_qubits))
-    qc1.measure_all()
+        qc1.reset(qubits)
+    qc1.x(qubits)
+    qc1.measure(qubits, range(num_qubits))
     return [qc0, qc1]
 
 
