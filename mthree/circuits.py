@@ -31,19 +31,20 @@ def _tensor_meas_states(qubit, num_qubits, initial_reset=False):
     return [qc0, qc1]
 
 
-def _marg_meas_states(num_qubits, initial_reset=False):
+def _marg_meas_states(qubits, num_system_qubits, initial_reset=False):
     """Construct all zeros and all ones states
     for marginal 1Q cals.
     """
-    qc0 = QuantumCircuit(num_qubits)
+    num_qubits = len(qubits)
+    qc0 = QuantumCircuit(num_system_qubits, num_qubits)
     if initial_reset:
-        qc0.reset(range(num_qubits))
-    qc0.measure_all()
-    qc1 = QuantumCircuit(num_qubits)
+        qc0.reset(qubits)
+    qc0.measure(qubits, range(num_qubits))
+    qc1 = QuantumCircuit(num_system_qubits, num_qubits)
     if initial_reset:
-        qc1.reset(range(num_qubits))
-    qc1.x(range(num_qubits))
-    qc1.measure_all()
+        qc1.reset(qubits)
+    qc1.x(qubits)
+    qc1.measure(qubits, range(num_qubits))
     return [qc0, qc1]
 
 
@@ -69,28 +70,30 @@ def balanced_cal_strings(num_qubits):
     return strings
 
 
-def balanced_cal_circuits(cal_strings, initial_reset=False):
+def balanced_cal_circuits(cal_strings, layout, system_qubits, initial_reset=False):
     """Build balanced calibration circuits.
 
     Parameters:
         cal_strings (list): List of strings for balanced cal circuits.
+        layout (list): Logical to physical qubit layout
         initial_reset (bool): Use resets at beginning of circuit.
+        system_qubits (int): Number of qubits in system
 
     Returns:
         list: List of balanced cal circuits.
     """
-    num_qubits = len(cal_strings[0])
     circs = []
+    num_active_qubits = len(cal_strings[0])
     for string in cal_strings:
-        qc = QuantumCircuit(num_qubits)
+        qc = QuantumCircuit(system_qubits, num_active_qubits)
         if initial_reset:
             qc.barrier()
-            qc.reset(range(num_qubits))
-            qc.reset(range(num_qubits))
-            qc.reset(range(num_qubits))
+            qc.reset(range(system_qubits))
+            qc.reset(range(system_qubits))
+            qc.reset(range(system_qubits))
         for idx, bit in enumerate(string[::-1]):
             if bit == '1':
-                qc.x(idx)
-        qc.measure_all()
+                qc.x(layout[idx])
+        qc.measure(layout, range(num_active_qubits))
         circs.append(qc)
     return circs

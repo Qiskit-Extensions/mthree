@@ -22,7 +22,7 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit import transpile, execute
+from qiskit import execute
 from qiskit.providers import Backend
 
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
@@ -290,21 +290,20 @@ class M3Mitigation():
         num_cal_qubits = len(qubits)
         cal_strings = []
         if method == 'marginal':
-            circs = _marg_meas_states(num_cal_qubits, initial_reset=initial_reset)
-            trans_qcs = transpile(circs, self.system,
-                                  initial_layout=qubits, optimization_level=0)
+            trans_qcs = _marg_meas_states(qubits, self.num_qubits,
+                                          initial_reset=initial_reset)
+
         elif method == 'balanced':
             cal_strings = balanced_cal_strings(num_cal_qubits)
-            circs = balanced_cal_circuits(cal_strings, initial_reset=initial_reset)
-            trans_qcs = transpile(circs, self.system,
-                                  initial_layout=qubits, optimization_level=0)
-        # Indeopendent
+            trans_qcs = balanced_cal_circuits(cal_strings, qubits,
+                                              self.num_qubits,
+                                              initial_reset=initial_reset)
+        # Independent
         else:
-            circs = []
+            trans_qcs = []
             for kk in qubits:
-                circs.extend(_tensor_meas_states(kk, self.num_qubits,
-                                                 initial_reset=initial_reset))
-            trans_qcs = transpile(circs, self.system, optimization_level=0)
+                trans_qcs.extend(_tensor_meas_states(kk, self.num_qubits,
+                                                     initial_reset=initial_reset))
 
         # This Backend check is here for Qiskit direct access.  Should be removed later.
         if not isinstance(self.system, Backend):
