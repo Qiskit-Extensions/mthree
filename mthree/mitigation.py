@@ -23,7 +23,6 @@ import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
 from qiskit import transpile, execute
-from qiskit.providers import Backend
 
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
                              balanced_cal_strings, balanced_cal_circuits)
@@ -307,7 +306,7 @@ class M3Mitigation():
             trans_qcs = transpile(circs, self.system, optimization_level=0)
 
         # This Backend check is here for Qiskit direct access.  Should be removed later.
-        if isinstance(self.system, Backend):
+        if self.system.__class__.__name__ == 'DirectBackend':
             job = execute(trans_qcs, self.system, optimization_level=0,
                           shots=self.cal_shots, rep_delay=self.rep_delay)
         else:
