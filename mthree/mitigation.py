@@ -22,7 +22,7 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit import transpile, execute
+from qiskit import execute
 
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
                              balanced_cal_strings, balanced_cal_circuits)
