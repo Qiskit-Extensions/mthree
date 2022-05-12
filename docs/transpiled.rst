@@ -8,7 +8,7 @@ In the :ref:`basic` section we looked at circuits with a qubit layout that
 was known ahead of time.  However, when taking an arbitrary circuit and compiling
 it down to hardware, SWAP mapping permutes qubits such that the final mapping
 between virtual circuit qubits and physical qubits is not a-priori known.
-For example consider the Berstein-Vazarani circuit
+For example consider the Bernstein-Vazirani circuit
 
 .. jupyter-execute::
 
