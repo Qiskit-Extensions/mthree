@@ -181,6 +181,7 @@ class StyleCommand(setuptools.Command):
 setuptools.setup(
     name='mthree',
     version=VERSION,
+    python_requires=">=3.7",
     packages=PACKAGES,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
