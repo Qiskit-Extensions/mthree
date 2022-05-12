@@ -23,7 +23,6 @@ import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
 from qiskit import transpile, execute
-from qiskit.providers import BaseBackend
 
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
                              balanced_cal_strings, balanced_cal_circuits)
@@ -41,12 +40,12 @@ class M3Mitigation():
         """Main M3 calibration class.
 
         Parameters:
-            system (BaseBackend): Target backend.
+            system (Backend): Target backend.
             iter_threshold (int): Sets the bitstring count at which iterative mode
                                   is turned on (assuming reasonable error rates).
 
         Attributes:
-            system (BaseBackend): The target system.
+            system (Backend): The target system.
             single_qubit_cals (list): 1Q calibration matrices
         """
         self.system = system
@@ -306,8 +305,8 @@ class M3Mitigation():
                                                  initial_reset=initial_reset))
             trans_qcs = transpile(circs, self.system, optimization_level=0)
 
-        # This BaseBackend check is here for Qiskit direct access.  Should be removed later.
-        if isinstance(self.system, BaseBackend):
+        # This Backend check is here for Qiskit direct access.  Should be removed later.
+        if self.system.__class__.__name__ == 'DirectBackend':
             job = execute(trans_qcs, self.system, optimization_level=0,
                           shots=self.cal_shots, rep_delay=self.rep_delay)
         else:
