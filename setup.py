@@ -181,6 +181,7 @@ class StyleCommand(setuptools.Command):
 setuptools.setup(
     name='mthree',
     version=VERSION,
+    python_requires=">=3.7",
     packages=PACKAGES,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
@@ -196,7 +197,6 @@ setuptools.setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
