@@ -51,7 +51,7 @@ you want to evaluate them with:
 
 .. jupyter-execute::
 
-    expvals = quasis.expval([['IIII', 'ZZZZ', '0000', '1111'], ['IIII']])
+    quasis.expval([['IIII', 'ZZZZ', '0000', '1111'], ['IIII']])
 
 The return list has the expectation values grouped into NumPy arrays.  A similar procedure works
 for expectation values and standard deviations:
@@ -60,7 +60,13 @@ for expectation values and standard deviations:
 
     quasis.expval_and_stddev([['IIII', 'ZZZZ', '0000', '1111'], ['IIII']])
 
-Of course probabilities work the same way:
+If you have a single expectation value string then you do not need to wrap it in a list:
+
+.. jupyter-execute::
+
+    quasi.expval([['IIII', 'ZZZZ', '0000', '1111'], 'IIII'])
+
+Of course probability-distributions work the same way as quasi-distributions:
 
 .. jupyter-execute::
 
