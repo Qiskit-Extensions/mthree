@@ -288,8 +288,8 @@ class QuasiCollection(list):
             out = []
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
-            return np.array(out, dtype=float)
-        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+            return out
+        return [item.expval(exp_ops) for item in self]
 
     def expval_and_stddev(self, exp_ops=''):
         """Expectation value and standard deviation over entire collection.
@@ -390,7 +390,7 @@ class ProbCollection(list):
             out = []
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
-            return np.array(out, dtype=float)
+            return out
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
 
     def expval_and_stddev(self, exp_ops=''):
