@@ -4,9 +4,9 @@
 Converting to probabilites
 ##########################
 
-M3 natively works with qusi-probability distributions; distributions that contain negative values
-but none the less sum to one.  This is useful for mitigaing expectation values, but there could
-be situations where a true probability distribution is useful / needed.  To tbis end, it is
+M3 natively works with quasi-probability distributions; distributions that contain negative values
+but nonetheless sum to one.  This is useful for mitigating expectation values, but there could
+be situations where a true probability distribution is useful / needed.  To this end, it is
 possible to find the closest probability distribution to a quasi-probability distribution in
 terms of :math:`L2`-norm using:
 :meth:`mthree.classes.QuasiDistribution.nearest_probability_distribution`.  This conversion is
