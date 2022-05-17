@@ -73,3 +73,8 @@ def test_groupings2():
 
     assert np.allclose(expvals[0], 1.0)
     assert expvals[1].shape[0] == 2
+
+    probs = quasis.nearest_probability_distribution()
+    expvals2 = probs.expval(['IIII', ['IIII', '1111']])
+    assert np.allclose(expvals2[0], 1.0)
+    assert expvals2[1].shape[0] == 2
