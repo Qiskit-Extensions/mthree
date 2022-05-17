@@ -288,7 +288,7 @@ class QuasiCollection(list):
             out = []
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
-            if not isinstance(out[0], (list, np.ndarray)):
+            if not any(isinstance(item, (list, np.ndarray)) for item in out):
                 return np.asarray(out, dtype=float)
             return out
         return np.array([item.expval(exp_ops) for item in self])
@@ -392,7 +392,7 @@ class ProbCollection(list):
             out = []
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
-            if not isinstance(out[0], (list, np.ndarray)):
+            if not any(isinstance(item, (list, np.ndarray)) for item in out):
                 return np.asarray(out, dtype=float)
             return out
         return np.array([item.expval(exp_ops) for item in self], dtype=float)
