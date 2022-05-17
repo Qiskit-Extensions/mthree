@@ -12,7 +12,6 @@
 # pylint: disable=no-name-in-module
 
 """Test opertor groupings"""
-from cmath import exp
 import numpy as np
 from qiskit import QuantumCircuit, transpile
 from qiskit.test.mock import FakeAthens
