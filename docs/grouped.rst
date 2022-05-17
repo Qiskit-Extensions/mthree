@@ -64,7 +64,7 @@ If you have a single expectation value string then you do not need to wrap it in
 
 .. jupyter-execute::
 
-    quasi.expval([['IIII', 'ZZZZ', '0000', '1111'], 'IIII'])
+    quasis.expval([['IIII', 'ZZZZ', '0000', '1111'], 'IIII'])
 
 Of course probability-distributions work the same way as quasi-distributions:
 
