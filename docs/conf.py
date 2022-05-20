@@ -25,6 +25,7 @@
 #
 import os
 import shutil
+import warnings
 from distutils.dir_util import copy_tree
 
 import mthree as m3
