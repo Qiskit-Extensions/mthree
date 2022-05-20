@@ -35,6 +35,7 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     :hidden:
  
     Basic usage <basic>
+    Balanced calibration <balanced>
     Transpiled circuits <transpiled>
     Expectation values <expvals>
     Using collections <collections>
