@@ -52,4 +52,5 @@ of shots is indepdendent of `N`
     mit.cals_from_system(shots=(10000+1)//backend.configuration().num_qubits)
 
 for a fixed desired precision.  Note that the "+1" in the above is there to
-account for the possibility of an odd `N`.
+account for the possibility of an odd `N`.  This makes the calibration procedure
+for larger numbers of qubits more efficient.
