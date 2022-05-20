@@ -28,7 +28,7 @@ If there is a `0`, then that circuit samples the :math:`|0\rangle` state for tha
 similarly for the `1` element.  So when we execute the `2N` balanced calibration circuits
 using `shots` number of samples, then each error rate in the calibration data is actually
 being sampled `N*shots` times.  Because the number of samples determines the precision of
- the calibration data, knowing this is quite important.
+the calibration data, knowing this is quite important.
 
  This information can be used in two ways.  First, if one wants very precise calibration data
  then we can take advantage of this factor of `N` enhancement and call the calibration step
