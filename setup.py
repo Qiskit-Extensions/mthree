@@ -53,7 +53,7 @@ OPTIONAL_FLAGS = []
 OPTIONAL_ARGS = []
 WITH_OMP = False
 for _arg in sys.argv:
-    if _arg == "--openmp":
+    if "-openmp" in _arg:
         WITH_OMP = True
         sys.argv.remove(_arg)
 if WITH_OMP or os.getenv("MTHREE_OPENMP", True):
