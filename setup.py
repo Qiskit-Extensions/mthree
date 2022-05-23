@@ -15,6 +15,7 @@
 
 import os
 import sys
+import warnings
 import subprocess
 import setuptools
 
@@ -55,6 +56,9 @@ WITH_OMP = False
 for _arg in sys.argv:
     if _arg == "--openmp" or _arg == "--with-openmp":
         WITH_OMP = True
+        if _arg == "--with-openmp":
+            warnings.warn("Using '--with-openmp' to set openmp is deprecated.",
+                          DeprecationWarning)
         sys.argv.remove(_arg)
         break
 if WITH_OMP or os.getenv("MTHREE_OPENMP", False):
