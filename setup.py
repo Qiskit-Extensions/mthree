@@ -15,6 +15,7 @@
 
 import os
 import sys
+import warnings
 import subprocess
 import setuptools
 
@@ -53,24 +54,26 @@ OPTIONAL_FLAGS = []
 OPTIONAL_ARGS = []
 WITH_OMP = False
 for _arg in sys.argv:
-    if _arg.startswith("--with-"):
-        _options = _arg.split("--with-")[1].split(",")
+    if _arg == "--openmp" or _arg == "--with-openmp":
+        WITH_OMP = True
+        if _arg == "--with-openmp":
+            warnings.warn("Using '--with-openmp' to set openmp is deprecated.",
+                          DeprecationWarning)
         sys.argv.remove(_arg)
-        if "openmp" in _options or os.getenv("MTHREE_OPENMP", False):
-            WITH_OMP = True
-            if sys.platform == 'win32':
-                OPTIONAL_FLAGS = ['/openmp']
-            else:
-                OPTIONAL_FLAGS = ['-fopenmp']
-                OPTIONAL_ARGS = OPTIONAL_FLAGS
-        if "native" in _options or os.getenv("MTHREE_NATIVE", False):
-            OPTIONAL_FLAGS.append('-march=native')
+        break
+if WITH_OMP or os.getenv("MTHREE_OPENMP", False):
+    WITH_OMP = True
+    if sys.platform == 'win32':
+        OPTIONAL_FLAGS = ['/openmp']
+    else:
+        OPTIONAL_FLAGS = ['-fopenmp']
+    OPTIONAL_ARGS = OPTIONAL_FLAGS
 
 INCLUDE_DIRS = [np.get_include()]
 # Extra link args
 LINK_FLAGS = []
 # If on Win and not in MSYS2 (i.e. Visual studio compile)
-if (sys.platform == 'win32' and os.environ.get('MSYSTEM') is None):
+if (sys.platform == 'win32' and os.environ.get('MSYSTEM', None) is None):
     COMPILER_FLAGS = ['/O3']
 # Everything else
 else:
@@ -85,7 +88,8 @@ for idx, ext in enumerate(CYTHON_EXTS):
                                extra_compile_args=COMPILER_FLAGS+OPTIONAL_FLAGS,
                                extra_link_args=LINK_FLAGS+OPTIONAL_ARGS,
                                language='c++',
-                               define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")])
+                               define_macros=[("NPY_NO_DEPRECATED_API", 
+                                               "NPY_1_7_API_VERSION")])
     EXT_MODULES.append(mod)
 
 
@@ -203,7 +207,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering",
     ],
-    cmdclass={'lint': PylintCommand, 'style': StyleCommand},
+    cmdclass={'lint': PylintCommand,
+              'style': StyleCommand},
     install_requires=REQUIREMENTS,
     package_data=PACKAGE_DATA,
     ext_modules=cythonize(EXT_MODULES, language_level=3),
