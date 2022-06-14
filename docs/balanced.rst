@@ -27,12 +27,9 @@ For every position in the bit-string you will see that a `0` or `1` appears `N` 
 If there is a `0`, then that circuit samples the :math:`|0\rangle` state for that qubit,
 similarly for the `1` element.  So when we execute the `2N` balanced calibration circuits
 using `shots` number of samples, then each error rate in the calibration data is actually
-being sampled `N*shots` times.  Because the number of samples determines the precision of
-the calibration data, knowing this is quite important.
-
- This information can be used in two ways.  First, if one wants very precise calibration data
- then we can take advantage of this factor of `N` enhancement and call the calibration step
- as is:
+being sampled `N*shots` times.  Thus, when you pass the `shots` value to M3, in the balanced
+calibration mode internally it divides by the number of measured qubits so that the precision
+matches the precison of the other methods.  That is to say that the following:
 
  .. jupyter-execute::
 
@@ -40,17 +37,5 @@ the calibration data, knowing this is quite important.
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(shots=10000)
 
-For this `5` qubit system this will results in error rates sampled `50000` times.
-Alternatively, we can divide the number of shots by `N` (making sure to take into
-account odd `N`) and come up with a calibration routine where the total number
-of shots is indepdendent of `N`
-
-.. jupyter-execute::
-
-    backend = FakeAthens()
-    mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(shots=(10000+1)//backend.configuration().num_qubits)
-
-for a fixed desired precision.  Note that the "+1" in the above is there to
-account for the possibility of an odd `N`.  This makes the calibration procedure
-for larger numbers of qubits more efficient.
+Will sample each qubit error rate `10000` times regardless of which method is used.  Moreover, this
+also yields a calibration process whose overhead is independent of the number of qubits used.

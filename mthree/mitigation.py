@@ -289,6 +289,9 @@ class M3Mitigation():
 
         num_cal_qubits = len(qubits)
         cal_strings = []
+        # shots is needed here because balanced cals will use a value
+        # different from cal_shots
+        shots = self.cal_shots
         if method == 'marginal':
             trans_qcs = _marg_meas_states(qubits, self.num_qubits,
                                           initial_reset=initial_reset)
@@ -298,6 +301,7 @@ class M3Mitigation():
             trans_qcs = balanced_cal_circuits(cal_strings, qubits,
                                               self.num_qubits,
                                               initial_reset=initial_reset)
+            shots = (self.cal_shots + 1) // num_cal_qubits
         # Independent
         else:
             trans_qcs = []
@@ -308,9 +312,9 @@ class M3Mitigation():
         # This Backend check is here for Qiskit direct access.  Should be removed later.
         if not isinstance(self.system, Backend):
             job = execute(trans_qcs, self.system, optimization_level=0,
-                          shots=self.cal_shots, rep_delay=self.rep_delay)
+                          shots=shots, rep_delay=self.rep_delay)
         else:
-            job = self.system.run(trans_qcs, shots=self.cal_shots, rep_delay=self.rep_delay)
+            job = self.system.run(trans_qcs, shots=shots, rep_delay=self.rep_delay)
 
         # Execute job and cal building in new theread.
         self._job_error = None
@@ -714,7 +718,7 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
 
             target = cal_strings[idx][::-1]
             good_prep = np.zeros(num_cal_qubits, dtype=float)
-            denom = mit.cal_shots * num_cal_qubits
+            denom = mit.cal_shots
 
             for key, val in count.items():
                 key = key[::-1]
