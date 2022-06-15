@@ -21,6 +21,7 @@ Utility functions
    expval
    stddev
    expval_and_stddev
+   marginal_distribution
 
 """
 import numbers
