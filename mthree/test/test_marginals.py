@@ -65,7 +65,7 @@ def test_marginals3():
               '001': 72, '110': 114, '010': 30, '000': 4906}
 
     list_mapping = [12, 15, 18]
-    dict_mapping = {12:0, 15:1, 18:2}
+    dict_mapping = {12: 0, 15: 1, 18: 2}
 
     _, out_list_map = mthree.utils.marginal_distribution(counts, 'IIZ',
                                                          mapping=list_mapping)
@@ -73,7 +73,7 @@ def test_marginals3():
 
     _, out_dict_map = mthree.utils.marginal_distribution(counts, 'IIZ',
                                                          mapping=dict_mapping)
-    assert out_dict_map == {12:0}
+    assert out_dict_map == {12: 0}
 
     _, out_list_map = mthree.utils.marginal_distribution(counts, 'ZIZ',
                                                          mapping=list_mapping)
@@ -81,12 +81,12 @@ def test_marginals3():
 
     _, out_dict_map = mthree.utils.marginal_distribution(counts, 'ZIZ',
                                                          mapping=dict_mapping)
-    assert out_dict_map == {12:0, 18: 1}
+    assert out_dict_map == {12: 0, 18: 1}
 
     _, out_list_map = mthree.utils.marginal_distribution(counts, [2, 0],
-                                                          mapping=list_mapping)
+                                                         mapping=list_mapping)
     assert out_list_map == [18, 12]
 
     _, out_dict_map = mthree.utils.marginal_distribution(counts, [2, 0],
                                                          mapping=dict_mapping)
-    assert out_dict_map == {18:0, 12: 1}
+    assert out_dict_map == {18: 0, 12: 1}
