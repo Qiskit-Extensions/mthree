@@ -23,10 +23,12 @@ Utility functions
    expval_and_stddev
 
 """
+import numbers
 import numpy as np
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
+from mthree.marginals import cy_marginal_counts, cy_marginal_distribution
 
 
 def final_measurement_mapping(circuit):
@@ -52,6 +54,60 @@ def final_measurement_mapping(circuit):
     if not given_list:
         return maps_out[0]
     return maps_out
+
+
+def marginal_distribution(dist, indices, mapping=None):
+    """Grab the marginal counts from a given distribution.
+    
+    If an operator is passed for the `indices` then the position of the
+    non-identity elements in the string will be used to set the indices
+    to marginalize over.
+    
+    The mapping
+    
+    Parameters:
+        dist (dict): Input distribution
+        indices (array_like or str): Indices (qubits) to keep or operator string
+        mapping (dict or array_like): Optional, final measurement mapping.
+        
+    Returns:
+        dict: Marginal distribution
+        list or dict: The reduced mapping if an optional mapping (list or dict) is given
+        
+    Raises:
+        M3Error: Operator length does not equal bit-string length
+        M3Error: One or more indices is out of bounds
+    """
+    key_len = len(next(iter(dist)))
+    val = next(iter(dist.values()))
+    
+    if isinstance(indices, str):
+        indices = indices.upper()
+        if len(indices) != key_len:
+            raise M3Error('Operator length does not equal distribution bit-string length.')
+        indices = [(key_len-kk-1) for kk in range(key_len-1, -1, -1) if indices[kk] != 'I']
+    indices = np.asarray(indices, dtype=np.int32)
+    if np.any(indices >= key_len):
+        raise M3Error('One or more out of bound indices for distribution bit-string length ({}).'.format(key_len))
+    is_counts = False
+    if isinstance(val, numbers.Integral):
+        is_counts = True
+    if is_counts:
+        out_dist = cy_marginal_counts(dist, indices)
+    else:
+        out_dist = cy_marginal_distribution(dist, indices)
+        
+    if mapping:
+        if isinstance(mapping, list):
+            out_mapping = [mapping[kk] for kk in indices]
+        else:
+            # mapping is a dict
+            out_mapping = {}
+            inv_mapping = dict((v, k) for k, v in mapping.items())
+            for idx, ind in enumerate(indices):
+                out_mapping[inv_mapping[ind]] = idx
+        return out_dist, out_mapping
+    return out_dist
 
 
 def _final_measurement_mapping(circuit):
