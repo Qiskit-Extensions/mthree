@@ -74,7 +74,7 @@ def test_marginals3():
     _, out_dict_map = mthree.utils.marginal_distribution(counts, 'IIZ',
                                                          mapping=dict_mapping)
     assert out_dict_map == {12:0}
-    
+
     _, out_list_map = mthree.utils.marginal_distribution(counts, 'ZIZ',
                                                          mapping=list_mapping)
     assert out_list_map == [12, 18]
