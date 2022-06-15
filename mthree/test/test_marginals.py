@@ -11,10 +11,7 @@
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
 
-"""Test opertor groupings"""
-import numpy as np
-from qiskit import QuantumCircuit, transpile
-from qiskit.test.mock import FakeGuadalupe
+"""Test marginals"""
 import mthree
 
 
@@ -23,7 +20,7 @@ def test_marginals1():
     """
     counts = {'011': 123, '111': 4554, '101': 180, '100': 21,
               '001': 72, '110': 114, '010': 30, '000': 4906}
-    
+
     marginal_zero = mthree.utils.marginal_distribution(counts, [0])
     assert marginal_zero['0'] == 5071
     assert marginal_zero['1'] == 4929
