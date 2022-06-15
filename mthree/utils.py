@@ -64,7 +64,9 @@ def marginal_distribution(dist, indices, mapping=None):
     non-identity elements in the string will be used to set the indices
     to marginalize over.
 
-    The mapping
+    The mapping passed will be marginalized so that it can be directly
+    used in applying the correction.  The type of mapping at output is
+    the same as that input.
 
     Parameters:
         dist (dict): Input distribution
