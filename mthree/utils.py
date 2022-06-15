@@ -80,7 +80,7 @@ def marginal_distribution(dist, indices, mapping=None):
     """
     key_len = len(next(iter(dist)))
     val = next(iter(dist.values()))
-    
+
     if isinstance(indices, str):
         indices = indices.upper()
         if len(indices) != key_len:
@@ -97,7 +97,7 @@ def marginal_distribution(dist, indices, mapping=None):
         out_dist = cy_marginal_counts(dist, indices)
     else:
         out_dist = cy_marginal_distribution(dist, indices)
-        
+
     if mapping:
         if isinstance(mapping, list):
             out_mapping = [mapping[kk] for kk in indices]
