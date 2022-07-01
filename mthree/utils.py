@@ -24,12 +24,12 @@ Utility functions
    marginal_distribution
 
 """
-import numbers
 import numpy as np
+
+from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
-from mthree.marginals import cy_marginal_counts, cy_marginal_distribution
 
 
 def final_measurement_mapping(circuit):
@@ -89,17 +89,8 @@ def marginal_distribution(dist, indices, mapping=None):
         if len(indices) != key_len:
             raise M3Error('Operator length does not equal distribution bit-string length.')
         indices = [(key_len-kk-1) for kk in range(key_len-1, -1, -1) if indices[kk] != 'I']
-    indices = np.asarray(indices, dtype=np.int32)
-    if np.any(indices >= key_len):
-        raise M3Error('One or more out of bound indices for'
-                      'distribution bit-string length ({}).'.format(key_len))
-    is_counts = False
-    if isinstance(val, numbers.Integral):
-        is_counts = True
-    if is_counts:
-        out_dist = cy_marginal_counts(dist, indices)
-    else:
-        out_dist = cy_marginal_distribution(dist, indices)
+
+    out_dist = marg_dist(dist, indices)
 
     if mapping:
         if isinstance(mapping, list):

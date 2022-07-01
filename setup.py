@@ -43,10 +43,10 @@ with open(os.path.join(this_dir, 'README.md'), encoding='utf-8') as readme:
     LONG_DESCRIPTION = readme.read()
 
 CYTHON_EXTS = ['compute', 'converters', 'hamming', 'matrix', 'probability', 'matvec'] + \
-              ['expval', 'marginals', 'column_testing', 'converters_testing']
-CYTHON_MODULES = ['mthree']*8 + \
+              ['expval', 'column_testing', 'converters_testing']
+CYTHON_MODULES = ['mthree']*7 + \
                  ['mthree.test']*2
-CYTHON_SOURCE_DIRS = ['mthree']*8 + \
+CYTHON_SOURCE_DIRS = ['mthree']*7 + \
                      ['mthree/test']*2
 
 # Add openmp flags
