@@ -14,7 +14,7 @@
 import numpy as np
 import scipy.sparse.linalg as spla
 from qiskit import QuantumCircuit, execute
-from qiskit.test.mock import FakeAthens
+from qiskit.providers.fake_provider import FakeAthens
 import mthree
 from mthree.matvec import M3MatVec
 

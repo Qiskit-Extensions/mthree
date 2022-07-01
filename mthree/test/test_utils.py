@@ -15,7 +15,7 @@
 import numpy as np
 from qiskit import QuantumCircuit, execute
 from qiskit.quantum_info import Statevector
-from qiskit.test.mock import FakeAthens
+from qiskit.providers.fake_provider import FakeAthens
 import mthree
 
 

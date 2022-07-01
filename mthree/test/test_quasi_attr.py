@@ -12,7 +12,7 @@
 # pylint: disable=no-name-in-module
 """Test matrix elements"""
 from qiskit import QuantumCircuit, execute
-from qiskit.test.mock import FakeMontreal
+from qiskit.providers.fake_provider import FakeMontreal
 import mthree
 
 

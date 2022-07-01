@@ -35,15 +35,16 @@ residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
     :hidden:
  
     Basic usage <basic>
-    Balanced calibration <balanced>
     Transpiled circuits <transpiled>
     Expectation values <expvals>
     Using collections <collections>
     Grouped operators <grouped>
     Error analysis <error>
+    Low-weight operators <marginals>
     Obtaining probabilities <probs>
     Saving and loading calibrations <cal_io>
     Utility functions <utils>
+    Balanced calibration <balanced>
     Advanced usage <advanced>
 
 .. toctree::

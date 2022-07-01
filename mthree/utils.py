@@ -21,9 +21,12 @@ Utility functions
    expval
    stddev
    expval_and_stddev
+   marginal_distribution
 
 """
 import numpy as np
+
+from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
@@ -52,6 +55,52 @@ def final_measurement_mapping(circuit):
     if not given_list:
         return maps_out[0]
     return maps_out
+
+
+def marginal_distribution(dist, indices, mapping=None):
+    """Grab the marginal counts from a given distribution.
+
+    If an operator is passed for the `indices` then the position of the
+    non-identity elements in the string will be used to set the indices
+    to marginalize over.
+
+    The mapping passed will be marginalized so that it can be directly
+    used in applying the correction.  The type of mapping at output is
+    the same as that input.
+
+    Parameters:
+        dist (dict): Input distribution
+        indices (array_like or str): Indices (qubits) to keep or operator string
+        mapping (dict or array_like): Optional, final measurement mapping.
+
+    Returns:
+        dict: Marginal distribution
+        list or dict: The reduced mapping if an optional mapping (list or dict) is given
+
+    Raises:
+        M3Error: Operator length does not equal bit-string length
+        M3Error: One or more indices is out of bounds
+    """
+    key_len = len(next(iter(dist)))
+    if isinstance(indices, str):
+        indices = indices.upper()
+        if len(indices) != key_len:
+            raise M3Error('Operator length does not equal distribution bit-string length.')
+        indices = [(key_len-kk-1) for kk in range(key_len-1, -1, -1) if indices[kk] != 'I']
+
+    out_dist = marg_dist(dist, indices)
+
+    if mapping:
+        if isinstance(mapping, list):
+            out_mapping = [mapping[kk] for kk in indices]
+        else:
+            # mapping is a dict
+            out_mapping = {}
+            inv_mapping = dict((v, k) for k, v in mapping.items())
+            for idx, ind in enumerate(indices):
+                out_mapping[inv_mapping[ind]] = idx
+        return out_dist, out_mapping
+    return out_dist
 
 
 def _final_measurement_mapping(circuit):

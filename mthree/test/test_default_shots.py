@@ -12,7 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test matrix elements"""
-from qiskit.test.mock import FakeAthens
+from qiskit.providers.fake_provider import FakeAthens
 import mthree
 
 LOW_SHOTS = 543
