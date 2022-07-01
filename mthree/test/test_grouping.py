@@ -14,7 +14,7 @@
 """Test opertor groupings"""
 import numpy as np
 from qiskit import QuantumCircuit, transpile
-from qiskit.test.mock import FakeAthens
+from qiskit.providers.fake_provider import FakeAthens
 import mthree
 
 

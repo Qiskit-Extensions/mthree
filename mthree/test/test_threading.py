@@ -13,7 +13,7 @@
 """Test QuantumCircuit final measurement mapping"""
 import pytest
 from qiskit import QuantumCircuit, transpile
-from qiskit.test.mock.backends import FakeCasablanca
+from qiskit.providers.fake_provider import FakeCasablanca
 import mthree
 from mthree.exceptions import M3Error
 from mthree.utils import final_measurement_mapping

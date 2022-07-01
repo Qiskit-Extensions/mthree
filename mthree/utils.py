@@ -82,8 +82,6 @@ def marginal_distribution(dist, indices, mapping=None):
         M3Error: One or more indices is out of bounds
     """
     key_len = len(next(iter(dist)))
-    val = next(iter(dist.values()))
-
     if isinstance(indices, str):
         indices = indices.upper()
         if len(indices) != key_len:
