@@ -54,7 +54,7 @@ def test_multi_qreg():
     qc.barrier(range(5))
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
-    assert measurement_mapping(qc) == {2: 2, 3: 3, 4: 1}
+    assert measurement_mapping(qc) == {0: 0, 2: 2, 3: 3, 4: 1}
 
 
 def test_multi_creg():
@@ -72,7 +72,7 @@ def test_multi_creg():
     qc.barrier(range(5))
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
-    assert measurement_mapping(qc) == {2: 2, 3: 3, 4: 1}
+    assert measurement_mapping(qc) == {0: 0, 2: 2, 3: 3, 4: 1}
 
 
 def test_mapping_list():
