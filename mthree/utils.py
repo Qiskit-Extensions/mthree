@@ -25,6 +25,7 @@ Utility functions
    marginal_distribution
 
 """
+import warnings
 import numpy as np
 
 from qiskit.circuit import Clbit, ClassicalRegister
@@ -32,6 +33,8 @@ from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
+
+warnings.simplefilter("default")
 
 
 class MeasurementMapping(dict):
@@ -52,6 +55,10 @@ def final_measurement_mapping(circuit):
     Returns:
         dict or list: Mapping of qubits to classical bits for final measurements.
     """
+    warnings.warn("The use of 'final_measurement_mapping' is deprecated"
+                  "use 'measurement_mapping' instead",
+                  DeprecationWarning)
+
     given_list = False
     if isinstance(circuit, (list, np.ndarray)):
         given_list = True

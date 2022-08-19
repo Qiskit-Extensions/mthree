@@ -28,7 +28,7 @@ from qiskit.providers import Backend
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
                              balanced_cal_strings, balanced_cal_circuits)
 from mthree.matrix import _reduced_cal_matrix, sdd_check
-from mthree.utils import counts_to_vector, vector_to_quasiprobs
+from mthree.utils import counts_to_vector, vector_to_quasiprobs, MeasurementMapping
 from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
@@ -275,12 +275,21 @@ class M3Mitigation():
         if method not in ['independent', 'balanced', 'marginal']:
             raise M3Error('Invalid calibration method.')
 
-        if isinstance(qubits, dict):
+        if isinstance(qubits, MeasurementMapping):
             # Assuming passed a mapping
+            qubits = list(qubits.values())
+        elif isinstance(qubits, dict):
+            # Assuming passed a final mapping
             qubits = list(qubits)
         elif isinstance(qubits, list):
+            if isinstance(qubits[0], MeasurementMapping):
+                # Assuming list of mappings, need to get unique elements
+                _qubits = []
+                for item in qubits:
+                    _qubits.extend(list(item.values()))
+                qubits = list(set(_qubits))
             # Check if passed a list of mappings
-            if isinstance(qubits[0], dict):
+            elif isinstance(qubits[0], dict):
                 # Assuming list of mappings, need to get unique elements
                 _qubits = []
                 for item in qubits:
@@ -359,13 +368,20 @@ class M3Mitigation():
         if not given_list:
             counts = [counts]
 
-        if isinstance(qubits, dict):
+        if isinstance(qubits, MeasurementMapping):
             # If a mapping was given for qubits
+            qubits = [list(qubits.values())]
+        elif isinstance(qubits, dict):
+            # If a final mapping was given for qubits
             qubits = [list(qubits)]
-        elif not any(isinstance(qq, (list, tuple, np.ndarray, dict)) for qq in qubits):
+        elif not any(isinstance(qq, (list, tuple, np.ndarray,
+                                     dict, MeasurementMapping)) for qq in qubits):
             qubits = [qubits]*len(counts)
         else:
-            if isinstance(qubits[0], dict):
+            if isinstance(qubits[0], MeasurementMapping):
+                # assuming passed a list of mappings
+                qubits = [list(qu.values()) for qu in qubits]
+            elif isinstance(qubits[0], dict):
                 # assuming passed a list of mappings
                 qubits = [list(qu) for qu in qubits]
 
