@@ -149,3 +149,19 @@ def test_cond_on_single_bit():
 
     mapping = measurement_mapping(qc)
     assert mapping == {0: 1, 1: 1, 2: 0}
+
+
+def test_cond_on_single_bit2():
+    """Conditioned on single qubit - no reg"""
+    qc = QuantumCircuit(2, 5)
+    qc.h(0)
+    qc.measure(1, 0)
+    qc.measure(0, 3)
+    qc.reset(1)
+    qc.x(0).c_if(3, 0)
+    qc.measure(1, 1)
+    qc.measure(0, 2)
+    qc.x(1)
+
+    mapping = measurement_mapping(qc)
+    assert mapping == {0: 1, 1: 1, 2: 0}
