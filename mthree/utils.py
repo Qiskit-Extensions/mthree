@@ -18,6 +18,7 @@ Utility functions
    :toctree: ../stubs/
 
    final_measurement_mapping
+   measurement_mapping
    expval
    stddev
    expval_and_stddev
@@ -30,6 +31,12 @@ from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
+
+
+class MeasurementMapping(dict):
+    """A class for type checking measurement mappings
+    """
+    pass
 
 
 def final_measurement_mapping(circuit):
@@ -51,6 +58,31 @@ def final_measurement_mapping(circuit):
         circuit = [circuit]
 
     maps_out = [_final_measurement_mapping(circ) for circ in circuit]
+
+    if not given_list:
+        return maps_out[0]
+    return maps_out
+
+
+def measurement_mapping(circuit):
+    """Return the measurement mapping for the circuit.
+
+    Dict keys label classical bits, whereas the values indicate the
+    physical qubits that are measured to produce those bit values.
+
+    Parameters:
+        circuit (QuantumCircuit or list): Input Qiskit QuantumCircuit(s).
+
+    Returns:
+        dict or list: Mapping of classical bits to qubits for final measurements.
+    """
+    given_list = False
+    if isinstance(circuit, (list, np.ndarray)):
+        given_list = True
+    if not given_list:
+        circuit = [circuit]
+
+    maps_out = [_measurement_mapping(circ) for circ in circuit]
 
     if not given_list:
         return maps_out[0]
@@ -155,6 +187,67 @@ def _final_measurement_mapping(circuit):
     # Sort so that classical bits are in numeric order low->high.
     mapping = dict(sorted(mapping.items(), key=lambda item: item[1]))
     return mapping
+
+
+def _measurement_mapping(circuit):
+    """Return the measurement mapping for the circuit.
+
+    Dict keys label classical bits, whereas the values indicate the
+    physical qubits that are measured to produce those bit values.
+
+    Parameters:
+        circuit (QuantumCircuit): Input Qiskit QuantumCircuit.
+
+    Returns:
+        dict: Mapping of classical bits to qubits for final measurements.
+    """
+    active_qubits = list(range(circuit.num_qubits))
+    active_cbits = list(range(circuit.num_clbits))
+
+    # Map registers to ints
+    qint_map = {}
+    for idx, qq in enumerate(circuit.qubits):
+        qint_map[qq] = idx
+
+    cint_map = {}
+    for idx, qq in enumerate(circuit.clbits):
+        cint_map[qq] = idx
+    
+    # Find final measurements starting in back
+    qmap = []
+    cmap = []
+    for item in circuit._data[::-1]:
+        if item[0].name == "measure":
+            cbit = cint_map[item[2][0]]
+            qbit = qint_map[item[1][0]]
+            if cbit in active_cbits and qbit in active_qubits:
+                qmap.append(qbit)
+                cmap.append(cbit)
+                active_cbits.remove(cbit)
+                
+        elif item[0].name not in ["barrier", "delay"]:
+            cond = item.operation.condition
+            if cond:
+                if isinstance(cond[0], ClassicalRegister):
+                    reg = cond[0]
+                    clbits = [Clbit(reg, kk) for kk in  range(reg.size)]
+                else:
+                    clbits = [cond[0]]
+                for cb in clbits:
+                    cbit = cint_map[cb]
+                    if cbit in active_cbits:
+                        active_cbits.remove(cbit)
+
+        if not active_cbits or not active_qubits:
+            break
+    mapping = {}
+    if cmap and qmap:
+        for idx, qubit in enumerate(qmap):
+                mapping[cmap[idx]] = qubit
+    
+    # Sort so that classical bits are in numeric order low->high.
+    mapping = dict(sorted(mapping.items(), key=lambda item: item[0]))
+    return MeasurementMapping(mapping)
 
 
 def _expval_std(items, exp_ops='', method=0):
