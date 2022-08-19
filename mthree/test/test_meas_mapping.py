@@ -149,4 +149,3 @@ def test_cond_on_single_bit():
 
     mapping = measurement_mapping(qc)
     assert mapping == {0: 1, 1: 1, 2: 0}
-
