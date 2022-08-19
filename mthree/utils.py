@@ -27,6 +27,7 @@ Utility functions
 """
 import numpy as np
 
+from qiskit.circuit import Clbit, ClassicalRegister
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
@@ -212,7 +213,7 @@ def _measurement_mapping(circuit):
     cint_map = {}
     for idx, qq in enumerate(circuit.clbits):
         cint_map[qq] = idx
-    
+
     # Find final measurements starting in back
     qmap = []
     cmap = []
@@ -224,7 +225,7 @@ def _measurement_mapping(circuit):
                 qmap.append(qbit)
                 cmap.append(cbit)
                 active_cbits.remove(cbit)
-                
+
         elif item[0].name not in ["barrier", "delay"]:
             cond = item.operation.condition
             if cond:
@@ -243,8 +244,8 @@ def _measurement_mapping(circuit):
     mapping = {}
     if cmap and qmap:
         for idx, qubit in enumerate(qmap):
-                mapping[cmap[idx]] = qubit
-    
+            mapping[cmap[idx]] = qubit
+
     # Sort so that classical bits are in numeric order low->high.
     mapping = dict(sorted(mapping.items(), key=lambda item: item[0]))
     return MeasurementMapping(mapping)
