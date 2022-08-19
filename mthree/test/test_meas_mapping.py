@@ -112,3 +112,41 @@ def test_mapping_w_delays():
     maps2 = measurement_mapping(qc)
     assert maps == {1: 0, 0: 1}
     assert maps2 == {0: 1, 1: 0}
+
+
+def test_cond_on_creg():
+    """Conditioned on full register blocks"""
+    q = QuantumRegister(2)
+    c = ClassicalRegister(5)
+    qc = QuantumCircuit(q, c)
+    qc.h(0)
+    qc.measure(1, 0)
+    qc.measure(0, 3)
+    qc.reset(1)
+    qc.x(0).c_if(c, 0)
+    qc.measure(1, 1)
+    qc.measure(0, 2)
+    qc.x(1)
+
+    mapping = measurement_mapping(qc)
+    assert mapping == {1: 1, 2: 0}
+
+
+def test_cond_on_single_bit():
+    """Conditioned on single qubit"""
+    q = QuantumRegister(2)
+    c = ClassicalRegister(5)
+
+    qc = QuantumCircuit(q, c)
+    qc.h(0)
+    qc.measure(1, 0)
+    qc.measure(0, 3)
+    qc.reset(1)
+    qc.x(0).c_if(c[3], 0)
+    qc.measure(1, 1)
+    qc.measure(0, 2)
+    qc.x(1)
+
+    mapping = measurement_mapping(qc)
+    assert mapping == {0: 1, 1: 1, 2: 0}
+
