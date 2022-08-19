@@ -13,13 +13,14 @@
 """Test QuantumCircuit final measurement mapping"""
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
 from qiskit.providers.fake_provider import FakeCasablanca
-from mthree.utils import final_measurement_mapping
+from mthree.utils import final_measurement_mapping, measurement_mapping
 
 
 def test_empty_circ():
     """Empty circuit has no mapping"""
     qc = QuantumCircuit()
     assert final_measurement_mapping(qc) == {}
+    assert measurement_mapping(qc) == {}
 
 
 def test_simple_circ():
@@ -27,6 +28,7 @@ def test_simple_circ():
     qc = QuantumCircuit(5)
     qc.measure_all()
     assert final_measurement_mapping(qc) == {0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
+    assert measurement_mapping(qc) == {0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
 
 
 def test_simple2_circ():
@@ -35,6 +37,7 @@ def test_simple2_circ():
     qc.measure_all()
     qc.h(range(5))
     assert final_measurement_mapping(qc) == {}
+    assert measurement_mapping(qc) == {0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
 
 
 def test_multi_qreg():
@@ -51,6 +54,7 @@ def test_multi_qreg():
     qc.barrier(range(5))
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
+    assert measurement_mapping(qc) == {2: 2, 3: 3, 4: 1}
 
 
 def test_multi_creg():
@@ -68,6 +72,7 @@ def test_multi_creg():
     qc.barrier(range(5))
     qc.measure(1, 4)
     assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
+    assert measurement_mapping(qc) == {2: 2, 3: 3, 4: 1}
 
 
 def test_mapping_list():
@@ -85,10 +90,14 @@ def test_mapping_list():
     backend = FakeCasablanca()
     circs = transpile([qc]*5, backend)
     maps = final_measurement_mapping(circs)
+    maps2 = measurement_mapping(circs)
     assert len(maps) == 5
+    assert len(maps2) == 5
 
     maps = final_measurement_mapping(qc)
+    maps2 = measurement_mapping(qc)
     assert not isinstance(maps, list)
+    assert not isinstance(maps2, list)
 
 
 def test_mapping_w_delays():
@@ -100,4 +109,6 @@ def test_mapping_w_delays():
     qc.barrier()
 
     maps = final_measurement_mapping(qc)
+    maps2 = measurement_mapping(qc)
     assert maps == {1: 0, 0: 1}
+    assert maps2 == {0: 1, 1: 0}
