@@ -231,7 +231,7 @@ def _measurement_mapping(circuit):
             if cond:
                 if isinstance(cond[0], ClassicalRegister):
                     reg = cond[0]
-                    clbits = [Clbit(reg, kk) for kk in  range(reg.size)]
+                    clbits = [Clbit(reg, kk) for kk in range(reg.size)]
                 else:
                     clbits = [cond[0]]
                 for cb in clbits:
