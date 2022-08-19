@@ -139,7 +139,7 @@ def _final_measurement_mapping(circuit):
                 cmap.append(cbit)
                 active_cbits.remove(cbit)
                 active_qubits.remove(qbit)
-        elif item[0].name != "barrier":
+        elif item[0].name not in ["barrier", "delay"]:
             for qq in item[1]:
                 _temp_qubit = qint_map[qq]
                 if _temp_qubit in active_qubits:

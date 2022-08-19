@@ -89,3 +89,15 @@ def test_mapping_list():
 
     maps = final_measurement_mapping(qc)
     assert not isinstance(maps, list)
+
+
+def test_mapping_w_delays():
+    """Check that measurements followed by delays get in the mapping"""
+    qc = QuantumCircuit(2, 2)
+    qc.measure(0, 1)
+    qc.delay(10, 0)
+    qc.measure(1, 0)
+    qc.barrier()
+
+    maps = final_measurement_mapping(qc)
+    assert maps == {1: 0, 0: 1}
