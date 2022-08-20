@@ -6,6 +6,7 @@ Sphinx
 qiskit_sphinx_theme
 matplotlib
 pylatexenc
+jupyterlab
 jupyter-sphinx
 nbsphinx
 psutil
