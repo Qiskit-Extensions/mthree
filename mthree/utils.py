@@ -55,7 +55,7 @@ def final_measurement_mapping(circuit):
     Returns:
         dict or list: Mapping of qubits to classical bits for final measurements.
     """
-    warnings.warn("The use of 'final_measurement_mapping' is deprecated"
+    warnings.warn("The use of 'final_measurement_mapping' is deprecated "
                   "use 'measurement_mapping' instead",
                   DeprecationWarning)
 
