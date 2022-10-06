@@ -155,12 +155,11 @@ class M3Mitigation():
             qubits = range(self.num_qubits)
         self.cal_method = method
         self.rep_delay = rep_delay
+        self.cals_file = cals_file
         self.cal_timestamp = None
         self._grab_additional_cals(qubits, shots=shots,  method=method,
                                    rep_delay=rep_delay, initial_reset=initial_reset,
                                    async_cal=async_cal)
-        if cals_file:
-            self.cals_to_file(cals_file)
 
     def cals_from_file(self, cals_file):
         """Generated the calibration data from a previous runs output
@@ -741,6 +740,9 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
 
         for idx, cal in enumerate(cals):
             mit.single_qubit_cals[qubits[idx]] = cal
+
+    if mit.cals_file is not None:
+        mit.cals_to_file(mit.cals_file)
 
     if any(bad_list):
         mit._job_error = M3Error('Faulty qubits detected: {}'.format(bad_list))
