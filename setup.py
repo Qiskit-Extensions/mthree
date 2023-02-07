@@ -22,9 +22,8 @@ import setuptools
 import numpy as np
 from Cython.Build import cythonize
 
-
-MAJOR = 1
-MINOR = 2
+MAJOR = 2
+MINOR = 0
 MICRO = 0
 
 ISRELEASED = False
