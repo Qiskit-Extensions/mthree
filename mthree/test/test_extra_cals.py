@@ -16,7 +16,7 @@
 import numpy as np
 import orjson
 from qiskit import QuantumCircuit, execute
-from qiskit.test.mock import FakeAthens
+from qiskit.providers.fake_provider import FakeAthens
 
 import mthree
 
