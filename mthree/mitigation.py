@@ -335,7 +335,7 @@ class M3Mitigation():
 
         Parameters:
             counts (dict, list): Input counts dict or list of dicts.
-            qubits (array_like): Qubits on which measurements applied.
+            qubits (dict, array_like): Qubits on which measurements applied.
             distance (int): Distance to correct for. Default=num_bits
             method (str): Solution method: 'auto', 'direct' or 'iterative'.
             max_iter (int): Max. number of iterations, Default=25.
