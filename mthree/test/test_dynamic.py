@@ -12,7 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test matrix elements"""
-from qiskit import *
+from qiskit import QuantumCircuit, transpile
 from qiskit.providers.fake_provider import FakeKolkata
 
 import mthree
@@ -26,7 +26,7 @@ def test_dynamic_bv():
     shots = 1e4
 
     qc = dynamic_bv('1'*N)
-    trans_qc = transpile(qc, backend, optimization_level=3, 
+    trans_qc = transpile(qc, backend, optimization_level=3,
                          seed_transpiler=12345)
 
     # Verify that mapping is returning the same qubit (1)
