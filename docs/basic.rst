@@ -67,7 +67,7 @@ provided that we select the correct layout.
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider FakeMontreal
+    from qiskit.providers.fake_provider import FakeMontreal
 
     backend = FakeMontreal()
     mit2 = mthree.M3Mitigation(backend)
