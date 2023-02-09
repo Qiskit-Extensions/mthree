@@ -97,9 +97,8 @@ def marginal_distribution(dist, indices, mapping=None):
         else:
             # mapping is a dict
             out_mapping = {}
-            inv_mapping = dict((v, k) for k, v in mapping.items())
-            for idx, ind in enumerate(indices):
-                out_mapping[inv_mapping[ind]] = idx
+            for ind in indices:
+                out_mapping[ind] = mapping[ind]
         return out_dist, out_mapping
     return out_dist
 
