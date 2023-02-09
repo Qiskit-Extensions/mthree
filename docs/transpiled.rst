@@ -48,16 +48,8 @@ routine to compute this for you:
     mapping = mthree.utils.final_measurement_mapping(trans_qc)
     print(mapping)
 
-We see that the keys of the returned dictionary label the physical qubits used, and the corresponding
-values show which classical bit they map to.  Using this mapping in M3 is easy:
-
-.. jupyter-execute::
-
-    mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(list(mapping))
-
-Alternatively, you can let M3 take care of converting a mapping to a list internally,
-which allows for simply calling:
+We see that the keys of the returned dictionary label the classical bits used, and the corresponding
+values show which qubit was measured into that bit.  Using this mapping in M3 is easy:
 
 .. jupyter-execute::
 

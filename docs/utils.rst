@@ -46,17 +46,10 @@ a critical role:
     mapping = mthree.utils.final_measurement_mapping(trans_qc)
     mapping
 
-The keys of this mapping index the physical qubits that are measured, whereas the
-values tell you which classical bits the corresponding measurements are stored in.
-The mapping is ordered in terms of the classical bit indices.  This allows one to
-simply do
-
-.. jupyter-execute::
-
-    list(mapping)
-
-to get the needed qubits in the correct order.  You can also just pass the generated
-``mapping`` into M3 functions and the required conversion will be done internally.
+The keys of this mapping index the classical bits, whereas the
+values tell you which qubits were measured to obtain the bit values.
+The mapping is ordered in terms of the classical bit indices.  You can just pass the
+generated ``mapping`` into M3 functions.
 
 
 Evaluating raw counts data
