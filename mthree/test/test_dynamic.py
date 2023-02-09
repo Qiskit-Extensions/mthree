@@ -76,7 +76,7 @@ def dynamic_bv(bitstring):
         # Final H gate to convert phase to computational-basis
         qc.h(0)
         # Measure
-        qc.measure(0,idx)
+        qc.measure(0, idx)
 
         # If not at the final bit, recycle and reset qubits
         if idx != (len(bitstring)-1):
