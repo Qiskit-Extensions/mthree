@@ -34,7 +34,7 @@ def test_simple2_circ():
     qc = QuantumCircuit(5)
     qc.measure_all()
     qc.h(range(5))
-    assert final_measurement_mapping(qc) == {}
+    assert final_measurement_mapping(qc) == {0: 0, 1: 1, 2: 2, 3: 3, 4: 4}
 
 
 def test_multi_qreg():
@@ -50,11 +50,11 @@ def test_multi_qreg():
     qc.measure(range(2, 4), range(2, 4))
     qc.barrier(range(5))
     qc.measure(1, 4)
-    assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
+    assert final_measurement_mapping(qc) == {0: 0, 2: 2, 3: 3, 4: 1}
 
 
 def test_multi_creg():
-    """Test multiple qregs"""
+    """Test multiple qregs and cregs"""
     qr1 = QuantumRegister(2, "q1")
     qr2 = QuantumRegister(3, "q2")
     cr1 = ClassicalRegister(3, "c1")
@@ -67,7 +67,7 @@ def test_multi_creg():
     qc.measure(range(2, 4), range(2, 4))
     qc.barrier(range(5))
     qc.measure(1, 4)
-    assert final_measurement_mapping(qc) == {2: 2, 3: 3, 1: 4}
+    assert final_measurement_mapping(qc) == {0: 0, 2: 2, 3: 3, 4: 1}
 
 
 def test_mapping_list():

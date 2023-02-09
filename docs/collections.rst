@@ -9,7 +9,7 @@ When you mitigate over multiple circuits the return object is a :class:`mthree.c
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.test.mock.backends import FakeCasablanca
+    from qiskit.providers.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(6)

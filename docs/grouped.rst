@@ -12,7 +12,7 @@ this consider the following simple example:
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.test.mock import FakeAthens
+    from qiskit.providers.fake_provider import FakeAthens
     import mthree
 
     qc = QuantumCircuit(4)

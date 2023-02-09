@@ -277,14 +277,14 @@ class M3Mitigation():
 
         if isinstance(qubits, dict):
             # Assuming passed a mapping
-            qubits = list(qubits)
+            qubits = list(qubits.values())
         elif isinstance(qubits, list):
             # Check if passed a list of mappings
             if isinstance(qubits[0], dict):
                 # Assuming list of mappings, need to get unique elements
                 _qubits = []
                 for item in qubits:
-                    _qubits.extend(list(item))
+                    _qubits.extend(list(item.values()))
                 qubits = list(set(_qubits))
 
         num_cal_qubits = len(qubits)
@@ -335,7 +335,7 @@ class M3Mitigation():
 
         Parameters:
             counts (dict, list): Input counts dict or list of dicts.
-            qubits (array_like): Qubits on which measurements applied.
+            qubits (dict, array_like): Qubits on which measurements applied.
             distance (int): Distance to correct for. Default=num_bits
             method (str): Solution method: 'auto', 'direct' or 'iterative'.
             max_iter (int): Max. number of iterations, Default=25.
@@ -361,13 +361,13 @@ class M3Mitigation():
 
         if isinstance(qubits, dict):
             # If a mapping was given for qubits
-            qubits = [list(qubits)]
+            qubits = [list(qubits.values())]
         elif not any(isinstance(qq, (list, tuple, np.ndarray, dict)) for qq in qubits):
             qubits = [qubits]*len(counts)
         else:
             if isinstance(qubits[0], dict):
                 # assuming passed a list of mappings
-                qubits = [list(qu) for qu in qubits]
+                qubits = [list(qu.values()) for qu in qubits]
 
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')

@@ -26,6 +26,7 @@ Utility functions
 """
 import numpy as np
 
+from qiskit.circuit import ClassicalRegister, Clbit
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
@@ -42,7 +43,7 @@ def final_measurement_mapping(circuit):
         circuit (QuantumCircuit or list): Input Qiskit QuantumCircuit or circuits.
 
     Returns:
-        dict or list: Mapping of qubits to classical bits for final measurements.
+        dict or list: Mapping of classical bits to qubits for final measurements.
     """
     given_list = False
     if isinstance(circuit, (list, np.ndarray)):
@@ -96,24 +97,23 @@ def marginal_distribution(dist, indices, mapping=None):
         else:
             # mapping is a dict
             out_mapping = {}
-            inv_mapping = dict((v, k) for k, v in mapping.items())
             for idx, ind in enumerate(indices):
-                out_mapping[inv_mapping[ind]] = idx
+                out_mapping[idx] = mapping[ind]
         return out_dist, out_mapping
     return out_dist
 
 
 def _final_measurement_mapping(circuit):
-    """Return the final measurement mapping for the circuit.
+    """Return the measurement mapping for the circuit.
 
-    Dict keys label measured qubits, whereas the values indicate the
-    classical bit onto which that qubits measurement result is stored.
+    Dict keys label classical bits, whereas the values indicate the
+    physical qubits that are measured to produce those bit values.
 
     Parameters:
         circuit (QuantumCircuit): Input Qiskit QuantumCircuit.
 
     Returns:
-        dict: Mapping of qubits to classical bits for final measurements.
+        dict: Mapping of classical bits to qubits for final measurements.
     """
     active_qubits = list(range(circuit.num_qubits))
     active_cbits = list(range(circuit.num_clbits))
@@ -138,22 +138,29 @@ def _final_measurement_mapping(circuit):
                 qmap.append(qbit)
                 cmap.append(cbit)
                 active_cbits.remove(cbit)
-                active_qubits.remove(qbit)
+
         elif item[0].name not in ["barrier", "delay"]:
-            for qq in item[1]:
-                _temp_qubit = qint_map[qq]
-                if _temp_qubit in active_qubits:
-                    active_qubits.remove(_temp_qubit)
+            cond = item.operation.condition
+            if cond:
+                if isinstance(cond[0], ClassicalRegister):
+                    reg = cond[0]
+                    clbits = [Clbit(reg, kk) for kk in range(reg.size)]
+                else:
+                    clbits = [cond[0]]
+                for cb in clbits:
+                    cbit = cint_map[cb]
+                    if cbit in active_cbits:
+                        active_cbits.remove(cbit)
 
         if not active_cbits or not active_qubits:
             break
     mapping = {}
     if cmap and qmap:
         for idx, qubit in enumerate(qmap):
-            mapping[qubit] = cmap[idx]
+            mapping[cmap[idx]] = qubit
 
     # Sort so that classical bits are in numeric order low->high.
-    mapping = dict(sorted(mapping.items(), key=lambda item: item[1]))
+    mapping = dict(sorted(mapping.items(), key=lambda item: item[0]))
     return mapping
 
 

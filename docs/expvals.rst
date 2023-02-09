@@ -17,7 +17,7 @@ a noisy-simulator.
 
     import numpy as np
     from qiskit import *
-    from qiskit.test.mock import FakeAthens
+    from qiskit.providers.fake_provider import FakeAthens
     import mthree
 
     backend = FakeAthens()
