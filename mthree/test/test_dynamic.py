@@ -54,22 +54,22 @@ def test_dynamic_bv():
 
 def dynamic_bv(bitstring):
     """Create a Bernstein-Vazirani circuit from a given bitstring.
-    
+
     Parameters:
         bitstring (str): A bitstring.
-        
+
     Returns:
         QuantumCircuit: Output circuit.
     """
     qc = QuantumCircuit(2, len(bitstring))
-    
+
     # Prepare the |-x> state on target qubit
     qc.x(1)
     qc.h(1)
-    
+
     # For each bit (0 or 1) build a simple circuit block
     for idx, bit in enumerate(bitstring[::-1]):
-        
+
         # Initial H gate on control
         qc.h(0)
         # If bit=1, do a CNOT gate
@@ -79,7 +79,7 @@ def dynamic_bv(bitstring):
         qc.h(0)
         # Measure
         qc.measure(0,idx)
-        
+
         # If not at the final bit, recycle and reset qubits
         if idx != (len(bitstring)-1):
             # Reset control qubit for reuse
