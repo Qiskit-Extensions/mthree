@@ -73,7 +73,7 @@ For example let us compare raw data verse the mitigated results in a simple case
 
 .. jupyter-execute::
 
-    from qiskit.test.mock.backends import FakeAthens
+    from qiskit.providers.fake_provider import FakeAthens
     backend = FakeAthens()
     qc = QuantumCircuit(4)
     qc.h(2)
