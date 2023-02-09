@@ -13,7 +13,7 @@ For example consider the Bernstein-Vazirani circuit
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.test.mock.backends import FakeCasablanca
+    from qiskit.providers.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(5, 4)

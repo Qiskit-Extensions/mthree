@@ -19,7 +19,7 @@ bits they correspond to.  Here we show another example of this usage.  First we 
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.test.mock.backends import FakeCasablanca
+    from qiskit.providers.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(7)
