@@ -12,8 +12,6 @@
 # pylint: disable=no-name-in-module
 
 """Test matrix elements"""
-import numpy as np
-
 from qiskit import *
 from qiskit.providers.fake_provider import FakeKolkata
 
