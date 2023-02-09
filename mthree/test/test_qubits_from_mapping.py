@@ -30,12 +30,12 @@ def test_cals_mappings():
     qc.measure(range(4), range(4))
 
     backend = FakeCasablanca()
-    circs = transpile([qc]*5, backend)
+    circs = transpile([qc]*5, backend, seed_transpiler=12345)
     maps = final_measurement_mapping(circs)
 
     qubits = []
     for item in maps:
-        qubits.extend(list(item))
+        qubits.extend(list(item.values()))
     qubits = list(set(qubits))
 
     mit = mthree.M3Mitigation(backend)
