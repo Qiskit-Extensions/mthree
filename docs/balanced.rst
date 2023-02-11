@@ -35,7 +35,10 @@ matches the precison of the other methods.  That is to say that the following:
 
     backend = FakeAthens()
     mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(shots=10000)
+    mit.cals_from_system(method='balanced')
 
-Will sample each qubit error rate `10000` times regardless of which method is used.  Moreover, this
-also yields a calibration process whose overhead is independent of the number of qubits used.
+Will sample each qubit error rate `10000` times regardless of which method is used.  Moreover,
+this also yields a calibration process whose overhead is independent of the number of qubits
+used.  Note that, when using a simulator or "fake" device, M3 defaults to `independent`
+calibration mode for efficiency.  As such, to enable `balanced` calibration on a simulator
+one must explicitly set the `method`` as done above.
