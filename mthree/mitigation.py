@@ -132,7 +132,7 @@ class M3Mitigation():
                               rep_delay=rep_delay,
                               cals_file=cals_file)
 
-    def cals_from_system(self, qubits=None, shots=None, method='balanced',
+    def cals_from_system(self, qubits=None, shots=None, method=None,
                          initial_reset=False, rep_delay=None, cals_file=None,
                          async_cal=False):
         """Grab calibration data from system.
@@ -140,7 +140,8 @@ class M3Mitigation():
         Parameters:
             qubits (array_like): Qubits over which to correct calibration data. Default is all.
             shots (int): Number of shots per circuit. min(1e4, max_shots).
-            method (str): Type of calibration, 'balanced' (default), 'independent', or 'marginal'.
+            method (str): Type of calibration, 'balanced' (default for hardware),
+                         'independent' (default for simulators), or 'marginal'.
             initial_reset (bool): Use resets at beginning of calibration circuits, default=False.
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
@@ -153,6 +154,10 @@ class M3Mitigation():
             raise M3Error('Calibration currently in progress.')
         if qubits is None:
             qubits = range(self.num_qubits)
+        if method is None:
+            method = 'balanced'
+            if self.system.configuration().simulator:
+                method = 'independent'
         self.cal_method = method
         self.rep_delay = rep_delay
         self.cal_timestamp = None
