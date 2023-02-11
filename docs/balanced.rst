@@ -34,8 +34,8 @@ matches the precison of the other methods.  That is to say that the following:
  .. jupyter-execute::
 
     backend = FakeAthens()
-    mit = mthree.M3Mitigation(backend, method='balanced')
-    mit.cals_from_system(shots=10000)
+    mit = mthree.M3Mitigation(backend)
+    mit.cals_from_system(method='balanced')
 
 Will sample each qubit error rate `10000` times regardless of which method is used.  Moreover,
 this also yields a calibration process whose overhead is independent of the number of qubits
