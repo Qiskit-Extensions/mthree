@@ -20,6 +20,14 @@ and / or one has very tight memory constraints, then the problem can be solved i
 manner using a preconditioned iterative linear solution method, e.g. the Generalized minimal
 residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
 
+M3 is suitable for problems ameanable to using quasi-probabilities such as those
+formulated in terms of expectation values, or sampling problems where, for example, one is
+interested in the bit-string with the highest probability.  Quasi-probabilities can be
+projected onto the nearest probability distribution if true probabilities are desired, but
+this makes error analysis more difficult.  M3 works for mid-circuit measurements as well,
+provided that one is interested in ensemble averages, as opposed to correcting single-shot
+measurements; it cannot mitigate single-shot measurements used for conditional-gate logic. 
+
 
 .. toctree::
     :maxdepth: 1
