@@ -80,7 +80,7 @@ import mthree
 mit = mthree.M3Mitigation(backend)
 
 # Compute the 1Q calibration matrices for the given qubits and given number of shots
-# By default it is over all backend qubits at 8192 shots.
+# By default it is over all backend qubits at 10000 shots.
 mit.cals_from_system(qubits, shots)
 
 # Apply mitigation to a given dict of raw counts over the specified qubits
@@ -111,26 +111,14 @@ expval, stddev = quasi.expval_and_stddev()
 ### Closest probability distribution
 
 The results of M3 mitigation are quasi-probabilities that nominally contain small negative values.
-This is suitable for use in computing corrected expectation values.  However, if one needs
+This is suitable for use in computing corrected expectation values or sampling problems
+where one is interested in the highest probability bit-string.  However, if one needs
 a true probability distribution then it is possible to convert from quasi-probabilites to
 the closest true probability distribution in L2-norm using:
 
 ```python
 closest_probs = m3_quasi.nearest_probability_distribution()
 ```
-
-### Truncating based on Hamming distance
-
-An additional benefit of the way M3 works is that it is possible to compute the effect of
-mitigation when only looking at errors that are up to a given Hamming distance away.
-This allows for investigating if large weight errors have much impact on the output.  This can be controlled by the `distance` keyword argument in `apply_correction`:
-
-```python
-m3_quasi = mit.apply_correction(raw_counts, qubits, distance=DIST)
-```
-
-By default, M3 computes errors out to the full distance.  At large numbers of unique bit-strings
-truncating to small Hamming distance can have some performance benefits.
 
 ## License
 
