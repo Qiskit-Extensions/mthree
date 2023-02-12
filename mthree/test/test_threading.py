@@ -42,3 +42,8 @@ def test_test_call_cals_twice():
     with pytest.raises(M3Error):
         mit.cals_from_system(maps, async_cal=True)
         mit.cals_from_system(maps)
+
+    # Test that I can save cals while in async mode
+    with pytest.raises(M3Error):
+        cal_file = "data_cal.json"
+        mit.cals_from_system(maps, cals_file=cal_file, async_cal=True)
