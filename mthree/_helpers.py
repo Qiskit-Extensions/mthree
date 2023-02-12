@@ -33,6 +33,9 @@ def system_info(backend):
         info_dict["num_qubits"] = config.num_qubits
         info_dict["max_shots"] = config.max_shots
         info_dict["simulator"] = config.simulator
+        # A hack for Qiskit/Terra #9572
+        if "fake" in info_dict["name"]:
+            info_dict["simulator"] = True
     elif isinstance(backend, BackendV2):
         info_dict["name"] = backend.name
         info_dict["num_qubits"] = backend.num_qubits
