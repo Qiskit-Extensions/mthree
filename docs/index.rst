@@ -45,6 +45,7 @@ measurements; it cannot mitigate single-shot measurements used for conditional-g
     Basic usage <basic>
     Transpiled circuits <transpiled>
     Expectation values <expvals>
+    Sampling problems <sampling>
     Using collections <collections>
     Grouped operators <grouped>
     Error analysis <error>
