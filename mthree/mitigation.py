@@ -33,6 +33,7 @@ from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
+from ._helpers import system_info
 
 
 class M3Mitigation():
@@ -47,9 +48,13 @@ class M3Mitigation():
 
         Attributes:
             system (Backend): The target system.
+            system_info (dict): Information needed about the system
+            cal_method (str): Calibration method used
+            cal_timestamp (str): Time at which cals were taken
             single_qubit_cals (list): 1Q calibration matrices
         """
         self.system = system
+        self.system_info = system_info(system)
         self.single_qubit_cals = None
         self.num_qubits = system.configuration().num_qubits if system else None
         self.iter_threshold = iter_threshold
@@ -158,7 +163,7 @@ class M3Mitigation():
             qubits = range(self.num_qubits)
         if method is None:
             method = 'balanced'
-            if self.system.configuration().simulator:
+            if self.system_info["simulator"]:
                 method = 'independent'
         self.cal_method = method
         self.rep_delay = rep_delay
@@ -208,7 +213,7 @@ class M3Mitigation():
         if not self.single_qubit_cals:
             raise M3Error('Mitigator is not calibrated.')
         save_dict = {'timestamp': self.cal_timestamp,
-                     'backend': self.system.name(),
+                     'backend': self.system_info["name"],
                      'shots': self.cal_shots,
                      'cals': self.single_qubit_cals}
         with open(cals_file, 'wb') as fd:
@@ -273,7 +278,7 @@ class M3Mitigation():
             self.single_qubit_cals = [None]*self.num_qubits
         if self.cal_shots is None:
             if shots is None:
-                shots = min(self.system.configuration().max_shots, 10000)
+                shots = min(self.system_info["max_shots"], 10000)
             self.cal_shots = shots
         if self.rep_delay is None:
             self.rep_delay = rep_delay
