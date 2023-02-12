@@ -54,7 +54,7 @@ class M3Mitigation():
             single_qubit_cals (list): 1Q calibration matrices
         """
         self.system = system
-        self.system_info = system_info(system)
+        self.system_info = system_info(system) if system else {}
         self.single_qubit_cals = None
         self.num_qubits = self.system_info["num_qubits"]
         self.iter_threshold = iter_threshold
