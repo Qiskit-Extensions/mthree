@@ -56,7 +56,7 @@ class M3Mitigation():
         self.system = system
         self.system_info = system_info(system)
         self.single_qubit_cals = None
-        self.num_qubits = system.configuration().num_qubits if system else None
+        self.num_qubits = self.system_info["num_qubits"]
         self.iter_threshold = iter_threshold
         self.cal_shots = None
         self.cal_method = 'balanced'
