@@ -679,7 +679,14 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
         timestamp = timestamp.isoformat()
     # Go to UTC times because we are going to use this for
     # resultsDB storage as well
-    dt = datetime.datetime.fromisoformat(timestamp)
+    try:
+        dt = datetime.datetime.fromisoformat(timestamp)
+    # Qiskit direct gives a different format for their timestamp
+    # Since I do not have access, this makes it difficult to fix
+    # directly, so here catch the ValueError and just set now
+    # as the time
+    except ValueError:
+        dt = datetime.datetime.now()
     dt_utc = dt.astimezone(datetime.timezone.utc)
     mit.cal_timestamp = dt_utc.isoformat()
     # A list of qubits with bad meas cals
