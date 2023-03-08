@@ -288,14 +288,14 @@ class M3Mitigation():
 
         if isinstance(qubits, dict):
             # Assuming passed a mapping
-            qubits = list(qubits.values())
+            qubits = list(set(qubits.values()))
         elif isinstance(qubits, list):
             # Check if passed a list of mappings
             if isinstance(qubits[0], dict):
                 # Assuming list of mappings, need to get unique elements
                 _qubits = []
                 for item in qubits:
-                    _qubits.extend(list(item.values()))
+                    _qubits.extend(list(set(item.values())))
                 qubits = list(set(_qubits))
 
         num_cal_qubits = len(qubits)
