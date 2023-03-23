@@ -760,24 +760,21 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
             cal[1, 0] = 1.0 - cal[0, 0]
             cal[0, 1] = 1.0 - cal[1, 1]
 
-            if cal[0, 1] >= cal[0, 0]:
-                bad_list.append(qubits[jj])
-
         for idx, cal in enumerate(cals):
             mit.single_qubit_cals[qubits[idx]] = cal
 
     # save cals to file, if requested
     if mit.cals_file:
         mit.cals_to_file(mit.cals_file)
-    # Append list of faulty qubits, if any
-    mit.faulty_qubits = bad_list
+    # faulty qubits, if any
+    mit.faulty_qubits = _faulty_qubit_checker(mit.single_qubit_cals)
 
 def _faulty_qubit_checker(cals):
     """Find faulty qubits in cals
-    
+
     Parameters:
         cals (list): Input list of calibrations
-    
+
     Returns:
         list: Faulty qubits
     """
