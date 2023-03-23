@@ -26,7 +26,7 @@ def test_dynamic_bv():
     backend = FakeKolkata()
 
     N = 5
-    shots = 1e4
+    shots = int(1e4)
 
     qc = dynamic_bv('1'*N)
     trans_qc = transpile(qc, backend, optimization_level=3,
