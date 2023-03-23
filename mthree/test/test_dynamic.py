@@ -14,6 +14,9 @@
 """Test matrix elements"""
 from qiskit import QuantumCircuit, transpile
 from qiskit.providers.fake_provider import FakeKolkata
+# Transpiler passes for optimizing dynamic circuits
+from qiskit.transpiler import PassManager
+from qiskit.transpiler.passes.optimization import ResetAfterMeasureSimplification
 
 import mthree
 
@@ -23,7 +26,7 @@ def test_dynamic_bv():
     backend = FakeKolkata()
 
     N = 5
-    shots = 1e4
+    shots = int(1e4)
 
     qc = dynamic_bv('1'*N)
     trans_qc = transpile(qc, backend, optimization_level=3,
@@ -48,6 +51,19 @@ def test_dynamic_bv():
 
     assert quasis['1'*N] > counts['1'*N]/shots
     assert quasis['1'*N] > 0.97
+
+
+def test_dynamic_bv_mapping():
+    """Test that conditionals do not get counted as touching qubits in final mapping"""
+    backend = FakeKolkata()
+
+    circ = dynamic_bv('1'*5)
+    trans_circ = transpile(circ, backend, initial_layout=[12, 10])
+
+    pm = PassManager(ResetAfterMeasureSimplification())
+    flatten_circ = pm.run(trans_circ)
+    mapping = mthree.utils.final_measurement_mapping(flatten_circ)
+    assert mapping == {0: 12, 1: 12, 2: 12, 3: 12, 4: 12}
 
 
 def dynamic_bv(bitstring):
