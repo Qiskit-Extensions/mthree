@@ -26,7 +26,6 @@ Utility functions
 """
 import numpy as np
 
-from qiskit.circuit import ClassicalRegister, Clbit
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
