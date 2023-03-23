@@ -139,19 +139,6 @@ def _final_measurement_mapping(circuit):
                 cmap.append(cbit)
                 active_cbits.remove(cbit)
 
-        elif item[0].name not in ["barrier", "delay"]:
-            cond = item.operation.condition
-            if cond:
-                if isinstance(cond[0], ClassicalRegister):
-                    reg = cond[0]
-                    clbits = [Clbit(reg, kk) for kk in range(reg.size)]
-                else:
-                    clbits = [cond[0]]
-                for cb in clbits:
-                    cbit = cint_map[cb]
-                    if cbit in active_cbits:
-                        active_cbits.remove(cbit)
-
         if not active_cbits or not active_qubits:
             break
     mapping = {}
