@@ -67,6 +67,8 @@ class M3Mitigation():
         self._job_error = None
         # Holds the cals file
         self.cals_file = None
+        # faulty qubits
+        self.faulty_qubits = []
 
     def __getattribute__(self, attr):
         """This allows for checking the status of the threaded cals call
@@ -197,6 +199,7 @@ class M3Mitigation():
                 self.cal_shots = None
                 self.single_qubit_cals = [np.asarray(cal) if cal else None
                                           for cal in loaded_data]
+        self.faulty_qubits = _faulty_qubit_checker(self.single_qubit_cals)
 
     def cals_to_file(self, cals_file=None):
         """Save calibration data to JSON file.
@@ -213,7 +216,7 @@ class M3Mitigation():
         if not self.single_qubit_cals:
             raise M3Error('Mitigator is not calibrated.')
         save_dict = {'timestamp': self.cal_timestamp,
-                     'backend': self.system_info["name"],
+                     'backend': self.system_info.get("name", None),
                      'shots': self.cal_shots,
                      'cals': self.single_qubit_cals}
         with open(cals_file, 'wb') as fd:
@@ -247,6 +250,7 @@ class M3Mitigation():
                 raise M3Error('Input list length not equal to'
                               ' number of qubits {} != {}'.format(len(matrices), self.num_qubits))
         self.single_qubit_cals = matrices
+        self.faulty_qubits = _faulty_qubit_checker(self.single_qubit_cals)
 
     def cals_to_matrices(self):
         """Return single qubit cals as list of NumPy arrays
@@ -382,6 +386,15 @@ class M3Mitigation():
 
         if len(qubits) != len(counts):
             raise M3Error('Length of counts does not match length of qubits.')
+
+        # Check if using faulty qubits
+        bad_qubits = set()
+        for item in qubits:
+            for qu in item:
+                if qu in self.faulty_qubits:
+                    bad_qubits.add(qu)
+        if any(bad_qubits):
+            raise M3Error('Using faulty qubits: {}'.format(bad_qubits))
 
         quasi_out = []
         for idx, cnts in enumerate(counts):
@@ -756,6 +769,21 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
     # save cals to file, if requested
     if mit.cals_file:
         mit.cals_to_file(mit.cals_file)
-    # Return list of faulty qubits, if any
-    if any(bad_list):
-        mit._job_error = M3Error('Faulty qubits detected: {}'.format(bad_list))
+    # Append list of faulty qubits, if any
+    mit.faulty_qubits = bad_list
+
+def _faulty_qubit_checker(cals):
+    """Find faulty qubits in cals
+    
+    Parameters:
+        cals (list): Input list of calibrations
+    
+    Returns:
+        list: Faulty qubits
+    """
+    faulty_qubits = []
+    for idx, cal in enumerate(cals):
+        if cal is not None:
+            if cal[0, 1] >= cal[0, 0]:
+                faulty_qubits.append(idx)
+    return faulty_qubits
