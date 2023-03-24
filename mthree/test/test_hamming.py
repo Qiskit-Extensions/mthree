@@ -29,12 +29,12 @@ def test_hamming_equiv():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     for kk in range(8+1):
-        _, details = mit.apply_correction(COUNTS, list(range(8)), 
-                                          details=True, 
+        _, details = mit.apply_correction(COUNTS, list(range(8)),
+                                          details=True,
                                           method='iterative',
                                           distance=kk)
-        _, details2 = mit.apply_correction(COUNTS, list(range(8)), 
-                                           details=True, 
+        _, details2 = mit.apply_correction(COUNTS, list(range(8)),
+                                           details=True,
                                            method='direct',
                                            distance=kk)
 
