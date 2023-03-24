@@ -28,3 +28,6 @@ cdef void compute_col_norms(double * col_norms,
                             unsigned int num_bits,
                             unsigned int num_elems,
                             unsigned int distance) nogil
+
+cdef unsigned int hamming_terms(unsigned int num_bits,
+                                unsigned int distance) nogil
