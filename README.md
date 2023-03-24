@@ -11,7 +11,7 @@ M3 is a measurement mitigation technique that solves for corrected measurement p
 
 ## Documentation
 
-[Online Documentation @ Qiskit.org](https://qiskit.org/documentation/partners/mthree/)
+[Online Documentation @ Qiskit.org](https://qiskit.org/ecosystem/mthree/)
 
 ## Installation
 
