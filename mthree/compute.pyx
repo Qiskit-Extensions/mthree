@@ -130,8 +130,55 @@ cdef double _inner_col_norm_loop(unsigned int col,
     """
     cdef size_t row
     cdef double col_norm = 0
+    cdef unsigned int num_terms = hamming_terms(num_bits, distance)
+    cdef unsigned int terms = 0
 
     for row in range(num_elems):
         if MAX_DIST or within_distance(row, col, bitstrings, num_bits, distance):
             col_norm += compute_element(row, col, bitstrings, cals, num_bits)
+            terms += 1
+        if terms == num_terms:
+            break
     return col_norm
+
+
+@cython.cdivision(True)
+cdef unsigned int binomial_coeff(unsigned int n, unsigned int k) nogil:
+    """Computes the binomial coefficient n choose k
+    
+    Parameters:
+        n (unsigned int):  Number of terms
+        k (unsigned int): Number to choose
+    
+    Returns:
+        unsigned int: Resulting number of possibilities
+    
+    """
+    if k > n:
+        return 0
+    elif k == 0 or k == n:
+        return 1
+    elif k ==1 or k == (n-1):
+        return n
+    elif k+k < n:
+        return (binomial_coeff(n-1, k-1) * n) / k
+    else:
+        return (binomial_coeff(n-1, k) * n) / (n-k)
+
+
+@cython.boundscheck(False)
+cdef unsigned int hamming_terms(unsigned int num_bits, unsigned int distance) nogil:
+    """Compute the total number of terms within a given Hamming distance
+    
+    Parameters:
+        num_bits (unsigned int): Number of bits in bit-strings
+        distance (unsigned int): Hamming distance to consider
+        
+    Returns:
+        unsigned int: Number of terms
+    """
+    cdef unsigned int out = 0
+    cdef unsigned int kk
+    for kk in range(distance+1):
+        out += binomial_coeff(num_bits, kk)
+    return out 
