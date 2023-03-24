@@ -756,7 +756,7 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
                 else:
                     cal[1, 1] += good_prep[kk] / denom
 
-        for jj, cal in enumerate(cals):
+        for cal in cals:
             cal[1, 0] = 1.0 - cal[0, 0]
             cal[0, 1] = 1.0 - cal[1, 1]
 
