@@ -33,7 +33,7 @@ def test_faulty_logic():
     mit.faulty_qubits = [1, 3]
     counts = {"00": 0.4, "01": 0.1, "11": 0.5}
     with pytest.raises(mthree.exceptions.M3Error) as _:
-        _ = mit.apply_correction(counts, qubits= [3, 2])
+        _ = mit.apply_correction(counts, qubits=[3, 2])
 
 
 def test_faulty_io():

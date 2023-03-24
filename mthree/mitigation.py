@@ -769,6 +769,7 @@ def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
     # faulty qubits, if any
     mit.faulty_qubits = _faulty_qubit_checker(mit.single_qubit_cals)
 
+
 def _faulty_qubit_checker(cals):
     """Find faulty qubits in cals
 
