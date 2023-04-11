@@ -327,7 +327,8 @@ class M3Mitigation():
         num_circs = len(trans_qcs)
         # check for max number of circuits per job
         if isinstance(self.system, BackendV1):
-            max_circuits = self.system.configuration().max_experiments
+            # Aer simulator has no 'max_experiments'
+            max_circuits = getattr(self.system.configuration(), 'max_experiments', 300)
         elif isinstance(self.system, BackendV2):
             max_circuits = self.system.max_circuits
             # Needed for https://github.com/Qiskit/qiskit-terra/issues/9947
