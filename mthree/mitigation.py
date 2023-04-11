@@ -326,7 +326,7 @@ class M3Mitigation():
 
         num_circs = len(trans_qcs)
         # check for max number of circuits per job
-        max_circuits = self.system.configruation().max_experiments
+        max_circuits = self.system.configuration().max_experiments
         # Determine the number of jobs required
         num_jobs = num_circs // max_circuits + 1
         # Get the slice length
