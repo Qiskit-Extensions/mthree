@@ -326,7 +326,7 @@ class M3Mitigation():
 
         num_circs = len(trans_qcs)
         # check for max number of circuits per job
-        if isinstance(self.system, (Backend, BackendV1)):
+        if isinstance(self.system, BackendV1):
             max_circuits = self.system.configuration().max_experiments
         elif isinstance(self.system, BackendV2):
             max_circuits = self.system.target.max_circuits
@@ -710,7 +710,7 @@ def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
             return
         else:
             _counts = res.get_counts()
-            counts.append(_counts)
+            counts.extend(_counts)
     # attach timestamp
     timestamp = res.date
     # Needed since Aer result date is str but IBMQ job is datetime
