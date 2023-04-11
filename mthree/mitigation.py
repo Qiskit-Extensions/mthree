@@ -332,7 +332,7 @@ class M3Mitigation():
         # Get the slice length
         circ_slice = num_circs // num_jobs + 1
         circs_list = [trans_qcs[kk*circ_slice:(kk+1)*circ_slice] for kk in range(num_jobs-1)] \
-                   + [trans_qcs[(num_jobs-1)*circ_slice:]]
+            + [trans_qcs[(num_jobs-1)*circ_slice:]]
 
         # Do job submission here
         # This Backend check is here for Qiskit direct access.  Should be removed later.
