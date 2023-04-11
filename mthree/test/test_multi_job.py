@@ -22,4 +22,4 @@ def test_multiple_job_submission():
     backend._configuration.max_experiments = 5
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    assert all([cal.trace() > 1.9 for cal in mit.single_qubit_cals])
+    assert all(cal.trace() > 1.9 for cal in mit.single_qubit_cals)
