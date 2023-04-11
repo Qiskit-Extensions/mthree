@@ -330,6 +330,9 @@ class M3Mitigation():
             max_circuits = self.system.configuration().max_experiments
         elif isinstance(self.system, BackendV2):
             max_circuits = self.system.max_circuits
+            # Needed for https://github.com/Qiskit/qiskit-terra/issues/9947
+            if max_circuits is None:
+                max_circuits = 300
         else:
             raise M3Error('Unknown backend type')
         # Determine the number of jobs required
