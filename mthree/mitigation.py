@@ -23,7 +23,7 @@ import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
 from qiskit import execute
-from qiskit.providers import Backend
+from qiskit.providers import Backend, BackendV2, BackendV1
 
 from mthree.circuits import (_tensor_meas_states, _marg_meas_states,
                              balanced_cal_strings, balanced_cal_circuits)
@@ -326,7 +326,12 @@ class M3Mitigation():
 
         num_circs = len(trans_qcs)
         # check for max number of circuits per job
-        max_circuits = self.system.configuration().max_experiments
+        if isinstance(self.system, (Backend, BackendV1)):
+            max_circuits = self.system.configuration().max_experiments
+        elif isinstance(self.system, BackendV2):
+            max_circuits = self.system.target.max_circuits
+        else:
+            raise M3Error('Unknown backend type')
         # Determine the number of jobs required
         num_jobs = num_circs // max_circuits + 1
         # Get the slice length
