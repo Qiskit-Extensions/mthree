@@ -324,22 +324,38 @@ class M3Mitigation():
                 trans_qcs.extend(_tensor_meas_states(kk, self.num_qubits,
                                                      initial_reset=initial_reset))
 
+        num_circs = len(trans_qcs)
+        # check for max number of circuits per job
+        max_circuits = self.system.configruation().max_experiments
+        # Determine the number of jobs required
+        num_jobs = num_circs // max_circuits + 1
+        # Get the slice length
+        circ_slice = num_circs // num_jobs + 1
+        circs_list = [trans_qcs[kk*circ_slice:(kk+1)*circ_slice] for kk in range(num_jobs-1)] \
+                     + [trans_qcs[(num_jobs-1)*circ_slice:]]
+
+        # Do job submission here
         # This Backend check is here for Qiskit direct access.  Should be removed later.
+        jobs = []
         if not isinstance(self.system, Backend):
-            job = execute(trans_qcs, self.system, optimization_level=0,
-                          shots=shots, rep_delay=self.rep_delay)
+            for circs in circs_list:
+                _job = execute(circs, self.system, optimization_level=0,
+                               shots=shots, rep_delay=self.rep_delay)
+                jobs.append(_job)
         else:
-            job = self.system.run(trans_qcs, shots=shots, rep_delay=self.rep_delay)
+            for circs in circs_list:
+                _job = self.system.run(trans_qcs, shots=shots, rep_delay=self.rep_delay)
+                jobs.append(_job)
 
         # Execute job and cal building in new theread.
         self._job_error = None
         if async_cal:
-            thread = threading.Thread(target=_job_thread, args=(job, self, method, qubits,
+            thread = threading.Thread(target=_job_thread, args=(jobs, self, method, qubits,
                                                                 num_cal_qubits, cal_strings))
             self._thread = thread
             self._thread.start()
         else:
-            _job_thread(job, self, method, qubits, num_cal_qubits, cal_strings)
+            _job_thread(jobs, self, method, qubits, num_cal_qubits, cal_strings)
 
     def apply_correction(self, counts, qubits, distance=None,
                          method='auto',
@@ -668,23 +684,28 @@ class M3Mitigation():
             raise self._job_error  # pylint: disable=raising-bad-type
 
 
-def _job_thread(job, mit, method, qubits, num_cal_qubits, cal_strings):
+def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
     """Run the calibration job in a different thread and post-process
 
     Parameters:
+        jobs (list): A list of job instances
         mit (M3Mitigator): The mitigator instance
         method (str): The type of calibration
         qubits (list): List of qubits used
         num_cal_qubits (int): Number of calibration qubits
         cal_strings (list): List of cal strings for balanced cals
     """
-    try:
-        res = job.result()
-    # pylint: disable=broad-except
-    except Exception as error:
-        mit._job_error = error
-        return
-    counts = res.get_counts()
+    counts = []
+    for job in jobs:
+        try:
+            res = job.result()
+        # pylint: disable=broad-except
+        except Exception as error:
+            mit._job_error = error
+            return
+        else:
+            _counts = res.get_counts()
+            counts.append(_counts)
     # attach timestamp
     timestamp = res.date
     # Needed since Aer result date is str but IBMQ job is datetime
