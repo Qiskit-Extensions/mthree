@@ -329,7 +329,7 @@ class M3Mitigation():
         if isinstance(self.system, BackendV1):
             max_circuits = self.system.configuration().max_experiments
         elif isinstance(self.system, BackendV2):
-            max_circuits = self.system.target.max_circuits
+            max_circuits = self.system.max_circuits
         else:
             raise M3Error('Unknown backend type')
         # Determine the number of jobs required
