@@ -166,16 +166,11 @@ class M3Mitigation():
             # Remove faulty qubits if any
             if any(self.system_info['inoperable_qubits']):
                 qubits = list(filter(lambda item: item not in
-                    self.system_info['inoperable_qubits'], list(range(self.num_qubits))))
+                                      self.system_info['inoperable_qubits'],
+                                      list(range(self.num_qubits))))
                 warnings.warn('Backend reporting inoperable qubits.' +
                               ' Skipping calibrations for: {}' \
                                 .format(self.system_info['inoperable_qubits']))
-
-        else:
-            inoperable_overlap = list(set(qubits) & set(self.system_info['inoperable_qubits']))
-            if any(inoperable_overlap):
-                raise M3Error('Attempting to calibrate inoperable qubits: {}' \
-                    .format(inoperable_overlap))
         if method is None:
             method = 'balanced'
             if self.system_info["simulator"]:
@@ -314,6 +309,12 @@ class M3Mitigation():
                 for item in qubits:
                     _qubits.extend(list(set(item.values())))
                 qubits = list(set(_qubits))
+    
+        # Do check for inoperable qubits here
+        inoperable_overlap = list(set(qubits) & set(self.system_info['inoperable_qubits']))
+        if any(inoperable_overlap):
+            raise M3Error('Attempting to calibrate inoperable qubits: {}' \
+                .format(inoperable_overlap))
 
         num_cal_qubits = len(qubits)
         cal_strings = []
@@ -649,7 +650,7 @@ class M3Mitigation():
         P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec)
         vec = counts_to_vector(M.sorted_counts)
         out, error = spla.gmres(L, vec, tol=tol, atol=tol, maxiter=max_iter,
-                                M=P, callback=callback)
+                                M=P, callback=callback, callback_type='legacy')
         if error:
             raise M3Error('GMRES did not converge: {}'.format(error))
 
