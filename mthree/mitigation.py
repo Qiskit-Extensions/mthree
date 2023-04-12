@@ -378,7 +378,7 @@ class M3Mitigation:
             trans_qcs = balanced_cal_circuits(
                 cal_strings, qubits, self.num_qubits, initial_reset=initial_reset
             )
-            shots = (self.cal_shots + 1) // num_cal_qubits
+            shots = self.cal_shots // num_cal_qubits + 1
         # Independent
         else:
             trans_qcs = []
@@ -898,7 +898,7 @@ def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
         for idx, count in enumerate(counts):
             target = cal_strings[idx][::-1]
             good_prep = np.zeros(num_cal_qubits, dtype=float)
-            denom = mit.cal_shots
+            denom = mit.cal_shots // num_cal_qubits + 1
 
             for key, val in count.items():
                 key = key[::-1]
