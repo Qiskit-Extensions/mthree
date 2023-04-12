@@ -313,8 +313,8 @@ class M3Mitigation():
         # Do check for inoperable qubits here
         inoperable_overlap = list(set(qubits) & set(self.system_info['inoperable_qubits']))
         if any(inoperable_overlap):
-            raise M3Error('Attempting to calibrate inoperable qubits: {}' \
-                .format(inoperable_overlap))
+            raise M3Error('Attempting to calibrate inoperable qubits: {}'
+                    .format(inoperable_overlap))
 
         num_cal_qubits = len(qubits)
         cal_strings = []
