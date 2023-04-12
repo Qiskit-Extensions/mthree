@@ -100,7 +100,7 @@ class M3Mitigation:
 
         # Reverse index qubits for easier indexing later
         for kk, qubit in enumerate(qubits[::-1]):
-            cals[4 * kk : 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
+            cals[4 * kk: 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
         return cals
 
     def _check_sdd(self, counts, qubits, distance=None):
@@ -406,9 +406,9 @@ class M3Mitigation:
         # Get the slice length
         circ_slice = num_circs // num_jobs + 1
         circs_list = [
-            trans_qcs[kk * circ_slice : (kk + 1) * circ_slice]
+            trans_qcs[kk * circ_slice: (kk + 1) * circ_slice]
             for kk in range(num_jobs - 1)
-        ] + [trans_qcs[(num_jobs - 1) * circ_slice :]]
+        ] + [trans_qcs[(num_jobs - 1) * circ_slice:]]
         # Do job submission here
         # This Backend check is here for Qiskit direct access.  Should be removed later.
         jobs = []
