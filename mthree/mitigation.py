@@ -342,7 +342,6 @@ class M3Mitigation():
         circ_slice = num_circs // num_jobs + 1
         circs_list = [trans_qcs[kk*circ_slice:(kk+1)*circ_slice] for kk in range(num_jobs-1)] \
             + [trans_qcs[(num_jobs-1)*circ_slice:]]
-
         # Do job submission here
         # This Backend check is here for Qiskit direct access.  Should be removed later.
         jobs = []
@@ -353,7 +352,7 @@ class M3Mitigation():
                 jobs.append(_job)
         else:
             for circs in circs_list:
-                _job = self.system.run(trans_qcs, shots=shots, rep_delay=self.rep_delay)
+                _job = self.system.run(circs, shots=shots, rep_delay=self.rep_delay)
                 jobs.append(_job)
 
         # Execute job and cal building in new theread.
