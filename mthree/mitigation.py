@@ -309,7 +309,7 @@ class M3Mitigation():
                 for item in qubits:
                     _qubits.extend(list(set(item.values())))
                 qubits = list(set(_qubits))
-    
+
         # Do check for inoperable qubits here
         inoperable_overlap = list(set(qubits) & set(self.system_info['inoperable_qubits']))
         if any(inoperable_overlap):
