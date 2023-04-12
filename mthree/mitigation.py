@@ -167,8 +167,8 @@ class M3Mitigation():
             if any(self.system_info['inoperable_qubits']):
                 qubits = list(filter(lambda item: item not in
                     self.system_info['inoperable_qubits'], list(range(self.num_qubits))))
-                warnings.warn('Backend reporting inoperable qubits. ' + 
-                              'Skipping calibrations for: {}' \
+                warnings.warn('Backend reporting inoperable qubits.' + 
+                              ' Skipping calibrations for: {}' \
                                 .format(self.system_info['inoperable_qubits']))
 
         else:

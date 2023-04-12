@@ -30,11 +30,11 @@ def test_inoperable_qubits1():
     mit = mthree.M3Mitigation(BACKEND)
     mit.cals_from_system()
     for qubit in _faulty():
-        assert mit.single_qubit_cals[qubit] == None
+        assert mit.single_qubit_cals[qubit] is None
 
 
 def test_inoperable_qubits2():
     """Test that explicitly using inoperable qubits raises error"""
     mit = mthree.M3Mitigation(BACKEND)
-    with pytest.raises(M3Error):
+    with pytest.raises(mthree.exceptions.M3Error):
         mit.cals_from_system([0, 3])
