@@ -163,6 +163,19 @@ class M3Mitigation():
             raise M3Error('Calibration currently in progress.')
         if qubits is None:
             qubits = range(self.num_qubits)
+            # Remove faulty qubits if any
+            if any(self.system_info['inoperable_qubits']):
+                qubits = list(filter(lambda item: item not in
+                    self.system_info['inoperable_qubits'], list(range(self.num_qubits))))
+                warnings.warn('Backend reporting inoperable qubits. ' + 
+                              'Skipping calibrations for: {}' \
+                                .format(self.system_info['inoperable_qubits']))
+
+        else:
+            inoperable_overlap = list(set(qubits) & set(self.system_info['inoperable_qubits']))
+            if any(inoperable_overlap):
+                raise M3Error('Attempting to calibrate inoperable qubits: {}' \
+                    .format(inoperable_overlap))
         if method is None:
             method = 'balanced'
             if self.system_info["simulator"]:

@@ -27,6 +27,7 @@ def system_info(backend):
         dict: Backend information
     """
     info_dict = {}
+    info_dict["inoperable_qubits"] = []
     if isinstance(backend, BackendV1):
         config = backend.configuration()
         info_dict["name"] = backend.name()
@@ -49,6 +50,10 @@ def system_info(backend):
         # outside of configuration?
         if hasattr(backend, 'configuration'):
             info_dict["simulator"] = backend.configuration().simulator
+    # Look for faulty qubits.  Renaming to 'inoperable' here
+    if hasattr(backend, 'properties'):
+        if hasattr(backend.properties(), 'faulty_qubits'):
+            info_dict["inoperable_qubits"] = backend.properties().faulty_qubits()
     else:
         raise M3Error('Invalid backend passed.')
     return info_dict
