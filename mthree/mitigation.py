@@ -374,13 +374,14 @@ class M3Mitigation:
             trans_qcs = _marg_meas_states(
                 qubits, self.num_qubits, initial_reset=initial_reset
             )
-
         elif method == "balanced":
             cal_strings = balanced_cal_strings(num_cal_qubits)
             trans_qcs = balanced_cal_circuits(
                 cal_strings, qubits, self.num_qubits, initial_reset=initial_reset
             )
-            shots = self.cal_shots // num_cal_qubits + 1
+            shots = self.cal_shots // num_cal_qubits
+            if self.cal_shots / num_cal_qubits != shots:
+                shots += 1
             self._balanced_shots = shots * num_cal_qubits
         # Independent
         else:
@@ -435,12 +436,12 @@ class M3Mitigation:
         if async_cal:
             thread = threading.Thread(
                 target=_job_thread,
-                args=(jobs, self, method, qubits, num_cal_qubits, cal_strings),
+                args=(jobs, self, qubits, num_cal_qubits, cal_strings),
             )
             self._thread = thread
             self._thread.start()
         else:
-            _job_thread(jobs, self, method, qubits, num_cal_qubits, cal_strings)
+            _job_thread(jobs, self, qubits, num_cal_qubits, cal_strings)
 
     def apply_correction(
         self,
@@ -823,13 +824,12 @@ class M3Mitigation:
             raise self._job_error  # pylint: disable=raising-bad-type
 
 
-def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
+def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
     """Run the calibration job in a different thread and post-process
 
     Parameters:
         jobs (list): A list of job instances
         mit (M3Mitigator): The mitigator instance
-        method (str): The type of calibration
         qubits (list): List of qubits used
         num_cal_qubits (int): Number of calibration qubits
         cal_strings (list): List of cal strings for balanced cals
