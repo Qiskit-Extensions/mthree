@@ -74,6 +74,8 @@ class M3Mitigation:
         self.cals_file = None
         # faulty qubits
         self.faulty_qubits = []
+        # The number of shots used for balanced denominator
+        self._balanced_shots = None
 
     def __getattribute__(self, attr):
         """This allows for checking the status of the threaded cals call
@@ -372,13 +374,15 @@ class M3Mitigation:
             trans_qcs = _marg_meas_states(
                 qubits, self.num_qubits, initial_reset=initial_reset
             )
-
         elif method == "balanced":
             cal_strings = balanced_cal_strings(num_cal_qubits)
             trans_qcs = balanced_cal_circuits(
                 cal_strings, qubits, self.num_qubits, initial_reset=initial_reset
             )
-            shots = (self.cal_shots + 1) // num_cal_qubits
+            shots = self.cal_shots // num_cal_qubits
+            if self.cal_shots / num_cal_qubits != shots:
+                shots += 1
+            self._balanced_shots = shots * num_cal_qubits
         # Independent
         else:
             trans_qcs = []
@@ -432,12 +436,12 @@ class M3Mitigation:
         if async_cal:
             thread = threading.Thread(
                 target=_job_thread,
-                args=(jobs, self, method, qubits, num_cal_qubits, cal_strings),
+                args=(jobs, self, qubits, num_cal_qubits, cal_strings),
             )
             self._thread = thread
             self._thread.start()
         else:
-            _job_thread(jobs, self, method, qubits, num_cal_qubits, cal_strings)
+            _job_thread(jobs, self, qubits, num_cal_qubits, cal_strings)
 
     def apply_correction(
         self,
@@ -820,13 +824,12 @@ class M3Mitigation:
             raise self._job_error  # pylint: disable=raising-bad-type
 
 
-def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
+def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
     """Run the calibration job in a different thread and post-process
 
     Parameters:
         jobs (list): A list of job instances
         mit (M3Mitigator): The mitigator instance
-        method (str): The type of calibration
         qubits (list): List of qubits used
         num_cal_qubits (int): Number of calibration qubits
         cal_strings (list): List of cal strings for balanced cals
@@ -854,7 +857,7 @@ def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
     mit.cal_timestamp = dt_utc.isoformat()
     # A list of qubits with bad meas cals
     bad_list = []
-    if method == "independent":
+    if mit.cal_method == "independent":
         for idx, qubit in enumerate(qubits):
             mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
             # Counts 0 has all P00, P10 data, so do that here
@@ -869,7 +872,7 @@ def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
             mit.single_qubit_cals[qubit][:, 1] = [P01, P11]
             if P01 >= P00:
                 bad_list.append(qubit)
-    elif method == "marginal":
+    elif mit.cal_method == "marginal":
         prep0_counts = counts[0]
         prep1_counts = counts[1]
         for idx, qubit in enumerate(qubits):
@@ -898,7 +901,8 @@ def _job_thread(jobs, mit, method, qubits, num_cal_qubits, cal_strings):
         for idx, count in enumerate(counts):
             target = cal_strings[idx][::-1]
             good_prep = np.zeros(num_cal_qubits, dtype=float)
-            denom = mit.cal_shots
+            # divide by 2 since total shots is double
+            denom = mit._balanced_shots
 
             for key, val in count.items():
                 key = key[::-1]
