@@ -36,7 +36,7 @@ def test_faulty_logic():
         _ = mit.apply_correction(counts, qubits=[3, 2])
 
     assert len(record) == 1
-    assert record[0].message.args[0] == "Using faulty qubits: [3, 2]"
+    assert record[0].message.args[0] == "Using faulty qubits: {3}"
 
 
 def test_faulty_io():
