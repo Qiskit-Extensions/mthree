@@ -12,8 +12,6 @@
 # pylint: disable=no-name-in-module
 
 """Test details handling"""
-import numpy as np
-
 from qiskit import QuantumCircuit, transpile
 from qiskit.providers.fake_provider import FakeAthens
 
