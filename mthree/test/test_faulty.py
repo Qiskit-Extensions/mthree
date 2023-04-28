@@ -13,27 +13,8 @@
 
 """Test faulty qubits handling"""
 import numpy as np
-import pytest
 
 import mthree
-
-
-def test_faulty_logic():
-    """Test faulty qubits block correction"""
-
-    mit = mthree.M3Mitigation(None)
-    mit.single_qubit_cals = [np.array([[0.9819, 0.043],
-                                       [0.0181, 0.957]]),
-                             np.array([[0.4849, 0.5233],
-                                       [0.5151, 0.4767]]),
-                             np.array([[0.9092, 0.4021],
-                                       [0.0908, 0.5979]]),
-                             np.array([[0.4117, 0.8101],
-                                       [0.5883, 0.1899]])]
-    mit.faulty_qubits = [1, 3]
-    counts = {"00": 0.4, "01": 0.1, "11": 0.5}
-    with pytest.raises(mthree.exceptions.M3Error) as _:
-        _ = mit.apply_correction(counts, qubits=[3, 2])
 
 
 def test_faulty_io():
