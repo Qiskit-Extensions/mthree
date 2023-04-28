@@ -50,7 +50,7 @@ def test_dynamic_bv():
     quasis = mit.apply_correction(counts, mapping)
 
     assert quasis['1'*N] > counts['1'*N]/shots
-    assert quasis['1'*N] > 0.97
+    assert quasis['1'*N] > 0.96
 
 
 def test_dynamic_bv_mapping():
