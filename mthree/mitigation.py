@@ -505,9 +505,9 @@ class M3Mitigation:
             warnings.warn("Using faulty qubits: {}".format(bad_qubits))
 
         quasi_out = []
+        details_out = []
         for idx, cnts in enumerate(counts):
-            quasi_out.append(
-                self._apply_correction(
+            corrected = self._apply_correction(
                     cnts,
                     qubits=qubits[idx],
                     distance=distance,
@@ -516,12 +516,23 @@ class M3Mitigation:
                     tol=tol,
                     return_mitigation_overhead=return_mitigation_overhead,
                     details=details,
-                )
             )
+            if details:
+                quasi_out.append(corrected[0])
+                details_out.append(corrected[1])
+            else:
+                quasi_out.append(corrected)
 
         if not given_list:
+            if details:
+                return quasi_out[0], details_out[0]
             return quasi_out[0]
-        return QuasiCollection(quasi_out)
+
+        quasi_out = QuasiCollection(quasi_out)
+        if details:
+            return quasi_out, details_out
+
+        return quasi_out
 
     def _apply_correction(
         self,
