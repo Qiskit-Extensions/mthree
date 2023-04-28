@@ -34,8 +34,9 @@ def test_faulty_logic():
     counts = {"00": 0.4, "01": 0.1, "11": 0.5}
     with pytest.warns(UserWarning) as record:
         _ = mit.apply_correction(counts, qubits=[3, 2])
+
     assert len(record) == 1
-    assert 'faulty' in record[0].message.args[0]
+    assert record[0].message.args[0] == "Using faulty qubits: [3, 2]"
 
 
 def test_faulty_io():
