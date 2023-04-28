@@ -502,7 +502,7 @@ class M3Mitigation:
                 if qu in self.faulty_qubits:
                     bad_qubits.add(qu)
         if any(bad_qubits):
-            raise M3Error("Using faulty qubits: {}".format(bad_qubits))
+            warnings.warn("Using faulty qubits: {}".format(bad_qubits))
 
         quasi_out = []
         details_out = []

@@ -19,7 +19,7 @@ import mthree
 
 
 def test_faulty_logic():
-    """Test faulty qubits block correction"""
+    """Test faulty qubits raise warning"""
 
     mit = mthree.M3Mitigation(None)
     mit.single_qubit_cals = [np.array([[0.9819, 0.043],
@@ -32,8 +32,11 @@ def test_faulty_logic():
                                        [0.5883, 0.1899]])]
     mit.faulty_qubits = [1, 3]
     counts = {"00": 0.4, "01": 0.1, "11": 0.5}
-    with pytest.raises(mthree.exceptions.M3Error) as _:
+    with pytest.warns(UserWarning) as record:
         _ = mit.apply_correction(counts, qubits=[3, 2])
+
+    assert len(record) == 1
+    assert record[0].message.args[0] == "Using faulty qubits: {3}"
 
 
 def test_faulty_io():
