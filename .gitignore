@@ -134,3 +134,4 @@ docs/*.json
 docs/stubs/*
 docs/tutorials/
 bad_cals.json
+cals.json
