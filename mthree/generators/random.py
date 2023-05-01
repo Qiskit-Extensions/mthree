@@ -9,8 +9,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Random bit-array generator
-"""
+"""Random bit-array generator"""
+
 import numpy as np
 
 from mthree.exceptions import M3Error
@@ -67,7 +67,7 @@ class RandomGenerator:
         """
         if self.length is None:
             raise M3Error('Cannot return arrays from infinite generator')
-        elif self.length > 10000:
+        if self.length > 10000:
             raise  M3Error('Can only return all arrays for <= 10,000 qubits')
         # reset generator to get same sequence if already ran
         self._RNG = np.random.default_rng(seed=self.seed)
