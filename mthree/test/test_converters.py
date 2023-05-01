@@ -12,8 +12,8 @@
 # pylint: disable=no-name-in-module
 
 """Test the converters"""
-from mthree.matrix import bitstring_int
-from .converters_testing import _test_counts_roundtrip, _test_counts_to_array
+from mthree.src.matrix import bitstring_int
+from .src.converters_testing import _test_counts_roundtrip, _test_counts_to_array
 
 COUNTS = {'00000': 520,
           '00001': 10,

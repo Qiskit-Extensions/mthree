@@ -11,8 +11,8 @@ from libc.stdlib cimport malloc, free
 from libcpp.map cimport map
 from libcpp.string cimport string
 
-from mthree.compute cimport compute_col_norms
-from mthree.converters cimport counts_to_internal
+from mthree.src.compute cimport compute_col_norms
+from mthree.src.converters cimport counts_to_internal
 
 
 def _test_vector_column_norm(object counts,

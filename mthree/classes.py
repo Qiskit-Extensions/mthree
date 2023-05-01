@@ -34,8 +34,9 @@ import math
 import numpy as np
 from qiskit.result import Counts
 
-from mthree.probability import quasi_to_probs
-from mthree.expval import exp_val
+from mthree.src.expval import exp_val
+from mthree.src.probability import quasi_to_probs
+
 from mthree.exceptions import M3Error
 
 

@@ -20,7 +20,7 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 from cython.operator cimport dereference, postincrement
 
-from mthree.compute cimport within_distance, compute_element, compute_col_norms
+from .compute cimport within_distance, compute_element, compute_col_norms
 
 
 cdef class M3MatVec():

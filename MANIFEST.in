@@ -1,6 +1,7 @@
 include LICENSE.txt
 include README.md
 include requirements.txt
-recursive-include mthree *.pyx
-recursive-include mthree *.pxd
+recursive-include mthree/src *.pyx
+recursive-include mthree/src *.pxd
+recursive-include mthree/test/src *.pyx
 recursive-include mthree/test/data *.json

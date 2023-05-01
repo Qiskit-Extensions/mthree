@@ -16,7 +16,7 @@ from libc.stdlib cimport malloc, free
 from libcpp.map cimport map
 from libcpp.string cimport string
 
-from mthree.converters cimport counts_to_internal, internal_to_probs
+from mthree.src.converters cimport counts_to_internal, internal_to_probs
 
 
 def _test_counts_to_array(object counts):

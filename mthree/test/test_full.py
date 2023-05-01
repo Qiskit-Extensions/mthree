@@ -16,7 +16,7 @@ import numpy as np
 import scipy.linalg as la
 
 from mthree import M3Mitigation
-from mthree.matrix import bitstring_int
+from mthree.src.matrix import bitstring_int
 
 
 def test_full_problem():

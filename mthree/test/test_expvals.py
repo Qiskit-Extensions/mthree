@@ -13,7 +13,7 @@
 
 """Test list inputs"""
 import numpy as np
-from mthree.expval import exp_val
+from mthree.src.expval import exp_val
 
 
 def test_basic_expvals():
