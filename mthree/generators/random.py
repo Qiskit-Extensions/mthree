@@ -9,8 +9,8 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
-"""Random bit-array generator"""
 
+"""Random bit-array generator"""
 import numpy as np
 
 from mthree.exceptions import M3Error
@@ -54,7 +54,7 @@ class RandomGenerator:
             return self._RNG.integers(0, 2, size=self.num_qubits, dtype=np.uint8)
         else:
             raise StopIteration
-    
+
     def all_calibration_arrays(self):
         """Return all calibration arrays from generator
         
