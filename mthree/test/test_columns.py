@@ -13,7 +13,7 @@
 
 """Test the converters"""
 import numpy as np
-from mthree.hamming import hamming_ball
+from mthree.src.hamming import hamming_ball
 from .src.column_testing import _test_vector_column_norm
 
 
