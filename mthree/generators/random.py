@@ -17,6 +17,7 @@ from mthree.exceptions import M3Error
 
 
 class RandomGenerator:
+    """Random bit-array generator"""
     def __init__(self, num_qubits, num_arrays=None, seed=None):
         """Generator of random arrays corresponding to random x-gates on
         qubits for TexMex mitigation

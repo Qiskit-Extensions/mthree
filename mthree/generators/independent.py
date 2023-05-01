@@ -17,6 +17,7 @@ from mthree.exceptions import M3Error
 
 
 class IndependentGenerator:
+    """Independent bit-array generator"""
     def __init__(self, num_qubits):
         """Generator of arrays corresponding to a single x-gate on
         one qubit at a time.
