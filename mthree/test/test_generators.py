@@ -63,8 +63,8 @@ def test_independent1():
 def test_independent2():
     """Test independent generator can be called twice"""
     gen = IndependentGenerator(77)
-    out1 = [item for item in gen]
-    out2 = [item for item in gen]
+    out1 = list(gen)
+    out2 = list(gen)
     assert len(out1) == 77
     assert len(out2) == 77
     for kk in range(77):
