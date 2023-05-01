@@ -30,8 +30,8 @@ def test_random1():
 def test_random2():
     """Test random generator can be called twice"""
     gen = RandomGenerator(7, 7)
-    out1 = [item for item in gen]
-    out2 = [item for item in gen]
+    out1 = list(gen)
+    out2 = list(gen)
     assert len(out1) == 7
     assert len(out2) == 7
     for kk in range(7):
@@ -42,8 +42,8 @@ def test_random3():
     """Test random generator seeding works"""
     gen1 = RandomGenerator(7, 8, seed=12345)
     gen2 = RandomGenerator(7, 8, seed=12345)
-    out1 = [item for item in gen1]
-    out2 = [item for item in gen2]
+    out1 = list(gen1)
+    out2 = list(gen2)
     for kk in range(8):
         assert np.allclose(out1[kk], out2[kk])
 
