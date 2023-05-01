@@ -21,7 +21,7 @@ class IndependentGenerator:
     def __init__(self, num_qubits):
         """Generator of arrays corresponding to a single x-gate on
         one qubit at a time.
-        
+
         This is primarily for use with simulators.
 
         Parameters:
@@ -51,10 +51,10 @@ class IndependentGenerator:
 
     def all_calibration_arrays(self):
         """Return all calibration arrays from generator
-        
+
         Returns:
             list: All calibration arrays, if length <= 10,000
-            
+
         Raises:
             Exception: Generator length is > 10,000
         """

@@ -21,7 +21,7 @@ class RandomGenerator:
     def __init__(self, num_qubits, num_arrays=None, seed=None):
         """Generator of random arrays corresponding to random x-gates on
         qubits for TexMex mitigation
-        
+
         By default, generates an infinite collection of arrays
 
         Parameters:
@@ -58,10 +58,10 @@ class RandomGenerator:
 
     def all_calibration_arrays(self):
         """Return all calibration arrays from generator
-        
+
         Returns:
             list: All calibration arrays, if a finite length <= 10,000
-            
+
         Raises:
             M3Error: Generator is infinite length
             M3Error: Generator length is > 10,000
@@ -69,12 +69,12 @@ class RandomGenerator:
         if self.length is None:
             raise M3Error('Cannot return arrays from infinite generator')
         if self.length > 10000:
-            raise  M3Error('Can only return all arrays for <= 10,000 qubits')
+            raise M3Error('Can only return all arrays for <= 10,000 qubits')
         # reset generator to get same sequence if already ran
         self._RNG = np.random.default_rng(seed=self.seed)
         out = []
         for _ in range(self.length):
             out.append(self._RNG.integers(0, 2, size=self.num_qubits, dtype=np.uint8))
-        #reset again so that if __iter__ is called after this it still works
+        # reset again so that if __iter__ is called after this it still works
         self._RNG = np.random.default_rng(seed=self.seed)
         return out
