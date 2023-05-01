@@ -48,6 +48,17 @@ def test_random3():
         assert np.allclose(out1[kk], out2[kk])
 
 
+def test_random4():
+    """Test random generator repeats work"""
+    gen = RandomGenerator(9, 18)
+    out1 = list(gen)
+    out2 = gen.all_calibration_arrays()
+    out3 = list(gen)
+    for kk in range(18):
+        assert np.allclose(out1[kk], out2[kk])
+        assert np.allclose(out1[kk], out3[kk])
+
+
 def test_independent1():
     """Test independent generator setting num_arrays works"""
     gen1 = IndependentGenerator(5)
