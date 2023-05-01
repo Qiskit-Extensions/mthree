@@ -14,7 +14,7 @@
 """Test the converters"""
 import numpy as np
 from mthree.hamming import hamming_ball
-from .column_testing import _test_vector_column_norm
+from .src.column_testing import _test_vector_column_norm
 
 
 mats = [np.array([[0.9954, 0.0682],
