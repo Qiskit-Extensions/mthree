@@ -70,5 +70,6 @@ measurements; it cannot mitigate single-shot measurements used for conditional-g
     :hidden:
  
     Mitigation class <apidocs/main>
+    Bit-array Generators<apidocs/generators>
     Distributions <apidocs/classes>
     Utility functions <apidocs/utils>
