@@ -13,6 +13,8 @@
 """Random bit-array generator"""
 import numpy as np
 
+from mthree.exceptions import M3Error
+
 
 class RandomGenerator:
     """Random bit-array generator"""
@@ -66,6 +68,9 @@ class RandomComplimentGenerator:
             num_qubits (int): Number of qubits / length of arrays
             length (int): Total number of generated arrays, default=16
             seed (int): Seed used for RNG
+
+        Raises:
+            M3Error: Number of requested arrays is not even
         """
         self.seed = seed
         if self.seed is None:
@@ -73,7 +78,7 @@ class RandomComplimentGenerator:
         self._RNG = np.random.default_rng(seed=self.seed)
         self.num_qubits = num_qubits
         if num_arrays % 2:
-            raise mthree.exceptions.M3Error('num_arrays must be even')
+            raise M3Error('num_arrays must be even')
         self.length = num_arrays
         self._iter_index = 0
         self._previous_array = None
