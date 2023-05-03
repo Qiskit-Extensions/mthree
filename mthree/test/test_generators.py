@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """Test bit-array generators"""
+import itertools
 import numpy as np
 
 from mthree.generators import IndependentGenerator, RandomGenerator, HadamardGenerator
