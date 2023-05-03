@@ -13,8 +13,6 @@
 """Independent bit-array generator"""
 import numpy as np
 
-from mthree.exceptions import M3Error
-
 
 class IndependentGenerator:
     """Independent bit-array generator"""
@@ -48,21 +46,3 @@ class IndependentGenerator:
             return out
         else:
             raise StopIteration
-
-    def all_calibration_arrays(self):
-        """Return all calibration arrays from generator
-
-        Returns:
-            list: All calibration arrays, if length <= 10,000
-
-        Raises:
-            Exception: Generator length is > 10,000
-        """
-        if self.length > 10000:
-            raise M3Error('Can only return all arrays for <= 10,000 qubits')
-        out = []
-        for kk in range(self.num_qubits):
-            temp = np.zeros(self.num_qubits, dtype=np.uint8)
-            temp[self.num_qubits-kk-1] = 1
-            out.append(temp)
-        return out

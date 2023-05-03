@@ -18,13 +18,13 @@ from mthree.generators import IndependentGenerator, RandomGenerator
 def test_random1():
     """Test random generator setting num_arrays works"""
     gen1 = RandomGenerator(5, 1)
-    assert len(gen1.all_calibration_arrays()) == 1
+    assert len(list(gen1)) == 1
 
     gen127 = RandomGenerator(50, 127)
-    assert len(gen127.all_calibration_arrays()) == 127
+    assert len(list(gen127)) == 127
 
     gen433 = RandomGenerator(433, 433)
-    assert len(gen433.all_calibration_arrays()) == 433
+    assert len(list(gen433)) == 433
 
 
 def test_random2():
@@ -52,23 +52,21 @@ def test_random4():
     """Test random generator repeats work"""
     gen = RandomGenerator(9, 18)
     out1 = list(gen)
-    out2 = gen.all_calibration_arrays()
-    out3 = list(gen)
+    out2 = list(gen)
     for kk in range(18):
         assert np.allclose(out1[kk], out2[kk])
-        assert np.allclose(out1[kk], out3[kk])
 
 
 def test_independent1():
     """Test independent generator setting num_arrays works"""
     gen1 = IndependentGenerator(5)
-    assert len(gen1.all_calibration_arrays()) == 5
+    assert len(list(gen1)) == 5
 
     gen50 = IndependentGenerator(50)
-    assert len(gen50.all_calibration_arrays()) == 50
+    assert len(list(gen50)) == 50
 
     gen433 = IndependentGenerator(433)
-    assert len(gen433.all_calibration_arrays()) == 433
+    assert len(list(gen433)) == 433
 
 
 def test_independent2():
