@@ -38,6 +38,9 @@ cdef class HadamardGenerator():
         Generates a set of bit-arrays that evenly
         sample all independent and pair-wise correlated
         measurement errors.
+
+        References:
+            Bravyi et al, Phys. Rev. A 103, 042605 (2021)
         """
         self.num_qubits = num_qubits
         self.p = <unsigned int>floor(log2(num_qubits)+1)
