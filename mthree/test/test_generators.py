@@ -92,12 +92,12 @@ def test_hadamard1():
     """Test Hadamard generator does even pairwise sampling up to 100 qubit strings"""
     for integer in range(100):
         G = HadamardGenerator(integer)
-
         pairwise_dict = {}
-        for item in itertools.combinations(range(G.num_qubits), 2):
-            pairwise_dict[item] = {}
-            for arr in G:
+        for arr in G:
+            for item in itertools.combinations(range(G.num_qubits), 2):
                 pair = str(arr[item[0]])+str(arr[item[1]])
+                if not item in pairwise_dict:
+                    pairwise_dict[item] = {}
                 if pair in pairwise_dict[item]:
                     pairwise_dict[item][pair] += 1
                 else:
