@@ -49,3 +49,49 @@ class RandomGenerator:
             return self._RNG.integers(0, 2, size=self.num_qubits, dtype=np.uint8)
         else:
             raise StopIteration
+
+
+class RandomComplimentGenerator:
+    """Random compliment bit-array generator"""
+    def __init__(self, num_qubits, num_arrays=16, seed=None):
+        """Generator of compliment random arrays corresponding to 
+        random x-gates on qubits for TexMex mitigation
+
+        Parameters:
+            num_qubits (int): Number of qubits
+            num_arrays (int): Number of arrays to generate, default=16
+            seed (int): seed for RNG, default=None
+
+        Attributes:
+            num_qubits (int): Number of qubits / length of arrays
+            length (int): Total number of generated arrays, default=16
+            seed (int): Seed used for RNG
+        """
+        self.seed = seed
+        if self.seed is None:
+            self.seed = np.random.randint(0, np.iinfo(np.int32).max)
+        self._RNG = np.random.default_rng(seed=self.seed)
+        self.num_qubits = num_qubits
+        if num_arrays % 2:
+            raise mthree.exceptions.M3Error('num_arrays must be even')
+        self.length = num_arrays
+        self._iter_index = 0
+        self._previous_array = None
+
+    def __iter__(self):
+        self._RNG = np.random.default_rng(seed=self.seed)
+        self._iter_index = 0
+        self._previous_array = None
+        return self
+
+    def __next__(self):
+        if self._iter_index < self.length:
+            self._iter_index += 1
+            if self._iter_index % 2:
+                out = self._RNG.integers(0, 2, size=self.num_qubits, dtype=np.uint8)
+                self._previous_array = out
+                return out
+            else:
+                return (self._previous_array + 1) % 2
+        else:
+            raise StopIteration
