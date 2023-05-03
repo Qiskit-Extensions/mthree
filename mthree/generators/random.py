@@ -13,8 +13,6 @@
 """Random bit-array generator"""
 import numpy as np
 
-from mthree.exceptions import M3Error
-
 
 class RandomGenerator:
     """Random bit-array generator"""
