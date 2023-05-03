@@ -20,16 +20,14 @@ class RandomGenerator:
         """Generator of random arrays corresponding to random x-gates on
         qubits for TexMex mitigation
 
-        By default, generates an infinite collection of arrays
-
         Parameters:
             num_qubits (int): Number of qubits
-            num_arrays (int): Number of arrays to generate, default=16 (None=infinite)
+            num_arrays (int): Number of arrays to generate, default=16
             seed (int): seed for RNG, default=None
 
         Attributes:
             num_qubits (int): Number of qubits / length of arrays
-            length (int): Total number of generated arrays, default=16 (None=infinite)
+            length (int): Total number of generated arrays, default=16
             seed (int): Seed used for RNG
         """
         self.seed = seed
