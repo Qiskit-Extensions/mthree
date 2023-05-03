@@ -56,7 +56,7 @@ class RandomGenerator:
 class RandomComplimentGenerator:
     """Random compliment bit-array generator"""
     def __init__(self, num_qubits, num_arrays=16, seed=None):
-        """Generator of compliment random arrays corresponding to 
+        """Generator of compliment random arrays corresponding to
         random x-gates on qubits for TexMex mitigation
 
         Parameters:
