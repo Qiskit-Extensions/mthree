@@ -17,8 +17,7 @@ Bit-array generating functions
    :toctree: ../stubs/
 
     IndependentGenerator
-    RandomGenerator
-
+    RandomComplimentGenerator
 """
 from .independent import IndependentGenerator
-from .random import RandomGenerator
+from .random import RandomGenerator, RandomComplimentGenerator
