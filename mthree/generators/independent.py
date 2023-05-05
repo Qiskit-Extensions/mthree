@@ -30,6 +30,7 @@ class IndependentGenerator:
             length (int): Total number of generated arrays, default=None (infinite)
             seed (int): Seed used for RNG
         """
+        self.name = 'independent'
         self.num_qubits = num_qubits
         self.length = num_qubits
         self._iter_index = 0

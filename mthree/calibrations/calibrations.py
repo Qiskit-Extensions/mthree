@@ -15,6 +15,7 @@ import warnings
 
 from qiskit import QuantumCircuit
 
+from mthree.exceptions import M3Error
 from mthree._helpers import system_info
 from .mapping import calibration_mapping
 
@@ -39,7 +40,10 @@ class Calibration:
         self.generator = generator
         self.bit_to_physical_mapping = calibration_mapping(self.backend,
                                                            qubits=qubits)
+        self.physical_to_bit_mapping = {val:key for key, val in 
+                                        self.bit_to_physical_mapping.items()}
         self._calibration_data = None
+        self.shots_per_circuit = None
         self._thread = None
         self._job_error = None
         
@@ -84,29 +88,42 @@ class Calibration:
             list: Calibration circuits
         """
         out_circuits = []
+        measure_all = True
+        creg_length = self.generator.num_qubits
+        if self.generator.name == 'independent':
+            measure_all = False
+            creg_length = 1
         for string in self.generator:
-            qc = QuantumCircuit(self.backend_info['num_qubits'],
-                                self.generator.num_qubits)
+            qc = QuantumCircuit(self.backend_info['num_qubits'], creg_length)
             for idx, val in enumerate(string[::-1]):
                 if val:
                     qc.x(self.bit_to_physical_mapping[idx])
-                qc.measure(self.bit_to_physical_mapping[idx], idx)
+                if measure_all:
+                    qc.measure(self.bit_to_physical_mapping[idx], idx)
+                elif val:
+                    # For independent circuits
+                    qc.measure(self.bit_to_physical_mapping[idx], 0)
             out_circuits.append(qc)
         return out_circuits
 
-    def calibrate_from_backend(self, shots=int(1e4), async_cal=True):
+    def calibrate_from_backend(self, shots=int(1e4), async_cal=True, overwrite=False):
         """Calibrate from the target backend using the generator circuits
         
         Parameters:
             shots (int): Number of shots defining the precision of
                          the underlying error elements
+            async_cal (bool): Perform calibration asyncronously, default=True
+        
+        Raises:
+            M3Error: Calibration is already calibrated and overwrite=False
         """
-        if self._calibration_data is not None:
-            warnings.warn('Calibration is already calibrated.  Overwriting')
+        if self._calibration_data is not None and not overwrite:
+            M3Error('Calibration is already calibrated and overwrite=False')
         self._calibration_data = None
         cal_circuits = self.calibration_circuits()
         self._job_error = None
-        cal_job = self.backend.run(cal_circuits, shots=shots)
+        self.shots_per_circuit = int(-( - shots // (self.generator.length/ 2)))
+        cal_job = self.backend.run(cal_circuits, shots=self.shots_per_circuit)
         if async_cal:
             thread = threading.Thread(
                 target=_job_thread,

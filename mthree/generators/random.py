@@ -32,6 +32,7 @@ class RandomGenerator:
             length (int): Total number of generated arrays, default=16
             seed (int): Seed used for RNG
         """
+        self.name = 'random'
         self.seed = seed
         if self.seed is None:
             self.seed = np.random.randint(0, np.iinfo(np.int32).max)
@@ -72,6 +73,7 @@ class RandomComplimentGenerator:
         Raises:
             M3Error: Number of requested arrays is not even
         """
+        self.name = 'random-compliment'
         self.seed = seed
         if self.seed is None:
             self.seed = np.random.randint(0, np.iinfo(np.int32).max)
