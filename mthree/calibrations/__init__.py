@@ -12,4 +12,3 @@
 """Calibration objects"""
 
 from .calibrations import Calibration
-from .converters import flip_and_combine

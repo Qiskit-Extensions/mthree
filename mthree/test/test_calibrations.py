@@ -21,7 +21,7 @@ BACKEND = FakeManila()
 
 def test_independent_generator_circuits():
     """Test independent generator circuits get remapped correctly"""
-    qubits = [0,4,2,1,3]
+    qubits = [0, 4, 2, 1, 3]
     cal = Calibration(BACKEND, qubits, IndependentGenerator(5))
     cal_circuits = cal.calibration_circuits()
     for idx, val in cal.bit_to_physical_mapping.items():
@@ -33,7 +33,7 @@ def test_independent_generator_circuits():
 
 def test_hadamard_generator_circuits():
     """Test hadamard generator circuits get remapped correctly"""
-    qubits = [4,0,1,3,2]
+    qubits = [4, 0, 1, 3, 2]
     gen = HadamardGenerator(5)
     cal = Calibration(BACKEND, qubits, gen)
     cal_circs = cal.calibration_circuits()

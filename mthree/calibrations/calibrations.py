@@ -17,6 +17,7 @@ from qiskit import QuantumCircuit
 
 from mthree.exceptions import M3Error
 from mthree._helpers import system_info
+from mthree.generators import HadamardGenerator
 from .mapping import calibration_mapping
 
 
@@ -31,15 +32,32 @@ class Calibration:
             qubits (array_like): Physical qubits to calibrate over
             generator (Generator): Generator of calibration circuits
         """
-        if len(qubits) != generator.num_qubits:
-            raise Exception('Number of calibration qubits does '
-                            'not match generator.num_qubits')
-        
         self.backend = backend
         self.backend_info = system_info(backend)
+        # Auto populate qubits if None is given
+        if qubits is None:
+            qubits = range(self.backend_info['num_qubits'])
+            # Remove faulty qubits if any
+            if any(self.backend_info["inoperable_qubits"]):
+                qubits = list(
+                    filter(
+                        lambda item: item not in self.backend_info["inoperable_qubits"],
+                        list(range(self.backend_info['num_qubits'])),
+                    )
+                )
+                warnings.warn(
+                    "Backend reporting inoperable qubits."
+                    + " Skipping calibrations for: {}".format(
+                        self.backend_info["inoperable_qubits"]
+                    )
+                )
+        self.qubits = qubits
+        if generator is None:
+            generator = HadamardGenerator(len(self.qubits))
         self.generator = generator
+
         self.bit_to_physical_mapping = calibration_mapping(self.backend,
-                                                           qubits=qubits)
+                                                           qubits=self.qubits)
         self.physical_to_bit_mapping = {val:key for key, val in 
                                         self.bit_to_physical_mapping.items()}
         self._calibration_data = None
@@ -113,6 +131,7 @@ class Calibration:
             shots (int): Number of shots defining the precision of
                          the underlying error elements
             async_cal (bool): Perform calibration asyncronously, default=True
+            overwritw (bool): Overwrite a previous calibration, default=False
         
         Raises:
             M3Error: Calibration is already calibrated and overwrite=False
