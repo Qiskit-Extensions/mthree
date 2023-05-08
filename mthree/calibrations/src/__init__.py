@@ -10,3 +10,5 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 """TEXMEX calibration tools"""
+
+from .texmex_cals import calibration_to_texmex
