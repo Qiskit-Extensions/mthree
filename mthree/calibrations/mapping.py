@@ -12,19 +12,23 @@
 """Calibration bit-mapping"""
 import warnings
 
+from mthree.exceptions import M3Error
 from mthree._helpers import system_info
 
 
 def calibration_mapping(backend, qubits=None):
     """Computes the bit to physical qubit mapping
     for a calibration over a given set of qubits
-    
+
     Parameters:
         backend (Backend): A backend instance
         qubits (list): Qubits to calibrate over, default=None is all
-        
+
     Returns:
         dict: Bit to physical qubit mapping
+
+    Raises:
+        M3Error: Duplicate qubit indices
     """
     backend_info = system_info(backend)
     if qubits is None:
@@ -47,7 +51,7 @@ def calibration_mapping(backend, qubits=None):
         bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     else:
         if len(set(qubits)) != len(qubits):
-            raise Exception('Duplicate qubit indices')
+            raise M3Error('Duplicate qubit indices')
         num_qubits = len(qubits)
         bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     return bit_to_phyical_mapping

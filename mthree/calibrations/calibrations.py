@@ -141,7 +141,7 @@ class Calibration:
         Raises:
             M3Error: Calibration is already calibrated and overwrite=False
         """
-        if self._calibration_data is not None and not overwrite:
+        if self._calibration_data is not None and (not overwrite):
             M3Error('Calibration is already calibrated and overwrite=False')
         self._calibration_data = None
         cal_circuits = self.calibration_circuits()
