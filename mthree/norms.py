@@ -41,7 +41,7 @@ def ainv_onenorm_est_lu(A, LU=None):
         return 1.0
 
     # Starting vec
-    v = (1.0/dims)*np.ones(dims, dtype=float)
+    v = (1.0 / dims) * np.ones(dims, dtype=float)
 
     # Factor A and A.T
     if LU is None:
@@ -76,12 +76,12 @@ def ainv_onenorm_est_lu(A, LU=None):
         k += 1
 
     # After loop do Higham's check for cancellations.
-    x = np.arange(1, dims+1)
-    x = (-1)**(x+1)*(1+(x-1)/(dims-1))
+    x = np.arange(1, dims + 1)
+    x = (-1) ** (x + 1) * (1 + (x - 1) / (dims - 1))
 
     x = la.lu_solve(LU, x, check_finite=False)
 
-    temp = 2*la.norm(x, 1)/(3*dims)
+    temp = 2 * la.norm(x, 1) / (3 * dims)
 
     if temp > gamma:
         gamma = temp
@@ -110,11 +110,9 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         M3Error: Error in iterative solver.
     """
     # Setup linear operator interfaces
-    L = spla.LinearOperator((M.num_elems, M.num_elems),
-                            matvec=M.matvec)
+    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec)
 
-    LT = spla.LinearOperator((M.num_elems, M.num_elems),
-                             matvec=M.rmatvec)
+    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec)
 
     diags = M.get_diagonal()
 
@@ -131,19 +129,17 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         return 1.0
 
     # Starting vec
-    v = (1.0/dims)*np.ones(dims, dtype=float)
+    v = (1.0 / dims) * np.ones(dims, dtype=float)
 
     # Initial solve
-    v, error = spla.gmres(L, v, tol=tol, atol=tol, maxiter=max_iter,
-                          M=P)
+    v, error = spla.gmres(L, v, tol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
-        raise M3Error('Iterative solver error {}'.format(error))
+        raise M3Error("Iterative solver error {}".format(error))
     gamma = la.norm(v, 1)
     eta = np.sign(v)
-    x, error = spla.gmres(LT, eta, tol=tol, atol=tol, maxiter=max_iter,
-                          M=P)
+    x, error = spla.gmres(LT, eta, tol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
-        raise M3Error('Iterative solver error {}'.format(error))
+        raise M3Error("Iterative solver error {}".format(error))
     # loop over reasonable number of trials
     k = 2
     while k < 6:
@@ -151,10 +147,9 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         idx = np.where(np.abs(x) == x_nrm)[0][0]
         v = np.zeros(dims, dtype=float)
         v[idx] = 1
-        v, error = spla.gmres(L, v, tol=tol, atol=tol, maxiter=max_iter,
-                              M=P)
+        v, error = spla.gmres(L, v, tol=tol, atol=tol, maxiter=max_iter, M=P)
         if error:
-            raise M3Error('Iterative solver error {}'.format(error))
+            raise M3Error("Iterative solver error {}".format(error))
         gamma_prime = gamma
         gamma = la.norm(v, 1)
 
@@ -162,24 +157,22 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
             break
 
         eta = np.sign(v)
-        x, error = spla.gmres(LT, eta, tol=tol, atol=tol, maxiter=max_iter,
-                              M=P)
+        x, error = spla.gmres(LT, eta, tol=tol, atol=tol, maxiter=max_iter, M=P)
         if error:
-            raise M3Error('Iterative solver error {}'.format(error))
+            raise M3Error("Iterative solver error {}".format(error))
         if la.norm(x, np.inf) == x[idx]:
             break
         k += 1
 
     # After loop do Higham's check for cancellations.
-    x = np.arange(1, dims+1)
-    x = (-1)**(x+1)*(1+(x-1)/(dims-1))
+    x = np.arange(1, dims + 1)
+    x = (-1) ** (x + 1) * (1 + (x - 1) / (dims - 1))
 
-    x, error = spla.gmres(L, x, tol=tol, atol=tol, maxiter=max_iter,
-                          M=P)
+    x, error = spla.gmres(L, x, tol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
-        raise M3Error('Iterative solver error {}'.format(error))
+        raise M3Error("Iterative solver error {}".format(error))
 
-    temp = 2*la.norm(x, 1)/(3*dims)
+    temp = 2 * la.norm(x, 1) / (3 * dims)
 
     if temp > gamma:
         gamma = temp

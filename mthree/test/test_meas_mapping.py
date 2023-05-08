@@ -83,7 +83,7 @@ def test_mapping_list():
     qc.measure(range(4), range(4))
 
     backend = FakeCasablanca()
-    circs = transpile([qc]*5, backend)
+    circs = transpile([qc] * 5, backend)
     maps = final_measurement_mapping(circs)
     assert len(maps) == 5
 

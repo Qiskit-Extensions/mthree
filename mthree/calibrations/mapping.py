@@ -32,13 +32,13 @@ def calibration_mapping(backend, qubits=None):
     """
     backend_info = system_info(backend)
     if qubits is None:
-        qubits = range(backend_info['num_qubits'])
+        qubits = range(backend_info["num_qubits"])
         # Remove faulty qubits if any
         if any(backend_info["inoperable_qubits"]):
             qubits = list(
                 filter(
                     lambda item: item not in backend_info["inoperable_qubits"],
-                    list(range(backend_info['num_qubits'])),
+                    list(range(backend_info["num_qubits"])),
                 )
             )
             warnings.warn(
@@ -51,7 +51,7 @@ def calibration_mapping(backend, qubits=None):
         bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     else:
         if len(set(qubits)) != len(qubits):
-            raise M3Error('Duplicate qubit indices')
+            raise M3Error("Duplicate qubit indices")
         num_qubits = len(qubits)
         bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     return bit_to_phyical_mapping

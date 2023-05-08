@@ -18,9 +18,10 @@ from mthree.exceptions import M3Error
 
 class FakeGenerator:
     """Fake generator"""
+
     def __init__(self, strings):
         """A fake generator instance used for testing.
-        
+
         Parameters:
             strings (list):  List of np.uint8 dtype arrays
 
@@ -42,6 +43,6 @@ class FakeGenerator:
     def __next__(self):
         if self._iter_index < self.length:
             self._iter_index += 1
-            return self.strings[self._iter_index-1]
+            return self.strings[self._iter_index - 1]
         else:
             raise StopIteration

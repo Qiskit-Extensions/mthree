@@ -9,6 +9,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=pointless-exception-statement
 """Calibration object"""
 import threading
 import warnings
@@ -23,8 +24,8 @@ from .mapping import calibration_mapping
 
 
 class Calibration:
-    """Calibration object
-    """
+    """Calibration object"""
+
     def __init__(self, backend, qubits=None, generator=None):
         """Calibration object
 
@@ -37,18 +38,17 @@ class Calibration:
         self.backend_info = system_info(backend)
         # Auto populate qubits if None is given
         if qubits is None:
-            qubits = range(self.backend_info['num_qubits'])
+            qubits = range(self.backend_info["num_qubits"])
             # Remove faulty qubits if any
             if any(self.backend_info["inoperable_qubits"]):
                 qubits = list(
                     filter(
                         lambda item: item not in self.backend_info["inoperable_qubits"],
-                        list(range(self.backend_info['num_qubits'])),
+                        list(range(self.backend_info["num_qubits"])),
                     )
                 )
                 warnings.warn(
-                    "Backend reporting inoperable qubits."
-                    + " Skipping calibrations for: {}".format(
+                    "Backend reporting inoperable qubits. Skipping calibrations for: {}".format(
                         self.backend_info["inoperable_qubits"]
                     )
                 )
@@ -57,10 +57,12 @@ class Calibration:
             generator = HadamardGenerator(len(self.qubits))
         self.generator = generator
 
-        self.bit_to_physical_mapping = calibration_mapping(self.backend,
-                                                           qubits=self.qubits)
-        self.physical_to_bit_mapping = {val:key for key, val in
-                                        self.bit_to_physical_mapping.items()}
+        self.bit_to_physical_mapping = calibration_mapping(
+            self.backend, qubits=self.qubits
+        )
+        self.physical_to_bit_mapping = {
+            val: key for key, val in self.bit_to_physical_mapping.items()
+        }
         self._calibration_data = None
         self.shots_per_circuit = None
         self.num_circuits = self.generator.length
@@ -95,29 +97,29 @@ class Calibration:
     def calibration_data(self):
         """Calibration data"""
         if self._calibration_data is None and self._thread is None:
-            raise M3Error('Calibration is not calibrated')
+            raise M3Error("Calibration is not calibrated")
         return self._calibration_data
 
     @calibration_data.setter
     def calibration_data(self, cals):
         if self._calibration_data is not None:
-            raise M3Error('Calibration is already calibrated')
+            raise M3Error("Calibration is already calibrated")
         self._calibration_data = cals
 
     def calibration_circuits(self):
         """Calibration circuits from underlying generator
-        
+
         Returns:
             list: Calibration circuits
         """
         out_circuits = []
         measure_all = True
         creg_length = self.generator.num_qubits
-        if self.generator.name == 'independent':
+        if self.generator.name == "independent":
             measure_all = False
             creg_length = 1
         for string in self.generator:
-            qc = QuantumCircuit(self.backend_info['num_qubits'], creg_length)
+            qc = QuantumCircuit(self.backend_info["num_qubits"], creg_length)
             for idx, val in enumerate(string[::-1]):
                 if val:
                     qc.x(self.bit_to_physical_mapping[idx])
@@ -131,22 +133,22 @@ class Calibration:
 
     def calibrate_from_backend(self, shots=int(1e4), async_cal=True, overwrite=False):
         """Calibrate from the target backend using the generator circuits
-        
+
         Parameters:
             shots (int): Number of shots defining the precision of
                          the underlying error elements
             async_cal (bool): Perform calibration asyncronously, default=True
             overwrite (bool): Overwrite a previous calibration, default=False
-        
+
         Raises:
             M3Error: Calibration is already calibrated and overwrite=False
         """
         if self._calibration_data is not None and (not overwrite):
-            M3Error('Calibration is already calibrated and overwrite=False')
+            M3Error("Calibration is already calibrated and overwrite=False")
         self._calibration_data = None
         cal_circuits = self.calibration_circuits()
         self._job_error = None
-        self.shots_per_circuit = int(-( - shots // (self.generator.length/ 2)))
+        self.shots_per_circuit = int(-(-shots // (self.generator.length / 2)))
         cal_job = self.backend.run(cal_circuits, shots=self.shots_per_circuit)
         self.calibration_job_id = cal_job.job_id()
         if async_cal:
@@ -161,8 +163,7 @@ class Calibration:
 
 
 def _job_thread(job, cal):
-    """Process job result async
-    """
+    """Process job result async"""
     try:
         res = job.result()
     # pylint: disable=broad-except
@@ -172,7 +173,7 @@ def _job_thread(job, cal):
     else:
         cal.calibration_data = res.get_counts()
         timestamp = res.date
-         # Needed since Aer result date is str but IBMQ job is datetime
+        # Needed since Aer result date is str but IBMQ job is datetime
         if isinstance(timestamp, datetime.datetime):
             timestamp = timestamp.isoformat()
         # Go to UTC times because we are going to use this for

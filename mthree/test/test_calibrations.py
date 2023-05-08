@@ -48,20 +48,21 @@ def test_hadamard_generator_circuits():
         for idx, val in cal.bit_to_physical_mapping.items():
             if string[idx]:
                 qc.x(val)
-            qc.measure(val, idx)     
+            qc.measure(val, idx)
         assert qc == cal_circs[kk]
 
 
 def test_texmex_conversion1():
-    """Test that texmex calibration conversion works
-    """
-    cals = [{'111':4, '110':1}, {'101':6, '000':9}, {'000':10}]
-    strings = [np.array([0, 0, 1], dtype=np.uint8),
-               np.array([0, 0, 1], dtype=np.uint8),
-               np.array([1, 1, 1], dtype=np.uint8)]
+    """Test that texmex calibration conversion works"""
+    cals = [{"111": 4, "110": 1}, {"101": 6, "000": 9}, {"000": 10}]
+    strings = [
+        np.array([0, 0, 1], dtype=np.uint8),
+        np.array([0, 0, 1], dtype=np.uint8),
+        np.array([1, 1, 1], dtype=np.uint8),
+    ]
     gen = FakeGenerator(strings)
     reduced_cals = calibration_to_texmex(cals, gen)
-    assert reduced_cals['001'] == 9/30
-    assert reduced_cals['100'] == 6/30
-    assert reduced_cals['111'] == 11/30
-    assert reduced_cals['110'] == 4/30
+    assert reduced_cals["001"] == 9 / 30
+    assert reduced_cals["100"] == 6 / 30
+    assert reduced_cals["111"] == 11 / 30
+    assert reduced_cals["110"] == 4 / 30
