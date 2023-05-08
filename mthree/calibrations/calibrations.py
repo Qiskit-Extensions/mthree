@@ -12,6 +12,7 @@
 """Calibration object"""
 import threading
 import warnings
+import datetime
 
 from qiskit import QuantumCircuit
 
@@ -62,6 +63,9 @@ class Calibration:
                                         self.bit_to_physical_mapping.items()}
         self._calibration_data = None
         self.shots_per_circuit = None
+        self.num_circuits = self.generator.length
+        self.calibration_job_id = None
+        self.calibration_timestamp = None
         self._thread = None
         self._job_error = None
         
@@ -89,7 +93,7 @@ class Calibration:
     
     @property
     def calibration_data(self):
-        if self._calibration_data is None:
+        if self._calibration_data is None and self._thread is None:
             raise Exception('Calibration is not calibrated')
         return self._calibration_data
 
@@ -143,6 +147,7 @@ class Calibration:
         self._job_error = None
         self.shots_per_circuit = int(-( - shots // (self.generator.length/ 2)))
         cal_job = self.backend.run(cal_circuits, shots=self.shots_per_circuit)
+        self.calibration_job_id = cal_job.job_id()
         if async_cal:
             thread = threading.Thread(
                 target=_job_thread,
@@ -155,7 +160,7 @@ class Calibration:
 
         
 def _job_thread(job, cal):
-    """Grab job result async
+    """Process job result async
     """
     try:
         res = job.result()
@@ -165,3 +170,12 @@ def _job_thread(job, cal):
         return
     else:
         cal.calibration_data = res.get_counts()
+        timestamp = res.date
+         # Needed since Aer result date is str but IBMQ job is datetime
+        if isinstance(timestamp, datetime.datetime):
+            timestamp = timestamp.isoformat()
+        # Go to UTC times because we are going to use this for
+        # resultsDB storage as well
+        dt = datetime.datetime.fromisoformat(timestamp)
+        dt_utc = dt.astimezone(datetime.timezone.utc)
+        cal.calibration_timestamp = dt_utc
