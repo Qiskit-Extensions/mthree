@@ -66,3 +66,18 @@ def test_texmex_conversion1():
     assert reduced_cals["100"] == 6 / 30
     assert reduced_cals["111"] == 11 / 30
     assert reduced_cals["110"] == 4 / 30
+
+
+def test_texmex_conversion2():
+    """Test that texmex calibration conversion works 2"""
+    cals = [{'1111': 4, '1100': 1}, {'1001': 6, '0001': 9}, {'1000': 10}]
+    strings = [np.array([1, 1, 0, 0], dtype=np.uint8),
+               np.array([0, 0, 0, 0], dtype=np.uint8),
+               np.array([0, 1, 1, 1], dtype=np.uint8)]
+    gen = FakeGenerator(strings)
+    reduced_cals = calibration_to_texmex(cals, gen)
+    assert reduced_cals["0011"] == 4 / 30
+    assert reduced_cals["0000"] == 1 / 30
+    assert reduced_cals["1001"] == 6 / 30
+    assert reduced_cals["0001"] == 9 / 30
+    assert reduced_cals["1111"] == 10 / 30
