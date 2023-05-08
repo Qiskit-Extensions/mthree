@@ -34,7 +34,7 @@ class FakeGenerator:
         for string in self.strings:
             if string.dtype != np.uint8:
                 raise M3Error("Dtype is not np.uint8")
-        
+
     def __iter__(self):
         self._iter_index = 0
         return self
