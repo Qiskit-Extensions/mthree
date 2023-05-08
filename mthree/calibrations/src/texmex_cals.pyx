@@ -46,10 +46,14 @@ def calibration_to_texmex(list counts, object generator):
     cdef pair[string, double] dict_pair
     cdef pair[umap[string, double].iterator, bool] insert_pair
 
+    if len(counts) != generator.length:
+        raise Exception(f"Counts length ({len(counts)}) does not equal generator length ({generator.length})")
+
     for idx, mask_str in enumerate(generator):
         counts_map = dict(counts[idx])
         end = counts_map.end()
         it = counts_map.begin()
+
         while it != end:
             old_key = dereference(it).first
             temp_val = dereference(it).second
