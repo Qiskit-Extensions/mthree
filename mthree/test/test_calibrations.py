@@ -9,6 +9,7 @@
 # Any modifications or derivative works of this code must retain this
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
+# pylint: disable=no-name-in-module
 """Test Calibration class"""
 import numpy as np
 from qiskit import QuantumCircuit
@@ -55,7 +56,7 @@ def test_texmex_conversion1():
     """Test that texmex calibration conversion works
     """
     cals = [{'111':4, '110':1}, {'101':6, '000':9}, {'000':10}]
-    strings = [np.array([0, 0, 1], dtype=np.uint8), 
+    strings = [np.array([0, 0, 1], dtype=np.uint8),
                np.array([0, 0, 1], dtype=np.uint8),
                np.array([1, 1, 1], dtype=np.uint8)]
     gen = FakeGenerator(strings)

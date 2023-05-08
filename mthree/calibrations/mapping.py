@@ -44,12 +44,10 @@ def calibration_mapping(backend, qubits=None):
                 )
             )
         num_qubits = len(qubits)
-        bit_to_phyical_mapping = {key: val for key,
-                                  val in zip(range(num_qubits), qubits)}
+        bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     else:
         if len(set(qubits)) != len(qubits):
             raise Exception('Duplicate qubit indices')
         num_qubits = len(qubits)
-        bit_to_phyical_mapping = {key:val for key,
-                                  val in zip(range(num_qubits), qubits)}
+        bit_to_phyical_mapping = dict(zip(range(num_qubits), qubits))
     return bit_to_phyical_mapping

@@ -59,7 +59,7 @@ class Calibration:
 
         self.bit_to_physical_mapping = calibration_mapping(self.backend,
                                                            qubits=self.qubits)
-        self.physical_to_bit_mapping = {val:key for key, val in 
+        self.physical_to_bit_mapping = {val:key for key, val in
                                         self.bit_to_physical_mapping.items()}
         self._calibration_data = None
         self.shots_per_circuit = None
@@ -68,7 +68,7 @@ class Calibration:
         self.calibration_timestamp = None
         self._thread = None
         self._job_error = None
-        
+
     def __getattribute__(self, attr):
         """This allows for checking the status of the threaded cals call
 
@@ -79,7 +79,7 @@ class Calibration:
             if attr in ["_calibration_data"]:
                 self._thread_check()
         return super().__getattribute__(attr)
-    
+
     def _thread_check(self):
         """Check if a thread is running and join it.
 
@@ -90,17 +90,18 @@ class Calibration:
             self._thread = None
         if self._job_error:
             raise self._job_error  # pylint: disable=raising-bad-type
-    
+
     @property
     def calibration_data(self):
+        """Calibration data"""
         if self._calibration_data is None and self._thread is None:
-            raise Exception('Calibration is not calibrated')
+            raise M3Error('Calibration is not calibrated')
         return self._calibration_data
 
     @calibration_data.setter
     def calibration_data(self, cals):
         if self._calibration_data is not None:
-            raise Exception('Calibration is already calibrated')
+            raise M3Error('Calibration is already calibrated')
         self._calibration_data = cals
 
     def calibration_circuits(self):
@@ -135,7 +136,7 @@ class Calibration:
             shots (int): Number of shots defining the precision of
                          the underlying error elements
             async_cal (bool): Perform calibration asyncronously, default=True
-            overwritw (bool): Overwrite a previous calibration, default=False
+            overwrite (bool): Overwrite a previous calibration, default=False
         
         Raises:
             M3Error: Calibration is already calibrated and overwrite=False
@@ -158,7 +159,7 @@ class Calibration:
         else:
             _job_thread(cal_job, self)
 
-        
+
 def _job_thread(job, cal):
     """Process job result async
     """
