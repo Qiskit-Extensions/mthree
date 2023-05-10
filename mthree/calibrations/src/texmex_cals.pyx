@@ -32,10 +32,10 @@ def calibration_to_texmex(list counts, object generator):
         dict: Merged TEXMEX calibration dict
     """
     cdef char[::1] mask_str
-    cdef umap[string, int] counts_map 
+    cdef umap[string, unsigned int] counts_map 
     cdef umap[string, double] out_map
-    cdef umap[string, int].iterator end
-    cdef umap[string, int].iterator it
+    cdef umap[string, unsigned int].iterator end
+    cdef umap[string, unsigned int].iterator it
 
     cdef umap[string, double].iterator double_end
     cdef umap[string, double].iterator double_it

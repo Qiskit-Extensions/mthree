@@ -13,3 +13,4 @@
 """TEXMEX calibration tools"""
 
 from .texmex_cals import calibration_to_texmex
+from .m3_cals import calibration_to_m3
