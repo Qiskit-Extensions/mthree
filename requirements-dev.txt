@@ -3,7 +3,7 @@ pytest
 pylint
 pycodestyle
 Sphinx<6
-qiskit_sphinx_theme
+qiskit_sphinx_theme~=1.11.1
 matplotlib
 pylatexenc
 jupyter-sphinx
