@@ -14,6 +14,7 @@
 import threading
 import warnings
 import datetime
+from dateutil import tz
 
 from qiskit import QuantumCircuit
 
@@ -66,8 +67,8 @@ class Calibration:
         self._calibration_data = None
         self.shots_per_circuit = None
         self.num_circuits = self.generator.length
-        self.calibration_job_id = None
-        self.calibration_timestamp = None
+        self.job_id = None
+        self._timestamp = None
         self._thread = None
         self._job_error = None
 
@@ -78,7 +79,7 @@ class Calibration:
         """
         __dict__ = super().__getattribute__("__dict__")
         if attr in __dict__:
-            if attr in ["_calibration_data"]:
+            if attr in ["_calibration_data", "job_id", "timestamp"]:
                 self._thread_check()
         return super().__getattribute__(attr)
 
@@ -99,6 +100,19 @@ class Calibration:
         if self._calibration_data is None and self._thread is None:
             raise M3Error("Calibration is not calibrated")
         return self._calibration_data
+
+    @property
+    def timestamp(self):
+        """Timestamp of calibration job
+        
+        Time is stored as UTC but returned in local time
+
+        Returns:
+            datetime: Timestamp in local time
+        """
+        if self._timestamp is None:
+            return self._timestamp
+        return self._timestamp.astimezone(tz.tzlocal())
 
     @calibration_data.setter
     def calibration_data(self, cals):
@@ -150,7 +164,7 @@ class Calibration:
         self._job_error = None
         self.shots_per_circuit = int(-(-shots // (self.generator.length / 2)))
         cal_job = self.backend.run(cal_circuits, shots=self.shots_per_circuit)
-        self.calibration_job_id = cal_job.job_id()
+        self.job_id = cal_job.job_id()
         if async_cal:
             thread = threading.Thread(
                 target=_job_thread,
@@ -180,4 +194,4 @@ def _job_thread(job, cal):
         # resultsDB storage as well
         dt = datetime.datetime.fromisoformat(timestamp)
         dt_utc = dt.astimezone(datetime.timezone.utc)
-        cal.calibration_timestamp = dt_utc
+        cal._timestamp = dt_utc
