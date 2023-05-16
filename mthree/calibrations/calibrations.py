@@ -79,7 +79,7 @@ class Calibration:
         """
         __dict__ = super().__getattribute__("__dict__")
         if attr in __dict__:
-            if attr in ["_calibration_data", "job_id", "timestamp"]:
+            if attr in ["_calibration_data", "timestamp"]:
                 self._thread_check()
         return super().__getattribute__(attr)
 
@@ -104,7 +104,7 @@ class Calibration:
     @property
     def timestamp(self):
         """Timestamp of calibration job
-        
+
         Time is stored as UTC but returned in local time
 
         Returns:
