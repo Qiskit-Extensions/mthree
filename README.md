@@ -30,16 +30,8 @@ python setup.py install
 To enable openmp one must have an openmp 3.0+ enabled compiler and install with:
 
 ```bash
-python setup.py install --with-openmp
+python setup.py install --openmp
 ```
-
-Optionally one can also set `-march=native` using:
-
-```bash
-python setup.py install --with-native
-```
-
-The `openmp` and `native` flags can be used simultaneously using a comma.
 
 ### OpenMP on OSX
 
@@ -65,7 +57,7 @@ export CPPFLAGS="-I/usr/local/opt/llvm/include"
 Then installation with openmp can be accomplished using:
 
 ```bash
-CC=clang CXX=clang python setup.py install --with-openmp
+CC=clang CXX=clang python setup.py install --openmp
 ```
 
 ## Usage
