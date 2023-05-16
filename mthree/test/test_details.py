@@ -73,7 +73,7 @@ def test_details_multi_circuit():
     mit = mthree.M3Mitigation(BACKEND)
     mit.cals_from_system()
 
-    quasi, details = mit.apply_correction([raw_counts]*2, [mapping]*2, details=True)
+    quasi, details = mit.apply_correction([raw_counts] * 2, [mapping] * 2, details=True)
 
     assert isinstance(quasi, mthree.classes.QuasiCollection)
     assert isinstance(details, list)

@@ -86,7 +86,7 @@ def test_independent3():
     num_qubits = 5
     for idx, arr in enumerate(IndependentGenerator(num_qubits)):
         # Since 0th qubit is right-most bit
-        assert np.where(arr == 1)[0][0] == num_qubits-idx-1
+        assert np.where(arr == 1)[0][0] == num_qubits - idx - 1
 
 
 def test_hadamard1():
@@ -96,7 +96,7 @@ def test_hadamard1():
         pairwise_dict = {}
         for arr in G:
             for item in itertools.combinations(range(G.num_qubits), 2):
-                pair = str(arr[item[0]])+str(arr[item[1]])
+                pair = str(arr[item[0]]) + str(arr[item[1]])
                 if item not in pairwise_dict:
                     pairwise_dict[item] = {}
                 if pair in pairwise_dict[item]:

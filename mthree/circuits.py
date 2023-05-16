@@ -58,12 +58,12 @@ def balanced_cal_strings(num_qubits):
         list: List of strings for balanced calibration circuits.
     """
     strings = []
-    for rep in range(1, num_qubits+1):
-        str1 = ''
-        str2 = ''
+    for rep in range(1, num_qubits + 1):
+        str1 = ""
+        str2 = ""
         for jj in range(int(np.ceil(num_qubits / rep))):
             str1 += str(jj % 2) * rep
-            str2 += str((jj+1) % 2) * rep
+            str2 += str((jj + 1) % 2) * rep
 
         strings.append(str1[:num_qubits])
         strings.append(str2[:num_qubits])
@@ -92,7 +92,7 @@ def balanced_cal_circuits(cal_strings, layout, system_qubits, initial_reset=Fals
             qc.reset(range(system_qubits))
             qc.reset(range(system_qubits))
         for idx, bit in enumerate(string[::-1]):
-            if bit == '1':
+            if bit == "1":
                 qc.x(layout[idx])
         qc.measure(layout, range(num_active_qubits))
         circs.append(qc)

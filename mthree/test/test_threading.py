@@ -32,7 +32,7 @@ def test_test_call_cals_twice():
     qc.measure(range(4), range(4))
 
     backend = FakeCasablanca()
-    circs = transpile([qc]*5, backend)
+    circs = transpile([qc] * 5, backend)
     maps = final_measurement_mapping(circs)
     mit = mthree.M3Mitigation(backend)
     with pytest.raises(M3Error):

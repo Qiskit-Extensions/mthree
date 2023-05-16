@@ -17,20 +17,38 @@ from mthree.src.hamming import hamming_ball
 from .src.column_testing import _test_vector_column_norm
 
 
-mats = [np.array([[0.9954, 0.0682],
-                  [0.0046, 0.9318]]),
-        np.array([[0.9494, 0.1236],
-                  [0.0506, 0.8764]]),
-        np.array([[0.9778, 0.04],
-                  [0.0222, 0.96]]),
-        np.array([[0.9718, 0.0726],
-                  [0.0282, 0.9274]]),
-        np.array([[0.9832, 0.0568],
-                  [0.0168, 0.9432]])]
+mats = [
+    np.array([[0.9954, 0.0682], [0.0046, 0.9318]]),
+    np.array([[0.9494, 0.1236], [0.0506, 0.8764]]),
+    np.array([[0.9778, 0.04], [0.0222, 0.96]]),
+    np.array([[0.9718, 0.0726], [0.0282, 0.9274]]),
+    np.array([[0.9832, 0.0568], [0.0168, 0.9432]]),
+]
 
-cals = np.array([0.9832, 0.0568, 0.0168, 0.9432, 0.9718, 0.0726, 0.0282, 0.9274,
-                0.9778, 0.04, 0.0222, 0.96, 0.9494, 0.1236, 0.0506, 0.8764,
-                0.9954, 0.0682, 0.0046, 0.9318])
+cals = np.array(
+    [
+        0.9832,
+        0.0568,
+        0.0168,
+        0.9432,
+        0.9718,
+        0.0726,
+        0.0282,
+        0.9274,
+        0.9778,
+        0.04,
+        0.0222,
+        0.96,
+        0.9494,
+        0.1236,
+        0.0506,
+        0.8764,
+        0.9954,
+        0.0682,
+        0.0046,
+        0.9318,
+    ]
+)
 
 FULL_MAT = np.kron(mats[1], mats[0])
 for ll in range(2, len(mats)):
@@ -42,7 +60,7 @@ def test_vector_colnorm_d0():
 
     counts = {}
     for kk in range(32):
-        counts[bin(kk)[2:].zfill(5)] = 1/32
+        counts[bin(kk)[2:].zfill(5)] = 1 / 32
 
     out = _test_vector_column_norm(counts, cals, 0)
 
@@ -55,14 +73,14 @@ def test_vector_colnorm_d3():
 
     counts = {}
     for kk in range(32):
-        counts[bin(kk)[2:].zfill(5)] = 1/32
+        counts[bin(kk)[2:].zfill(5)] = 1 / 32
 
     out = _test_vector_column_norm(counts, cals, 3)
 
     for kk in range(32):
         arr = np.fromiter(bin(kk)[2:].zfill(5), np.uint8)
         elems = hamming_ball(arr, 0, 3)
-        rows = np.asarray([np.sum(bits*2**np.arange(5)[::-1]) for bits in elems])
+        rows = np.asarray([np.sum(bits * 2 ** np.arange(5)[::-1]) for bits in elems])
         assert abs(out[kk] - np.sum(FULL_MAT[rows, kk])) < 1e-15
 
 
@@ -71,7 +89,7 @@ def test_vector_colnorm_d5():
 
     counts = {}
     for kk in range(32):
-        counts[bin(kk)[2:].zfill(5)] = 1/32
+        counts[bin(kk)[2:].zfill(5)] = 1 / 32
 
     out = _test_vector_column_norm(counts, cals, 5)
 

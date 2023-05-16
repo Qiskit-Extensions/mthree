@@ -10,15 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
+"""TEXMEX calibration tools"""
 
-"""Test matrix elements"""
-from qiskit.providers.fake_provider import FakeAthensV2
-import mthree
-
-
-def test_v2_fake_backend():
-    """Test that fake v2 backends work"""
-    backend = FakeAthensV2()
-    mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system()
-    assert mit.cal_method == "independent"
+from .texmex_cals import calibration_to_texmex
+from .m3_cals import calibration_to_m3

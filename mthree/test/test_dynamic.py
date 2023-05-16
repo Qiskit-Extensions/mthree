@@ -14,6 +14,7 @@
 """Test matrix elements"""
 from qiskit import QuantumCircuit, transpile
 from qiskit.providers.fake_provider import FakeKolkata
+
 # Transpiler passes for optimizing dynamic circuits
 from qiskit.transpiler import PassManager
 from qiskit.transpiler.passes.optimization import ResetAfterMeasureSimplification
@@ -28,9 +29,8 @@ def test_dynamic_bv():
     N = 5
     shots = int(1e4)
 
-    qc = dynamic_bv('1'*N)
-    trans_qc = transpile(qc, backend, optimization_level=3,
-                         seed_transpiler=12345)
+    qc = dynamic_bv("1" * N)
+    trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=12345)
 
     # Verify that mapping is returning the same qubit (1)
     # for all the classical bits
@@ -38,7 +38,7 @@ def test_dynamic_bv():
     assert mapping == {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
 
     mit = mthree.M3Mitigation(backend)
-    mit.cals_from_system(mapping, method='independent')
+    mit.cals_from_system(mapping, method="independent")
     # Check that only the 1 qubit is populated in the cals
     for idx, mat in enumerate(mit.single_qubit_cals):
         if idx == 1:
@@ -49,15 +49,15 @@ def test_dynamic_bv():
     counts = backend.run(trans_qc, shots=shots).result().get_counts()
     quasis = mit.apply_correction(counts, mapping)
 
-    assert quasis['1'*N] > counts['1'*N]/shots
-    assert quasis['1'*N] > 0.96
+    assert quasis["1" * N] > counts["1" * N] / shots
+    assert quasis["1" * N] > 0.96
 
 
 def test_dynamic_bv_mapping():
     """Test that conditionals do not get counted as touching qubits in final mapping"""
     backend = FakeKolkata()
 
-    circ = dynamic_bv('1'*5)
+    circ = dynamic_bv("1" * 5)
     trans_circ = transpile(circ, backend, initial_layout=[12, 10])
 
     pm = PassManager(ResetAfterMeasureSimplification())
@@ -83,7 +83,6 @@ def dynamic_bv(bitstring):
 
     # For each bit (0 or 1) build a simple circuit block
     for idx, bit in enumerate(bitstring[::-1]):
-
         # Initial H gate on control
         qc.h(0)
         # If bit=1, do a CNOT gate
@@ -95,7 +94,7 @@ def dynamic_bv(bitstring):
         qc.measure(0, idx)
 
         # If not at the final bit, recycle and reset qubits
-        if idx != (len(bitstring)-1):
+        if idx != (len(bitstring) - 1):
             # Reset control qubit for reuse
             qc.reset(0)
             # reset target qubit to minimize dephasing

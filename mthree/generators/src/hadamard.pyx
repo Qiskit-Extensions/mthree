@@ -24,6 +24,7 @@ from mthree.exceptions import M3Error
 
 cdef class HadamardGenerator():
     """Hadamard calibration generator"""
+    cdef public str name
     cdef unsigned int p
     cdef unsigned char * integer_bits
     cdef unsigned char * out_bits
@@ -42,6 +43,7 @@ cdef class HadamardGenerator():
         References:
             Bravyi et al, Phys. Rev. A 103, 042605 (2021)
         """
+        self.name = 'hadamard'
         self.num_qubits = num_qubits
         self.p = <unsigned int>floor(log2(num_qubits)+1)
         self.length = <unsigned int>(2**self.p)

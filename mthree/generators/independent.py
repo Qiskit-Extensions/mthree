@@ -16,6 +16,7 @@ import numpy as np
 
 class IndependentGenerator:
     """Independent bit-array generator"""
+
     def __init__(self, num_qubits):
         """Generator of arrays corresponding to a single x-gate on
         one qubit at a time.
@@ -30,6 +31,7 @@ class IndependentGenerator:
             length (int): Total number of generated arrays, default=None (infinite)
             seed (int): Seed used for RNG
         """
+        self.name = "independent"
         self.num_qubits = num_qubits
         self.length = num_qubits
         self._iter_index = 0
@@ -41,7 +43,7 @@ class IndependentGenerator:
     def __next__(self):
         if self._iter_index < self.length:
             out = np.zeros(self.num_qubits, dtype=np.uint8)
-            out[self.num_qubits-self._iter_index-1] = 1
+            out[self.num_qubits - self._iter_index - 1] = 1
             self._iter_index += 1
             return out
         else:
