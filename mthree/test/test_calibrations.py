@@ -114,3 +114,12 @@ def test_m3_conversion3():
     out = calibration_to_m3(cal.calibration_data, cal.generator)
     # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
     assert abs(out[1]-0.766) < 0.02
+
+
+def test_m3_conversion4():
+    """Test that M3 conversion works for permuted and subset orderings"""
+    cal = Calibration(BACKEND, qubits=[4, 2, 0])
+    cal.calibrate_from_backend(shots=12345)
+    out = calibration_to_m3(cal.calibration_data, cal.generator)
+    # This checks that Q0 P1->1 value is that corresponding to Q0
+    assert abs(out[5]-0.766) < 0.02
