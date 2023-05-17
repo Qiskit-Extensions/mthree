@@ -69,7 +69,7 @@ class Calibration:
         else:
             gen = generator(len(self.qubits))
             if num_random_circuits is not None or seed is not None:
-                 warnings.warn(f'random generator settings not applicable for {gen.name} generator')
+                warnings.warn(f'random generator settings not applicable for {gen.name} generator')
         self.generator = gen
 
         self.bit_to_physical_mapping = calibration_mapping(
