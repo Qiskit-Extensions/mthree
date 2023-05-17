@@ -42,7 +42,7 @@ def test_hadamard_generator_circuits():
     qubits = [4, 0, 1, 3, 2]
     cal = Calibration(BACKEND, qubits, HadamardGenerator)
     cal_circs = cal.calibration_circuits()
-    for kk, string in enumerate(gen):
+    for kk, string in enumerate(cal.generator):
         string = string[::-1]
         qc = QuantumCircuit(5, 5)
         for idx, val in cal.bit_to_physical_mapping.items():
@@ -97,7 +97,7 @@ def test_m3_conversion2():
     """Test that M3 conversion works from HadamardGenerator"""
     cal = Calibration(BACKEND, qubits=range(5), generator=HadamardGenerator)
     cal.calibrate_from_backend(shots=int(1e4))
-    assert cal.shots_per_circuit == int(1e4)
+    assert cal.shots_per_circuit == 2*int(1e4) / cal.generator.length
     out = calibration_to_m3(cal.calibration_data, cal.generator)
     # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
     assert abs(out[1]-0.766) < 0.02
@@ -107,7 +107,7 @@ def test_m3_conversion3():
     """Test that M3 conversion works from RandomComplimentGenerator"""
     cal = Calibration(BACKEND, qubits=range(5), generator=RandomComplimentGenerator)
     cal.calibrate_from_backend(shots=int(1e4))
-    assert cal.shots_per_circuit == int(1e4)
+    assert cal.shots_per_circuit == 2*int(1e4) / cal.generator.length
     out = calibration_to_m3(cal.calibration_data, cal.generator)
     # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
     assert abs(out[1]-0.766) < 0.02
