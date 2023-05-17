@@ -20,6 +20,8 @@ from libcpp cimport bool
 import numpy as np
 cimport numpy as np
 
+from mthree.exceptions import M3Error
+
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
@@ -49,24 +51,33 @@ def calibration_to_m3(list counts, object generator):
     cdef umap[string, unsigned int].iterator end
     cdef umap[string, unsigned int].iterator it
     cdef unsigned int val
+    
+    if generator.name == 'random':
+        raise M3Error('M3 cals cannot be formed from a RandomGenerator.')
 
-    for idx, cal_string in enumerate(generator):
-        counts_map = dict(counts[idx])
-        end = counts_map.end()
-        it = counts_map.begin()
-        while it != end:
-            key = dereference(it).first
-            val = dereference(it).second
-            for kk in range(num_qubits):
-                if (key[num_qubits-kk-1]-48) == cal_string[num_qubits-kk-1]:
-                    if cal_string[num_qubits-kk-1]:
-                        m3_cals[2*kk+1] += val
-                    else:
-                        m3_cals[2*kk] += val
-            postincrement(it)
-         
-    # Normalize to probabilities
-    for kk in range(num_elem):
-        m3_cals[kk] /= denom
+    elif generator.name == 'independent':
+        for idx, _ in enumerate(generator):
+            m3_cals[2*idx] = counts[2*idx].get('0')/shots_per_circuit
+            m3_cals[2*idx+1] = counts[2*idx+1].get('1')/shots_per_circuit
+        
+    else:
+        for idx, cal_string in enumerate(generator):
+            counts_map = dict(counts[idx])
+            end = counts_map.end()
+            it = counts_map.begin()
+            while it != end:
+                key = dereference(it).first
+                val = dereference(it).second
+                for kk in range(num_qubits):
+                    if (key[num_qubits-kk-1]-48) == cal_string[num_qubits-kk-1]:
+                        if cal_string[num_qubits-kk-1]:
+                            m3_cals[2*kk+1] += val
+                        else:
+                            m3_cals[2*kk] += val
+                postincrement(it)
+
+        # Normalize to probabilities
+        for kk in range(num_elem):
+            m3_cals[kk] /= denom
 
     return np.asarray(m3_cals)
