@@ -55,8 +55,10 @@ class Calibration:
                 )
         self.qubits = qubits
         if generator is None:
-            generator = HadamardGenerator(len(self.qubits))
-        self.generator = generator
+            gen = HadamardGenerator(len(self.qubits))
+        else:
+            gen = generator(len(self.qubits))
+        self.generator = gen
 
         self.bit_to_physical_mapping = calibration_mapping(
             self.backend, qubits=self.qubits
@@ -127,22 +129,30 @@ class Calibration:
             list: Calibration circuits
         """
         out_circuits = []
-        measure_all = True
         creg_length = self.generator.num_qubits
+        # need to do things different for the independent generator
         if self.generator.name == "independent":
-            measure_all = False
-            creg_length = 1
-        for string in self.generator:
-            qc = QuantumCircuit(self.backend_info["num_qubits"], creg_length)
-            for idx, val in enumerate(string[::-1]):
-                if val:
-                    qc.x(self.bit_to_physical_mapping[idx])
-                if measure_all:
+            for string in self.generator:
+                for idx, val in enumerate(string[::-1]):
+                    if val:
+                        # Prep and meas zero on qubit
+                        qc = QuantumCircuit(self.backend_info["num_qubits"], 1)
+                        qc.measure(self.bit_to_physical_mapping[idx], 0)
+                        out_circuits.append(qc)
+                        # Prep and meas one on qubit
+                        qc = QuantumCircuit(self.backend_info["num_qubits"], 1)
+                        qc.x(self.bit_to_physical_mapping[idx])
+                        qc.measure(self.bit_to_physical_mapping[idx], 0)
+                        out_circuits.append(qc)
+                        break
+        else:
+            for string in self.generator:
+                qc = QuantumCircuit(self.backend_info["num_qubits"], creg_length)
+                for idx, val in enumerate(string[::-1]):
+                    if val:
+                        qc.x(self.bit_to_physical_mapping[idx])
                     qc.measure(self.bit_to_physical_mapping[idx], idx)
-                elif val:
-                    # For independent circuits
-                    qc.measure(self.bit_to_physical_mapping[idx], 0)
-            out_circuits.append(qc)
+                out_circuits.append(qc)
         return out_circuits
 
     def calibrate_from_backend(self, shots=int(1e4), async_cal=True, overwrite=False):
@@ -162,7 +172,10 @@ class Calibration:
         self._calibration_data = None
         cal_circuits = self.calibration_circuits()
         self._job_error = None
-        self.shots_per_circuit = int(-(-shots // (self.generator.length / 2)))
+        if self.generator.name == 'independent':
+            self.shots_per_circuit = shots
+        else:
+            self.shots_per_circuit = int(-(-shots // (self.generator.length / 2)))
         cal_job = self.backend.run(cal_circuits, shots=self.shots_per_circuit)
         self.job_id = cal_job.job_id()
         if async_cal:
