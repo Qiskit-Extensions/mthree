@@ -15,10 +15,11 @@ import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.providers.fake_provider import FakeManila
 
-from mthree.generators import IndependentGenerator, HadamardGenerator
+from mthree.generators import IndependentGenerator, HadamardGenerator, RandomComplimentGenerator
 from mthree.generators._fake import FakeGenerator
 from mthree.calibrations import Calibration
 from mthree.calibrations import calibration_to_texmex
+from mthree.calibrations.src import calibration_to_m3
 
 
 BACKEND = FakeManila()
@@ -27,7 +28,7 @@ BACKEND = FakeManila()
 def test_independent_generator_circuits():
     """Test independent generator circuits get remapped correctly"""
     qubits = [0, 4, 2, 1, 3]
-    cal = Calibration(BACKEND, qubits, IndependentGenerator(5))
+    cal = Calibration(BACKEND, qubits, IndependentGenerator)
     cal_circuits = cal.calibration_circuits()
     for idx, val in cal.bit_to_physical_mapping.items():
         qc = QuantumCircuit(5, 1)
@@ -39,8 +40,7 @@ def test_independent_generator_circuits():
 def test_hadamard_generator_circuits():
     """Test hadamard generator circuits get remapped correctly"""
     qubits = [4, 0, 1, 3, 2]
-    gen = HadamardGenerator(5)
-    cal = Calibration(BACKEND, qubits, gen)
+    cal = Calibration(BACKEND, qubits, HadamardGenerator)
     cal_circs = cal.calibration_circuits()
     for kk, string in enumerate(gen):
         string = string[::-1]
@@ -81,3 +81,33 @@ def test_texmex_conversion2():
     assert reduced_cals["1001"] == 6 / 30
     assert reduced_cals["0001"] == 9 / 30
     assert reduced_cals["1111"] == 10 / 30
+
+
+def test_m3_conversion1():
+    """Test that M3 conversion works from IndependentGenerator"""
+    cal = Calibration(BACKEND, qubits=range(5), generator=IndependentGenerator)
+    cal.calibrate_from_backend(shots=int(1e4))
+    assert cal.shots_per_circuit == int(1e4)
+    out = calibration_to_m3(cal.calibration_data, cal.generator)
+    # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
+    assert abs(out[1]-0.766) < 0.02
+
+
+def test_m3_conversion2():
+    """Test that M3 conversion works from HadamardGenerator"""
+    cal = Calibration(BACKEND, qubits=range(5), generator=HadamardGenerator)
+    cal.calibrate_from_backend(shots=int(1e4))
+    assert cal.shots_per_circuit == int(1e4)
+    out = calibration_to_m3(cal.calibration_data, cal.generator)
+    # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
+    assert abs(out[1]-0.766) < 0.02
+
+
+def test_m3_conversion3():
+    """Test that M3 conversion works from RandomComplimentGenerator"""
+    cal = Calibration(BACKEND, qubits=range(5), generator=RandomComplimentGenerator)
+    cal.calibrate_from_backend(shots=int(1e4))
+    assert cal.shots_per_circuit == int(1e4)
+    out = calibration_to_m3(cal.calibration_data, cal.generator)
+    # This checks that Q0 result is valid since FakeManila qubit 0 is bad readout
+    assert abs(out[1]-0.766) < 0.02
