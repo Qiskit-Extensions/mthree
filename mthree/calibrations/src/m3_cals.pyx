@@ -20,6 +20,8 @@ from libcpp cimport bool
 import numpy as np
 cimport numpy as np
 
+from mthree.exceptions import M3Error
+
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
@@ -50,7 +52,10 @@ def calibration_to_m3(list counts, object generator):
     cdef umap[string, unsigned int].iterator it
     cdef unsigned int val
     
-    if generator.name == 'independent':
+    if generator.name == 'random':
+        raise M3Error('M3 cals cannot be formed from a RandomGenerator.')
+
+    elif generator.name == 'independent':
         for idx, _ in enumerate(generator):
             m3_cals[2*idx] = counts[2*idx].get('0')/shots_per_circuit
             m3_cals[2*idx+1] = counts[2*idx+1].get('1')/shots_per_circuit

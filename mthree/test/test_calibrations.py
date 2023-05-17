@@ -32,9 +32,12 @@ def test_independent_generator_circuits():
     cal_circuits = cal.calibration_circuits()
     for idx, val in cal.bit_to_physical_mapping.items():
         qc = QuantumCircuit(5, 1)
-        qc.x(val)
         qc.measure(val, 0)
-        assert qc == cal_circuits[idx]
+        assert qc == cal_circuits[2*idx]
+        qc2 = QuantumCircuit(5, 1)
+        qc2.x(val)
+        qc2.measure(val, 0)
+        assert qc2 == cal_circuits[2*idx+1]
 
 
 def test_hadamard_generator_circuits():
