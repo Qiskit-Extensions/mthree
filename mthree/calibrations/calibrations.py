@@ -200,21 +200,20 @@ class Calibration:
             self._thread.start()
         else:
             _job_thread(cal_job, self)
-
+    
     def to_m3_calibration(self):
-         """Return calibration data in M3 mitigation format
-         """
-         if self.calibration_data is None:
-             raise M3Error('Calibration has no data')
-         return calibration_to_m3(self.calibration_data, self.generator)
+        """Return calibration data in M3 mitigation format
+        """
+        if self.calibration_data is None:
+            raise M3Error('Calibration has no data')
+        return calibration_to_m3(self.calibration_data, self.generator)
     
     def to_texmex_calibration(self):
-         """Return calibration data in M3 mitigation format
-         """
-         if self.calibration_data is None:
-             raise M3Error('Calibration has no data')
-         return calibration_to_texmex(self.calibration_data, self.generator)
-        
+        """Return calibration data in M3 mitigation format
+        """
+        if self.calibration_data is None:
+            raise M3Error('Calibration has no data')
+        return calibration_to_texmex(self.calibration_data, self.generator)
 
 
 def _job_thread(job, cal):
