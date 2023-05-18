@@ -27,13 +27,17 @@ from .mapping import calibration_mapping
 class Calibration:
     """Calibration object"""
 
-    def __init__(self, backend, qubits=None, generator=None):
+    def __init__(self, backend, qubits=None, generator=None,
+                 num_random_circuits=None, seed=None):
         """Calibration object
 
         Parameters:
             backend (Backend): Target backend
             qubits (array_like): Physical qubits to calibrate over
             generator (Generator): Generator of calibration circuits
+            num_random_circuits (int): Number of random circuits if
+                                       using random generator, default=16
+            seed (int): Seed for random circuit generation, default=None
         """
         self.backend = backend
         self.backend_info = system_info(backend)
@@ -54,10 +58,18 @@ class Calibration:
                     )
                 )
         self.qubits = qubits
+
         if generator is None:
             gen = HadamardGenerator(len(self.qubits))
+        elif 'Random' in generator.__name__:
+            # For random and random-compliment generators
+            if num_random_circuits is None:
+                num_random_circuits = 16
+            gen = generator(len(self.qubits), num_arrays=num_random_circuits, seed=seed)
         else:
             gen = generator(len(self.qubits))
+            if num_random_circuits is not None or seed is not None:
+                warnings.warn(f'random generator settings not applicable for {gen.name} generator')
         self.generator = gen
 
         self.bit_to_physical_mapping = calibration_mapping(

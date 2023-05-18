@@ -123,3 +123,11 @@ def test_m3_conversion4():
     out = calibration_to_m3(cal.calibration_data, cal.generator)
     # This checks that Q0 P1->1 value is that corresponding to Q0
     assert abs(out[5]-0.766) < 0.02
+
+
+def test_random_settings():
+    """Verify that random parameters get passed to Generator from Calibration init"""
+    cal = Calibration(BACKEND, generator=RandomComplimentGenerator,
+                      num_random_circuits=12, seed=54321)
+    assert cal.generator.length == 12
+    assert cal.generator.seed == 54321
