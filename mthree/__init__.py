@@ -29,6 +29,7 @@ except ImportError:
     openmp = False
 
 from .mitigation import M3Mitigation
+from .calibrations import Calibration
 
 
 def about():
