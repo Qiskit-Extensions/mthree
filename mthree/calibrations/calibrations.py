@@ -22,6 +22,7 @@ from mthree.exceptions import M3Error
 from mthree._helpers import system_info
 from mthree.generators import HadamardGenerator
 from .mapping import calibration_mapping
+from .src import calibration_to_m3, calibration_to_texmex
 
 
 class Calibration:
@@ -199,6 +200,20 @@ class Calibration:
             self._thread.start()
         else:
             _job_thread(cal_job, self)
+
+    def to_m3_calibration(self):
+        """Return calibration data in M3 mitigation format
+        """
+        if self.calibration_data is None:
+            raise M3Error('Calibration has no data')
+        return calibration_to_m3(self.calibration_data, self.generator)
+
+    def to_texmex_calibration(self):
+        """Return calibration data in M3 mitigation format
+        """
+        if self.calibration_data is None:
+            raise M3Error('Calibration has no data')
+        return calibration_to_texmex(self.calibration_data, self.generator)
 
 
 def _job_thread(job, cal):
