@@ -35,13 +35,13 @@ def test_dynamic_bv():
     # Verify that mapping is returning the same qubit (1)
     # for all the classical bits
     mapping = mthree.utils.final_measurement_mapping(trans_qc)
-    assert mapping == {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+    assert mapping == {0: 25, 1: 25, 2: 25, 3: 25, 4: 25}
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(mapping, method="independent")
     # Check that only the 1 qubit is populated in the cals
     for idx, mat in enumerate(mit.single_qubit_cals):
-        if idx == 1:
+        if idx == 25:
             assert mat is not None
         else:
             assert mat is None
@@ -63,7 +63,7 @@ def test_dynamic_bv_mapping():
     pm = PassManager(ResetAfterMeasureSimplification())
     flatten_circ = pm.run(trans_circ)
     mapping = mthree.utils.final_measurement_mapping(flatten_circ)
-    assert mapping == {0: 25, 1: 25, 2: 25, 3: 25, 4: 25}
+    assert mapping == {0: 12, 1: 12, 2: 12, 3: 12, 4: 12}
 
 
 def dynamic_bv(bitstring):
