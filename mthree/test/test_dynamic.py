@@ -63,7 +63,7 @@ def test_dynamic_bv_mapping():
     pm = PassManager(ResetAfterMeasureSimplification())
     flatten_circ = pm.run(trans_circ)
     mapping = mthree.utils.final_measurement_mapping(flatten_circ)
-    assert mapping == {0: 12, 1: 12, 2: 12, 3: 12, 4: 12}
+    assert mapping == {0: 25, 1: 25, 2: 25, 3: 25, 4: 25}
 
 
 def dynamic_bv(bitstring):

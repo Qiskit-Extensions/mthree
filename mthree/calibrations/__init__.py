@@ -13,3 +13,4 @@
 
 from .calibrations import Calibration
 from .src import calibration_to_texmex, calibration_to_m3
+from .utils import m3_legacy_cals
