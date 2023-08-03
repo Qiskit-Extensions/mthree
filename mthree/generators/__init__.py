@@ -21,7 +21,9 @@ Bit-array generators
     IndependentGenerator
     RandomGenerator
     RandomComplimentGenerator
+    CompleteGenerator
 """
 from .src.hadamard import HadamardGenerator
 from .independent import IndependentGenerator
 from .random import RandomGenerator, RandomComplimentGenerator
+from .complete import CompleteGenerator
