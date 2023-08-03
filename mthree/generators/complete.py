@@ -18,7 +18,7 @@ class CompleteGenerator:
     """Complete basis set bit-array generator"""
 
     def __init__(self, num_qubits):
-        """Generator of arrays for full 2**N set of computational 
+        """Generator of arrays for full 2**N set of computational
         basis states
 
         Parameters:
@@ -42,6 +42,6 @@ class CompleteGenerator:
         if self._iter_index < self.length:
             self._iter_index += 1
             return np.array([(self._iter_index-1 >> kk) & 1
-                             for kk in range(self.num_qubits-1,-1,-1)], dtype=np.uint8)
+                             for kk in range(self.num_qubits-1, -1, -1)], dtype=np.uint8)
         else:
             raise StopIteration
