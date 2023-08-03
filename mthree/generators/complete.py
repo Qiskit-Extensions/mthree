@@ -13,8 +13,6 @@
 """Complete bit-array generator"""
 import numpy as np
 
-from mthree.exceptions import M3Error
-
 
 class CompleteGenerator:
     """Complete basis set bit-array generator"""
@@ -43,7 +41,7 @@ class CompleteGenerator:
     def __next__(self):
         if self._iter_index < self.length:
             self._iter_index += 1
-            return np.array([(self._iter_index-1 >> kk) & 1 
+            return np.array([(self._iter_index-1 >> kk) & 1
                              for kk in range(self.num_qubits-1,-1,-1)], dtype=np.uint8)
         else:
             raise StopIteration
