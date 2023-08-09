@@ -860,7 +860,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
     timestamp = res.date
     # Timestamp can be None
     if timestamp is None:
-        timestampe = datetime.datetime.now()
+        timestamp = datetime.datetime.now()
     # Needed since Aer result date is str but IBMQ job is datetime
     if isinstance(timestamp, datetime.datetime):
         timestamp = timestamp.isoformat()
