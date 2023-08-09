@@ -35,13 +35,14 @@ def test_dynamic_bv():
     # Verify that mapping is returning the same qubit (1)
     # for all the classical bits
     mapping = mthree.utils.final_measurement_mapping(trans_qc)
-    assert mapping == {0: 25, 1: 25, 2: 25, 3: 25, 4: 25}
+    qubit_list = list(set(mapping.values()))
+    assert len(qubit_list) == 1
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(mapping, method='independent')
     # Check that only the 1 qubit is populated in the cals
     for idx, mat in enumerate(mit.single_qubit_cals):
-        if idx == 25:
+        if idx == qubit_list[0]:
             assert mat is not None
         else:
             assert mat is None
