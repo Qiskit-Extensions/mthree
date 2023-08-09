@@ -856,7 +856,11 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
             return
         else:
             _counts = res.get_counts()
-            counts.extend(_counts)
+            # _counts can be a list or a dict (if only one circuit was executed within the job)
+            if isinstance(_counts, list):
+                counts.extend(_counts)
+            else:
+                counts.append(_counts)
     # attach timestamp
     timestamp = res.date
     # Needed since Aer result date is str but IBMQ job is datetime
