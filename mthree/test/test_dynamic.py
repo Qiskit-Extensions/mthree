@@ -35,7 +35,7 @@ def test_dynamic_bv():
     # Verify that mapping is returning the same qubit (1)
     # for all the classical bits
     mapping = mthree.utils.final_measurement_mapping(trans_qc)
-    assert mapping == {0: 1, 1: 1, 2: 1, 3: 1, 4: 1}
+    assert mapping == {0: 25, 1: 25, 2: 25, 3: 25, 4: 25}
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(mapping, method='independent')
