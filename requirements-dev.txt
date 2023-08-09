@@ -1,4 +1,5 @@
 qiskit>=0.28
+qiskit-aer
 pytest
 pylint
 pycodestyle
