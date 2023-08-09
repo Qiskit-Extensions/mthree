@@ -41,7 +41,7 @@ def test_dynamic_bv():
     mit.cals_from_system(mapping, method='independent')
     # Check that only the 1 qubit is populated in the cals
     for idx, mat in enumerate(mit.single_qubit_cals):
-        if idx == 1:
+        if idx == 25:
             assert mat is not None
         else:
             assert mat is None
