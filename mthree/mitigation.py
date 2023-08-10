@@ -15,6 +15,7 @@
 import warnings
 import threading
 import datetime
+from math import ceil
 from time import perf_counter
 
 import psutil
@@ -406,9 +407,9 @@ class M3Mitigation:
         else:
             raise M3Error("Unknown backend type")
         # Determine the number of jobs required
-        num_jobs = num_circs // max_circuits + 1
+        num_jobs = ceil(num_circs / max_circuits)
         # Get the slice length
-        circ_slice = num_circs // num_jobs + 1
+        circ_slice = ceil(num_circs / num_jobs)
         circs_list = [
             trans_qcs[kk * circ_slice: (kk + 1) * circ_slice]
             for kk in range(num_jobs - 1)
@@ -855,7 +856,11 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
             return
         else:
             _counts = res.get_counts()
-            counts.extend(_counts)
+            # _counts can be a list or a dict (if only one circuit was executed within the job)
+            if isinstance(_counts, list):
+                counts.extend(_counts)
+            else:
+                counts.append(_counts)
     # attach timestamp
     timestamp = res.date
     # Needed since Aer result date is str but IBMQ job is datetime
