@@ -17,6 +17,7 @@ import threading
 import datetime
 from math import ceil
 from time import perf_counter
+import logging
 
 import psutil
 import numpy as np
@@ -39,6 +40,8 @@ from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
 from ._helpers import system_info
+
+logger = logging.getLogger(__name__)
 
 
 class M3Mitigation:
@@ -340,8 +343,11 @@ class M3Mitigation:
         if self.rep_delay is None:
             self.rep_delay = rep_delay
 
+        logger.info("Grabbing calibration data for qubits=%s, method=%s, async_cal=%s",
+                    qubits, method, async_cal)
+
         if method not in ["independent", "balanced", "marginal"]:
-            raise M3Error("Invalid calibration method.")
+            raise M3Error(f"Invalid calibration method {method}.")
 
         if isinstance(qubits, dict):
             # Assuming passed a mapping
@@ -371,6 +377,7 @@ class M3Mitigation:
         # shots is needed here because balanced cals will use a value
         # different from cal_shots
         shots = self.cal_shots
+        logger.info("Generating calibration circuits.")
         if method == "marginal":
             trans_qcs = _marg_meas_states(
                 qubits, self.num_qubits, initial_reset=initial_reset
@@ -408,6 +415,8 @@ class M3Mitigation:
             raise M3Error("Unknown backend type")
         # Determine the number of jobs required
         num_jobs = ceil(num_circs / max_circuits)
+        logger.info("Generated %s circuits, which will run in %s jobs using %s shots",
+                    num_circs, num_jobs, shots)
         # Get the slice length
         circ_slice = ceil(num_circs / num_jobs)
         circs_list = [
@@ -475,6 +484,7 @@ class M3Mitigation:
         Raises:
             M3Error: Bitstring length does not match number of qubits given.
         """
+        logger.info("Apply correction to %s bitstrings", len(counts))
         if len(counts) == 0:
             raise M3Error("Input counts is any empty dict.")
         given_list = False
@@ -507,7 +517,13 @@ class M3Mitigation:
 
         quasi_out = []
         details_out = []
+        log_iter = max(len(counts) // 20, 1)
+        logger.info("Start applying correction using method %s", method)
         for idx, cnts in enumerate(counts):
+            if logger.getEffectiveLevel == logging.DEBUG:
+                if idx % log_iter == 0:
+                    logger.debug("Applying correction %s/%s", idx, len(counts))
+                st = perf_counter()
             corrected = self._apply_correction(
                     cnts,
                     qubits=qubits[idx],
@@ -518,11 +534,16 @@ class M3Mitigation:
                     return_mitigation_overhead=return_mitigation_overhead,
                     details=details,
             )
+            if logger.getEffectiveLevel == logging.DEBUG:
+                dur = perf_counter() - st
+                if dur > 1:
+                    logger.warning("It look %s seconds to process %s", dur, cnts)
             if details:
                 quasi_out.append(corrected[0])
                 details_out.append(corrected[1])
             else:
                 quasi_out.append(corrected)
+        logger.info("All done applying correction")
 
         if not given_list:
             if details:
@@ -861,6 +882,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
                 counts.extend(_counts)
             else:
                 counts.append(_counts)
+    logger.info("All jobs are done.")
     # attach timestamp
     timestamp = res.date
     # Timestamp can be None
