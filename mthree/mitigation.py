@@ -520,7 +520,7 @@ class M3Mitigation:
         log_iter = max(len(counts) // 20, 1)
         logger.info("Start applying correction using method %s", method)
         for idx, cnts in enumerate(counts):
-            if logger.getEffectiveLevel == logging.DEBUG:
+            if logger.isEnabledFor(logging.DEBUG):
                 if idx % log_iter == 0:
                     logger.debug("Applying correction %s/%s", idx, len(counts))
                 st = perf_counter()
