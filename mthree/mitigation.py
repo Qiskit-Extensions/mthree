@@ -534,10 +534,12 @@ class M3Mitigation:
                     return_mitigation_overhead=return_mitigation_overhead,
                     details=details,
             )
-            if logger.getEffectiveLevel == logging.DEBUG:
+            if logger.isEnabledFor(logging.DEBUG):
                 dur = perf_counter() - st
                 if dur > 1:
                     logger.warning("It look %s seconds to process %s", dur, cnts)
+                    if details:
+                        logger.debug("Correction details: %s", corrected[1])
             if details:
                 quasi_out.append(corrected[0])
                 details_out.append(corrected[1])
