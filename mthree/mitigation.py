@@ -24,7 +24,7 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit.providers import Backend, BackendV2, BackendV1
+from qiskit.providers import BackendV2, BackendV1
 
 from mthree.circuits import (
     _tensor_meas_states,
