@@ -11,7 +11,7 @@
 # that they have been altered from the originals.
 
 """Test multiple job submission"""
-from qiskit.providers.fake_provider import FakeKolkata
+from qiskit_ibm_runtime.fake_provider import FakeKolkata
 import mthree
 
 

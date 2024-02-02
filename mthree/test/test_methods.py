@@ -14,8 +14,8 @@
 """Test is various methods agree"""
 
 import numpy as np
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 
 
@@ -30,7 +30,7 @@ def test_methods_equality():
     qc.measure_all()
 
     backend = FakeAthens()
-    raw_counts = execute(qc, backend, shots=2048).result().get_counts()
+    raw_counts = backend.run(qc, shots=2048).result().get_counts()
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
@@ -54,7 +54,7 @@ def test_set_iterative():
     qc.measure_all()
 
     backend = FakeAthens()
-    raw_counts = execute(qc, backend, shots=4096).result().get_counts()
+    raw_counts = backend.run(qc, shots=4096).result().get_counts()
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(shots=4096)

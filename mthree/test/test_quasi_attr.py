@@ -11,8 +11,8 @@
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
 """Test matrix elements"""
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeMontreal
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeMontreal
 import mthree
 
 
@@ -35,8 +35,8 @@ def test_quasi_attr_set():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(qubits)
 
-    raw_counts = execute(qc, backend, shots=1024,
-                         initial_layout=qubits).result().get_counts()
+    raw_counts = backend.run(qc, shots=1024,
+                             initial_layout=qubits).result().get_counts()
     quasi1 = mit.apply_correction(raw_counts, qubits,
                                   return_mitigation_overhead=True, method='direct')
     quasi2 = mit.apply_correction(raw_counts, qubits,
