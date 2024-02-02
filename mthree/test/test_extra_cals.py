@@ -15,7 +15,7 @@
 
 import numpy as np
 import orjson
-from qiskit import QuantumCircuit, execute
+from qiskit import QuantumCircuit
 from qiskit_ibm_runtime.fake_provider import FakeAthens
 
 import mthree
@@ -33,7 +33,7 @@ def test_missing_qubit_cal():
     qc.measure_all()
 
     backend = FakeAthens()
-    raw_counts = execute(qc, backend, shots=2048).result().get_counts()
+    raw_counts = backend.run(qc, shots=2048).result().get_counts()
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(4))
@@ -57,7 +57,7 @@ def test_missing_all_cals():
     qc.measure_all()
 
     backend = FakeAthens()
-    raw_counts = execute(qc, backend, shots=2048).result().get_counts()
+    raw_counts = backend.run(qc, shots=2048).result().get_counts()
 
     mit = mthree.M3Mitigation(backend)
     _ = mit.apply_correction(raw_counts, range(5))
