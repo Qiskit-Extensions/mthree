@@ -24,7 +24,6 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit import execute
 from qiskit.providers import Backend, BackendV2, BackendV1
 
 from mthree.circuits import (
@@ -424,24 +423,12 @@ class M3Mitigation:
             for kk in range(num_jobs - 1)
         ] + [trans_qcs[(num_jobs - 1) * circ_slice:]]
         # Do job submission here
-        # This Backend check is here for Qiskit direct access.  Should be removed later.
         jobs = []
-        if not isinstance(self.system, Backend):
-            for circs in circs_list:
-                _job = execute(
-                    circs,
-                    self.system,
-                    optimization_level=0,
-                    shots=shots,
-                    rep_delay=self.rep_delay,
-                )
-                jobs.append(_job)
-        else:
-            for circs in circs_list:
-                _job = self.system.run(circs, shots=shots, rep_delay=self.rep_delay)
-                jobs.append(_job)
+        for circs in circs_list:
+            _job = self.system.run(circs, shots=shots, rep_delay=self.rep_delay)
+            jobs.append(_job)
 
-        # Execute job and cal building in new theread.
+        # Execute job and cal building in new thread.
         self._job_error = None
         if async_cal:
             thread = threading.Thread(
