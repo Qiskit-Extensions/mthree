@@ -25,7 +25,7 @@ For example consider the Bernstein-Vazirani circuit
     qc.h(range(4))
     qc.barrier()
     qc.measure(range(4), range(4))
-    qc.draw('text')
+    qc.draw('mpl')
 
 The target Casablanca system does not have the needed connectivity to natively
 embed the circuit and we must SWAP map it:
@@ -34,7 +34,7 @@ embed the circuit and we must SWAP map it:
 
     backend = FakeCasablanca()
     trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=12345)
-    trans_qc.draw('text')
+    trans_qc.draw('mpl')
 
 
 We can see from the measurements at the end that what was circuit qubit 0 is now mapped to physical

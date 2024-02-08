@@ -26,7 +26,7 @@ bits they correspond to.  Here we show another example of this usage.  First we 
     qc.h(0)
     qc.cx(0, range(1,7))
     qc.measure_all()
-    qc.draw('text')
+    qc.draw('mpl')
 
 and then transpile it:
 
@@ -34,7 +34,7 @@ and then transpile it:
 
     backend = FakeCasablanca()
     trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=54321)
-    trans_qc.draw('text')
+    trans_qc.draw('mpl')
 
 Once again we see that the physical qubits used and to which classical bits they map
 to is non-trivial to find.  Yet this information is critical for successfully mitigating

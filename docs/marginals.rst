@@ -28,7 +28,7 @@ Consider the following circuit that we would like to evaluate:
     for kk in range(N//2, N-1):
         qc.ch(kk, kk+1)
     qc.measure_all()
-    qc.draw('text')
+    qc.draw('mpl')
 
 
 Let us first map this onto the target system and compute the final measurement mapping:
