@@ -19,7 +19,7 @@ bits they correspond to.  Here we show another example of this usage.  First we 
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(7)
@@ -66,7 +66,7 @@ For example let us compare raw data verse the mitigated results in a simple case
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthens
     backend = FakeAthens()
     qc = QuantumCircuit(4)
     qc.h(2)

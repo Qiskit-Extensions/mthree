@@ -13,8 +13,8 @@
 
 """Test collection classes"""
 import numpy as np
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 
 
@@ -30,7 +30,7 @@ def test_mit_overhead():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute([qc]*10, backend).result().get_counts()
+    raw_counts = backend.run([qc]*10).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5),
@@ -52,7 +52,7 @@ def test_shots():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute([qc]*10, backend, shots=4321).result().get_counts()
+    raw_counts = backend.run([qc]*10, shots=4321).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(5),

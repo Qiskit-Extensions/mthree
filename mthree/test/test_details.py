@@ -13,7 +13,7 @@
 
 """Test details handling"""
 from qiskit import QuantumCircuit, transpile
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 
 import mthree
 

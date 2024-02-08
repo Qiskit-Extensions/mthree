@@ -16,7 +16,7 @@ over direct LU factorization (selection also depends on free memory).
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     backend = FakeCasablanca()

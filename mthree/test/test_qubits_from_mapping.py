@@ -12,7 +12,7 @@
 
 """Test QuantumCircuit final measurement mapping"""
 from qiskit import QuantumCircuit, transpile
-from qiskit.providers.fake_provider import FakeCasablanca
+from qiskit_ibm_runtime.fake_provider import FakeCasablanca
 import mthree
 from mthree.utils import final_measurement_mapping
 

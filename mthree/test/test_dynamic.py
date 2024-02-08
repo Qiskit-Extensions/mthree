@@ -13,10 +13,10 @@
 
 """Test matrix elements"""
 from qiskit import QuantumCircuit, transpile
-from qiskit.providers.fake_provider import FakeKolkata
 # Transpiler passes for optimizing dynamic circuits
 from qiskit.transpiler import PassManager
 from qiskit.transpiler.passes.optimization import ResetAfterMeasureSimplification
+from qiskit_ibm_runtime.fake_provider import FakeKolkata
 
 import mthree
 

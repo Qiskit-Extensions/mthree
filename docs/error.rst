@@ -14,7 +14,7 @@ Let us first calibrate the mitigator and get raw results:
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(6)

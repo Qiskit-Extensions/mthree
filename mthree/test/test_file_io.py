@@ -14,8 +14,8 @@
 """Test cals file IO"""
 import os
 import numpy as np
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 
 
@@ -31,7 +31,7 @@ def test_load_cals_from_file():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(cals_file='cals.json')
 
@@ -65,7 +65,7 @@ def test_load_cals_from_file2():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(shots=12345)
     mit.cals_to_file('cals.json')

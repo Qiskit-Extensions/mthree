@@ -17,7 +17,7 @@ consider the balanced calibration circuits for 5 qubits:
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthens
     import mthree
 
     mthree.circuits.balanced_cal_strings(5)

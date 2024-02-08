@@ -16,7 +16,7 @@ Consider the following circuit that we would like to evaluate:
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeGuadalupe
+    from qiskit_ibm_runtime.fake_provider import FakeGuadalupe
     import mthree
 
     N = 6
