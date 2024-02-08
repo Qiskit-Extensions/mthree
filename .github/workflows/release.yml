@@ -65,5 +65,5 @@ jobs:
       - name: Publish to PyPi
         env:
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-          TWINE_USERNAME: nonhermitian
+          TWINE_USERNAME: __token__
         run: twine upload dist/mthree*
