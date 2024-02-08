@@ -24,7 +24,7 @@ from Cython.Build import cythonize
 
 MAJOR = 2
 MINOR = 6
-MICRO = 2
+MICRO = 3
 
 ISRELEASED = True
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
@@ -200,7 +200,6 @@ setuptools.setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
