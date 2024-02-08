@@ -11,7 +11,7 @@
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module
 """Test matrix elements"""
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, transpile
 from qiskit_ibm_runtime.fake_provider import FakeMontreal
 import mthree
 
@@ -24,10 +24,10 @@ def test_quasi_attr_set():
     qc = QuantumCircuit(N)
     qc.x(range(0, N))
     qc.h(range(0, N))
-    for kk in range(N//2, 0, -1):
-        qc.ch(kk, kk-1)
-    for kk in range(N//2, N-1):
-        qc.ch(kk, kk+1)
+    for kk in range(N // 2, 0, -1):
+        qc.ch(kk, kk - 1)
+    for kk in range(N // 2, N - 1):
+        qc.ch(kk, kk + 1)
     qc.measure_all()
 
     qubits = [1, 4, 7, 10, 12, 13]
@@ -35,17 +35,24 @@ def test_quasi_attr_set():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(qubits)
 
-    raw_counts = backend.run(qc, shots=1024,
-                             initial_layout=qubits).result().get_counts()
-    quasi1 = mit.apply_correction(raw_counts, qubits,
-                                  return_mitigation_overhead=True, method='direct')
-    quasi2 = mit.apply_correction(raw_counts, qubits,
-                                  return_mitigation_overhead=True, method='iterative')
+    raw_counts = (
+        backend.run(transpile(qc, backend, initial_layout=qubits), shots=1024)
+        .result()
+        .get_counts()
+    )
+    quasi1 = mit.apply_correction(
+        raw_counts, qubits, return_mitigation_overhead=True, method="direct"
+    )
+    quasi2 = mit.apply_correction(
+        raw_counts, qubits, return_mitigation_overhead=True, method="iterative"
+    )
 
-    quasi3 = mit.apply_correction(raw_counts, qubits,
-                                  return_mitigation_overhead=False, method='direct')
-    quasi4 = mit.apply_correction(raw_counts, qubits,
-                                  return_mitigation_overhead=False, method='iterative')
+    quasi3 = mit.apply_correction(
+        raw_counts, qubits, return_mitigation_overhead=False, method="direct"
+    )
+    quasi4 = mit.apply_correction(
+        raw_counts, qubits, return_mitigation_overhead=False, method="iterative"
+    )
 
     shots = 1024
     assert quasi1.shots == shots

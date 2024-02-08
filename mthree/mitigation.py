@@ -782,7 +782,7 @@ class M3Mitigation:
         out, error = spla.gmres(
             L,
             vec,
-            tol=tol,
+            rtol=tol,
             atol=tol,
             maxiter=max_iter,
             M=P,
