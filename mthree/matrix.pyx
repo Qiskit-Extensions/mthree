@@ -29,7 +29,7 @@ cdef double matrix_element(unsigned int row,
                            const double * cals,
                            unsigned int num_bits,
                            unsigned int distance,
-                           unsigned int MAX_DIST) nogil:
+                           unsigned int MAX_DIST) noexcept nogil:
     
     cdef size_t kk
     cdef double out = 0
@@ -82,7 +82,7 @@ cdef void omp_element_compute(size_t jj, const unsigned char * bitstrings,
                               unsigned int distance,
                               double * W_ptr,
                               double * col_norms_ptr,
-                              unsigned int MAX_DIST) nogil:
+                              unsigned int MAX_DIST) noexcept nogil:
     """Computes the matrix elements for a single column
     """
     cdef double _temp, col_norm = 0
@@ -168,7 +168,7 @@ cdef void omp_sdd_compute(size_t row,
                           unsigned int num_bits,
                           unsigned int num_elems,
                           unsigned int distance,
-                          unsigned int MAX_DIST) nogil:
+                          unsigned int MAX_DIST) noexcept nogil:
 
     cdef size_t col
     cdef double diag_elem, mat_elem, row_sum = 0

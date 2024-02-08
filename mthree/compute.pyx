@@ -18,7 +18,7 @@ cdef inline unsigned int within_distance(unsigned int row,
                                          unsigned int col,
                                          const unsigned char * bitstrings,
                                          unsigned int num_bits,
-                                         unsigned int distance) nogil:
+                                         unsigned int distance) noexcept nogil:
     """Computes the Hamming distance between two bitstrings.
 
     Parameters:
@@ -47,7 +47,7 @@ cdef inline double compute_element(unsigned int row,
                                    unsigned int col,
                                    const unsigned char * bitstrings,
                                    const double * cals,
-                                   unsigned int num_bits) nogil:
+                                   unsigned int num_bits) noexcept nogil:
     """Computes the matrix element specified by the input
     bit strings from the supplied tensored cals data.
 
@@ -78,7 +78,7 @@ cdef void compute_col_norms(double * col_norms,
                             const double * cals,
                             unsigned int num_bits,
                             unsigned int num_elems,
-                            unsigned int distance) nogil:
+                            unsigned int distance) noexcept nogil:
     """Compute the matrix column norms for each bitstring.
 
     Parameters:
@@ -113,7 +113,7 @@ cdef double _inner_col_norm_loop(unsigned int col,
                                  unsigned int num_bits,
                                  unsigned int num_elems,
                                  unsigned int distance,
-                                 unsigned int MAX_DIST) nogil:
+                                 unsigned int MAX_DIST) noexcept nogil:
     """An inner-loop function for computing col_norms in parallel.
 
     This is needed to get around an issue with how Cython tries to do
@@ -143,7 +143,7 @@ cdef double _inner_col_norm_loop(unsigned int col,
 
 
 @cython.cdivision(True)
-cdef unsigned int binomial_coeff(unsigned int n, unsigned int k) nogil:
+cdef unsigned int binomial_coeff(unsigned int n, unsigned int k) noexcept nogil:
     """Computes the binomial coefficient n choose k
     
     Parameters:
@@ -167,7 +167,7 @@ cdef unsigned int binomial_coeff(unsigned int n, unsigned int k) nogil:
 
 
 @cython.boundscheck(False)
-cdef unsigned int hamming_terms(unsigned int num_bits, unsigned int distance) nogil:
+cdef unsigned int hamming_terms(unsigned int num_bits, unsigned int distance) noexcept nogil:
     """Compute the total number of terms within a given Hamming distance
     
     Parameters:
