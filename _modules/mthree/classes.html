@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+  <html class="no-js" lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>mthree.classes &mdash; Mthree 2.6.0 2.6.0 documentation</title>
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/jupyter-sphinx.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/thebelab.css" type="text/css" /><script src="../../_static/js/web-components/top-nav-bar.js"></script>
+
+  <!-- SEGMENT ANALYTICS --></head>
+<body class="pytorch-body">
+  <!-- UNIFIED TOP MENU -->
+  <qiskit-ui-shell variant="hide-account"></qiskit-ui-shell>
+
+   
+
+    <!-- LEFT SIDE BAR -->
+
+    <!-- if translations available, display language dropdown menu -->
+    
+
+    <!-- Menu becomes dropdown in mobile view -->
+    <div class="table-of-contents-link-wrapper">
+      <span>Table of Contents</span>
+      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+    </div>
+
+    <!-- left side bar main content -->
+    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
+    <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <div class="sidebar">
+    <div class="pytorch-left-menu-search">
+        <div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search Mthree 2.6.0 Docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+    </div>
+
+    <!-- render sidebar from the toctree -->
+    
+    
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.6.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../basic.html">Basic usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../transpiled.html">Transpiled circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../expvals.html">Expectation values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sampling.html">Sampling problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../collections.html">Using collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../grouped.html">Grouped operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../error.html">Error analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../marginals.html">Low-weight operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../probs.html">Obtaining probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cal_io.html">Saving and loading calibrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utility functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../balanced.html">Balanced calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced.html">Advanced usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/01_M3_ex1.html">M3 paper example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/02_correcting_probs.html">Correcting probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/03_qv_example.html">Quantum Volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/04_dynamic_bv.html">Dynamic Bernstein–Vazirani</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/10_basic_vqe.html">Basic mitigated VQE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../apidocs/main.html">Mitigation class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apidocs/classes.html">Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apidocs/classes.html#distribution-collections">Distribution collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apidocs/utils.html">Utility functions</a></li>
+</ul>
+
+    
+
+    <!-- PREVIOUS RELEASES -->
+        
+
+    </div>
+  </div>
+</nav>
+
+<!-- OPTIONAL EXPANDABLE FUNCTIONALITY -->
+
+
+<!-- STYLING -->
+<script>
+    // indent subheadings under captions
+    expandable_rows = document.getElementsByClassName("caption");
+    var i;
+    for (i = 0; i < expandable_rows.length; i++) {
+        expandable_rows[i].nextElementSibling.style.marginLeft = "1rem"
+
+        // un-bold subheadings in dropdown
+        var subheadings = expandable_rows[i].nextElementSibling
+        for (j = 0; j < subheadings.children.length; j++) {
+            subheadings.children[j].style.fontWeight = "unset"
+        }
+    }
+
+    // adjust toctree class name to style external links
+    var toc_rows = document.getElementsByClassName("toctree-l1");
+    var i;
+    for (i = 0; i < toc_rows.length; i++) {
+        if (toc_rows[i].children[0].className === "reference external") {
+            toc_rows[i].className = "toctree-l1-external"
+            }
+    }
+
+    // expand and unexpand previous releases dropdown when clicked
+    var release_rows = document.getElementsByClassName("sidebar-l1-expandable");
+    for (i = 0; i < release_rows.length; i++) {
+        release_rows[i].addEventListener("click", function() {
+            this.classList.toggle("open");
+            var clicked_subheadings = this.nextElementSibling;
+            if (clicked_subheadings.style.display === "block") {
+            clicked_subheadings.style.display = "none";
+            } else {
+            clicked_subheadings.style.display = "block";
+            }
+        });
+    }
+</script>
+
+    <div class="pytorch-container">
+
+      <!-- BREADCRUMB MINI MENU BELOW TOP NAV BAR -->
+      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
+        <div class="pytorch-breadcrumbs-wrapper">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="pytorch-breadcrumbs">
+    
+      <li>
+        <a href="../../index.html">
+            Mthree 2.6.0 2.6.0 documentation
+        </a> &gt;
+      </li>
+
+        
+          <li><a href="../index.html">Module code</a> &gt;</li>
+        
+      <li>mthree.classes</li>
+    
+  </ul>
+</div>
+        </div>
+      </div>
+
+      <!-- MAIN CENTRE CONTENT -->
+      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
+        
+        <div class="pytorch-content-left">
+          <div class="rst-content">
+            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
+             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
+              
+  <h1>Source code for mthree.classes</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This code is part of Mthree.</span>
+<span class="c1">#</span>
+<span class="c1"># (C) Copyright IBM 2021.</span>
+<span class="c1">#</span>
+<span class="c1"># This code is licensed under the Apache License, Version 2.0. You may</span>
+<span class="c1"># obtain a copy of this license in the LICENSE.txt file in the root directory</span>
+<span class="c1"># of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.</span>
+<span class="c1">#</span>
+<span class="c1"># Any modifications or derivative works of this code must retain this</span>
+<span class="c1"># copyright notice, and modified files need to carry a notice indicating</span>
+<span class="c1"># that they have been altered from the originals.</span>
+<span class="c1"># pylint: disable=no-name-in-module</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Distributions</span>
+<span class="sd">-------------</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">   :toctree: ../stubs/</span>
+
+<span class="sd">   QuasiDistribution</span>
+<span class="sd">   ProbDistribution</span>
+
+<span class="sd">Distribution collections</span>
+<span class="sd">------------------------</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">   :toctree: ../stubs/</span>
+
+<span class="sd">   QuasiCollection</span>
+<span class="sd">   ProbCollection</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qiskit.result</span> <span class="kn">import</span> <span class="n">Counts</span>
+
+<span class="kn">from</span> <span class="nn">mthree.probability</span> <span class="kn">import</span> <span class="n">quasi_to_probs</span>
+<span class="kn">from</span> <span class="nn">mthree.expval</span> <span class="kn">import</span> <span class="n">exp_val</span>
+<span class="kn">from</span> <span class="nn">mthree.exceptions</span> <span class="kn">import</span> <span class="n">M3Error</span>
+
+
+<div class="viewcode-block" id="ProbDistribution">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbDistribution.html#mthree.classes.ProbDistribution">[docs]</a>
+<span class="k">class</span> <span class="nc">ProbDistribution</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A generic dict-like class for probability distributions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mitigation_overhead</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A generic dict-like class for probability distributions.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (dict or Counts or ProbDistribution or QuasiDistribution): Input data.</span>
+<span class="sd">            shots (int): Number shots taken to form distribution.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Input not derived from discrete samples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># _gen_call means being called from the general utils function</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Counts</span><span class="p">):</span>
+            <span class="c1"># Convert Counts to probs</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">shots</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">_data</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">_data</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">=</span> <span class="n">mitigation_overhead</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProbDistribution.expval">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbDistribution.html#mthree.classes.ProbDistribution.expval">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation value from distribution.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): String representation of diagonal</span>
+<span class="sd">                                           qubit operators</span>
+<span class="sd">                                           used in computing the expectation value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Expectation value.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Invalid type passed to exp_ops</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">exp_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="n">exp_ops</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">exp_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_ops</span><span class="o">=</span><span class="n">exp_ops</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">exp_ops</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Invalid type passed to exp_ops&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProbDistribution.stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbDistribution.html#mthree.classes.ProbDistribution.stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute standard deviation from distribution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Standard deviation.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Distribution is missing info.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Prob-dist is missing shots information.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Prob-dist is missing mitigation overhead.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProbDistribution.expval_and_stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbDistribution.html#mthree.classes.ProbDistribution.expval_and_stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval_and_stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation value and standard deviation from distribution.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict): String or dict representation of diagonal qubit operators</span>
+<span class="sd">                                   used in computing the expectation value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Expectation value.</span>
+<span class="sd">            float: Standard deviation.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="QuasiDistribution">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiDistribution.html#mthree.classes.QuasiDistribution">[docs]</a>
+<span class="k">class</span> <span class="nc">QuasiDistribution</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dict-like class for representing quasi-probabilities.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mitigation_overhead</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A dict-like class for representing quasi-probabilities.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (dict): Input data.</span>
+<span class="sd">            shots (int): Number shots taken to form quasi-distribution.</span>
+<span class="sd">            mitigation_overhead (float): Overhead from performing mitigation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">=</span> <span class="n">mitigation_overhead</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QuasiDistribution.expval">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiDistribution.html#mthree.classes.QuasiDistribution.expval">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation value from distribution.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): String or dict representation</span>
+<span class="sd">                                           of diagonal qubit operators</span>
+<span class="sd">                                           used in computing the expectation</span>
+<span class="sd">                                           value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Expectation value.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Invalid type passed to exp_ops.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">exp_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="n">exp_ops</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">exp_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_ops</span><span class="o">=</span><span class="n">exp_ops</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">exp_ops</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Invalid type passed to exp_ops&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiDistribution.stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiDistribution.html#mthree.classes.QuasiDistribution.stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute standard deviation estimate from distribution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Estimate of standard deviation upper-bound.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Missing shots or mitigation_overhead information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Quasi-dist is missing shots information.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;Quasi-dist is missing mitigation overhead.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiDistribution.expval_and_stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiDistribution.html#mthree.classes.QuasiDistribution.expval_and_stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval_and_stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation value and standard deviation estimate from distribution.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict): String or dict representation of diagonal qubit operators</span>
+<span class="sd">                                   used in computing the expectation value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Expectation value.</span>
+<span class="sd">            float: Estimate of standard deviation upper-bound.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">stddev</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="QuasiDistribution.nearest_probability_distribution">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiDistribution.html#mthree.classes.QuasiDistribution.nearest_probability_distribution">[docs]</a>
+    <span class="k">def</span> <span class="nf">nearest_probability_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_distance</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Takes a quasiprobability distribution and maps</span>
+<span class="sd">        it to the closest probability distribution as defined by</span>
+<span class="sd">        the L2-norm.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            return_distance (bool): Return the L2 distance between distributions.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ProbDistribution: Nearest probability distribution.</span>
+<span class="sd">            float: Euclidean (L2) distance of distributions.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            Method from Smolin et al., Phys. Rev. Lett. 108, 070502 (2012).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">probs</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">quasi_to_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">return_distance</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ProbDistribution</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span><span class="p">),</span> <span class="n">dist</span>
+        <span class="k">return</span> <span class="n">ProbDistribution</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shots</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mitigation_overhead</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="QuasiCollection">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">QuasiCollection</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list subclass that makes handling multiple quasi-distributions easier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;QuasiCollection constructor.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (list or QuasiCollection): List of QuasiDistribution instances.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: Must be list of QuasiDistribution only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">dd</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">QuasiDistribution</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;QuasiCollection requires QuasiDistribution instances.&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of shots taken over collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of shots values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">shots</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mitigation_overhead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mitigation overhead over entire collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of mitigation overhead values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QuasiCollection.expval">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection.expval">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expectation value over entire collection.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): Diagonal operators over which to compute expval.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of expectation values.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Length of passes operators does not match container length.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;exp_ops length does not match container length&#39;</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">out</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="QuasiCollection.expval_and_stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection.expval_and_stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval_and_stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expectation value and standard deviation over entire collection.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): Diagonal operators over which to compute expval.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Tuples of expval and stddev pairs.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Length of passes operators does not match container length.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;exp_ops length does not match container length&#39;</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">expval_and_stddev</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">expval_and_stddev</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="QuasiCollection.stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection.stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Standard deviation over entire collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of standard deviations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">stddev</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="QuasiCollection.nearest_probability_distribution">
+<a class="viewcode-back" href="../../stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection.nearest_probability_distribution">[docs]</a>
+    <span class="k">def</span> <span class="nf">nearest_probability_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nearest probability distribution over collection</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ProbCollection: Collection of ProbDistributions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ProbCollection</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">nearest_probability_distribution</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ProbCollection">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbCollection.html#mthree.classes.ProbCollection">[docs]</a>
+<span class="k">class</span> <span class="nc">ProbCollection</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list subclass that makes handling multiple probability-distributions easier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;ProbCollection constructor.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            data (list or ProbCollection): List of ProbDistribution instances.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: Must be list of ProbDistribution only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">dd</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">ProbDistribution</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;ProbCollection requires ProbDistribution instances.&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of shots taken over collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of shots values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">shots</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mitigation_overhead</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mitigation overhead over entire collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of mitigation overhead values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProbCollection.expval">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbCollection.html#mthree.classes.ProbCollection.expval">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expectation value over entire collection.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): Diagonal operators over which to compute expval.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of expectation values.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Length of passes operators does not match container length.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;exp_ops length does not match container length&#39;</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">out</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProbCollection.expval_and_stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbCollection.html#mthree.classes.ProbCollection.expval_and_stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">expval_and_stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_ops</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expectation value and standard deviation over entire collection.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            exp_ops (str or dict or list): Diagonal operators over which to compute expval.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Tuples of expval and stddev pairs.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            M3Error: Length of passes operators does not match container length.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            The dict operator format is a sparse diagonal format</span>
+<span class="sd">            using bitstrings as the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s1">&#39;exp_ops length does not match container length&#39;</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">expval_and_stddev</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">expval_and_stddev</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ProbCollection.stddev">
+<a class="viewcode-back" href="../../stubs/mthree.classes.ProbCollection.html#mthree.classes.ProbCollection.stddev">[docs]</a>
+    <span class="k">def</span> <span class="nf">stddev</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Standard deviation over entire collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ndarray: Array of standard deviations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">item</span><span class="o">.</span><span class="n">stddev</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+             </article>
+            </div>
+            <footer>
+<!-- USER FEEDBACK -->
+  
+
+  <!-- NEXT/PREVIOUS BUTTONS -->
+  <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+    
+    
+  </div>
+
+  <div role="contentinfo">
+    <p>
+    <!-- SHOW QISKIT COPYRIGHT TEXT -->
+        &copy; Copyright 2021, Mthree Team.
+
+    <!-- SHOW DATE PAGE LAST UPDATED -->
+      Last updated on 2024/02/08.
+
+    </p>
+  </div>
+
+<!-- SHOW 'MADE WITH SPHINX' TEXT -->
+    
+      <div>
+        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using <a href="https://github.com/Qiskit/qiskit_sphinx_theme">Qiskit Sphinx Theme </a> (based on <a href="https://github.com/pytorch/pytorch_sphinx_theme"> PyTorch Sphinx Theme</a>).
+      </div>
+     
+<br>
+</footer>
+
+<script>
+  function clicked(ctaType) {
+    document.getElementById('was-helpful-thank-you').style.visibility = 'visible';
+    window.trackCta(`Helpful - ${ctaType}`);
+  }
+</script>
+
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE AUTOSUMMARY MENU -->
+        <div class="pytorch-content-right" id="pytorch-content-right">
+          <div class="pytorch-right-menu" id="pytorch-right-menu">
+            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
+              
+            </div>
+          </div>
+        </div>
+      </section>
+    </div> 
+
+  <!-- MOBILE MENU FOR SIDEBAR -->
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=ae39cb24"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/thebelab-helper.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <!-- enable language dropdown menu expand -->
+  <script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      mobileMenu.bind();
+      mobileTOC.bind();
+      sideMenus.bind();
+      scrollToAnchor.bind();
+      highlightNavigation.bind();
+      mainMenuDropdown.bind();
+      filterTags.bind();
+
+      // Add class to links that have code blocks, since we cannot create links in code blocks
+      $("article.pytorch-article a span.pre").each(function(e) {
+        $(this).closest("a").addClass("has-code");
+      });
+    })
+  </script>
+
+</body>
+</html>

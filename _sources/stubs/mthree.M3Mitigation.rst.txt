@@ -1,0 +1,51 @@
+﻿mthree.M3Mitigation
+===================
+
+.. currentmodule:: mthree
+
+.. autoclass:: M3Mitigation
+   :members:
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      
+            ~M3Mitigation.apply_correction
+         
+      
+            ~M3Mitigation.cals_from_file
+         
+      
+            ~M3Mitigation.cals_from_matrices
+         
+      
+            ~M3Mitigation.cals_from_system
+         
+      
+            ~M3Mitigation.cals_to_file
+         
+      
+            ~M3Mitigation.cals_to_matrices
+         
+      
+            ~M3Mitigation.readout_fidelity
+         
+      
+            ~M3Mitigation.reduced_cal_matrix
+         
+      
+            ~M3Mitigation.tensored_cals_from_file
+         
+      
+            ~M3Mitigation.tensored_cals_from_system
+         
+      
+   
+   
+
+   
+   
+   

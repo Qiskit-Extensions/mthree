@@ -1,0 +1,33 @@
+﻿mthree.classes.QuasiDistribution
+================================
+
+.. currentmodule:: mthree.classes
+
+.. autoclass:: QuasiDistribution
+   :members:
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      
+            ~QuasiDistribution.expval
+         
+      
+            ~QuasiDistribution.expval_and_stddev
+         
+      
+            ~QuasiDistribution.nearest_probability_distribution
+         
+      
+            ~QuasiDistribution.stddev
+         
+      
+   
+   
+
+   
+   
+   

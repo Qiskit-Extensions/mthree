@@ -1,0 +1,6 @@
+﻿mthree.utils.expval\_and\_stddev
+================================
+
+.. currentmodule:: mthree.utils
+
+.. autofunction:: expval_and_stddev

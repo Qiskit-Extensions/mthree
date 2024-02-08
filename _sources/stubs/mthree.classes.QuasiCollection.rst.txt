@@ -1,0 +1,40 @@
+﻿mthree.classes.QuasiCollection
+==============================
+
+.. currentmodule:: mthree.classes
+
+.. autoclass:: QuasiCollection
+   :members:
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      
+            ~QuasiCollection.expval
+         
+      
+            ~QuasiCollection.expval_and_stddev
+         
+      
+            ~QuasiCollection.nearest_probability_distribution
+         
+      
+            ~QuasiCollection.stddev
+         
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~QuasiCollection.mitigation_overhead
+      ~QuasiCollection.shots
+   
+   

@@ -1,0 +1,6 @@
+﻿mthree.utils.marginal\_distribution
+===================================
+
+.. currentmodule:: mthree.utils
+
+.. autofunction:: marginal_distribution

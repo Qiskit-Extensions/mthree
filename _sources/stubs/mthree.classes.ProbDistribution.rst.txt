@@ -1,0 +1,30 @@
+﻿mthree.classes.ProbDistribution
+===============================
+
+.. currentmodule:: mthree.classes
+
+.. autoclass:: ProbDistribution
+   :members:
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      
+            ~ProbDistribution.expval
+         
+      
+            ~ProbDistribution.expval_and_stddev
+         
+      
+            ~ProbDistribution.stddev
+         
+      
+   
+   
+
+   
+   
+   

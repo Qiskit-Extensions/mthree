@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+  <html class="no-js" lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Quantum Volume &mdash; Mthree 2.6.0 2.6.0 documentation</title>
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/jupyter-sphinx.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/thebelab.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" /><script src="../_static/js/web-components/top-nav-bar.js"></script>
+
+  <!-- SEGMENT ANALYTICS --></head>
+<body class="pytorch-body">
+  <!-- UNIFIED TOP MENU -->
+  <qiskit-ui-shell variant="hide-account"></qiskit-ui-shell>
+
+   
+
+    <!-- LEFT SIDE BAR -->
+
+    <!-- if translations available, display language dropdown menu -->
+    
+
+    <!-- Menu becomes dropdown in mobile view -->
+    <div class="table-of-contents-link-wrapper">
+      <span>Table of Contents</span>
+      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+    </div>
+
+    <!-- left side bar main content -->
+    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
+    <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <div class="sidebar">
+    <div class="pytorch-left-menu-search">
+        <div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search Mthree 2.6.0 Docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+    </div>
+
+    <!-- render sidebar from the toctree -->
+    
+    
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">mthree (2.6.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basic.html">Basic usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../transpiled.html">Transpiled circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expvals.html">Expectation values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sampling.html">Sampling problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../collections.html">Using collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../grouped.html">Grouped operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error.html">Error analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../marginals.html">Low-weight operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../probs.html">Obtaining probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cal_io.html">Saving and loading calibrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils.html">Utility functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../balanced.html">Balanced calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="01_M3_ex1.html">M3 paper example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_correcting_probs.html">Correcting probabilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quantum Volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_dynamic_bv.html">Dynamic Bernstein–Vazirani</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_basic_vqe.html">Basic mitigated VQE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../apidocs/main.html">Mitigation class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidocs/classes.html">Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidocs/classes.html#distribution-collections">Distribution collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidocs/utils.html">Utility functions</a></li>
+</ul>
+
+    
+
+    <!-- PREVIOUS RELEASES -->
+        
+
+    </div>
+  </div>
+</nav>
+
+<!-- OPTIONAL EXPANDABLE FUNCTIONALITY -->
+
+
+<!-- STYLING -->
+<script>
+    // indent subheadings under captions
+    expandable_rows = document.getElementsByClassName("caption");
+    var i;
+    for (i = 0; i < expandable_rows.length; i++) {
+        expandable_rows[i].nextElementSibling.style.marginLeft = "1rem"
+
+        // un-bold subheadings in dropdown
+        var subheadings = expandable_rows[i].nextElementSibling
+        for (j = 0; j < subheadings.children.length; j++) {
+            subheadings.children[j].style.fontWeight = "unset"
+        }
+    }
+
+    // adjust toctree class name to style external links
+    var toc_rows = document.getElementsByClassName("toctree-l1");
+    var i;
+    for (i = 0; i < toc_rows.length; i++) {
+        if (toc_rows[i].children[0].className === "reference external") {
+            toc_rows[i].className = "toctree-l1-external"
+            }
+    }
+
+    // expand and unexpand previous releases dropdown when clicked
+    var release_rows = document.getElementsByClassName("sidebar-l1-expandable");
+    for (i = 0; i < release_rows.length; i++) {
+        release_rows[i].addEventListener("click", function() {
+            this.classList.toggle("open");
+            var clicked_subheadings = this.nextElementSibling;
+            if (clicked_subheadings.style.display === "block") {
+            clicked_subheadings.style.display = "none";
+            } else {
+            clicked_subheadings.style.display = "block";
+            }
+        });
+    }
+</script>
+
+    <div class="pytorch-container">
+
+      <!-- BREADCRUMB MINI MENU BELOW TOP NAV BAR -->
+      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
+        <div class="pytorch-breadcrumbs-wrapper">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="pytorch-breadcrumbs">
+    
+      <li>
+        <a href="../index.html">
+            Mthree 2.6.0 2.6.0 documentation
+        </a> &gt;
+      </li>
+
+        
+      <li>Quantum Volume</li>
+    
+  </ul>
+</div>
+        </div>
+      </div>
+
+      <!-- MAIN CENTRE CONTENT -->
+      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
+        
+        <div class="pytorch-content-left">
+          <div class="rst-content">
+            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
+             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
+              
+  <section id="Quantum-Volume">
+<h1>Quantum Volume<a class="headerlink" href="#Quantum-Volume" title="Link to this heading">¶</a></h1>
+<p>Here we show off using the expectation value functionality of the M3 distribution classes using Quantum Volume (QV) as an example. Here we formulate QV as an expectation value of a projector onto the heavy-output elements on a distribution.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qiskit.quantum_info</span> <span class="kn">import</span> <span class="n">Statevector</span>
+<span class="kn">from</span> <span class="nn">qiskit.circuit.library</span> <span class="kn">import</span> <span class="n">QuantumVolume</span>
+<span class="kn">import</span> <span class="nn">mthree</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeBurlington</span>
+<span class="n">noisy_sim</span> <span class="o">=</span> <span class="n">FakeBurlington</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>QV is defined in terms of heavy-ouputs of a distribution. Heavy-outputs are those bit-strings that are those that have probabilities above the median value of the distribution. Below we define the projection operator onto the set of bit-strings that are heavy-outputs for a given distribution.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">heavy_projector</span><span class="p">(</span><span class="n">qv_probs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Forms the projection operator onto the heavy-outputs of a given probability distribution.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        qv_probs (dict): A dictionary of bitstrings and associated probabilities.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Projector onto the heavy-set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">median_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">qv_probs</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">heavy_strs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">qv_probs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;</span> <span class="n">median_prob</span><span class="p">:</span>
+            <span class="n">heavy_strs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">heavy_strs</span>
+</pre></div>
+</div>
+</div>
+<p>Now we generate 10 QV circuits as our dataset.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate QV circuits</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">qv_circs</span> <span class="o">=</span> <span class="p">[</span><span class="n">QuantumVolume</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<p>Next, we have to determine the heavy-set of each circuit from the ideal answer, and then pass this along to our heavy-set projector function that we defined above.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute ideal distributions and projectors on the heavy set.</span>
+<span class="n">ideal_probs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Statevector</span><span class="o">.</span><span class="n">from_instruction</span><span class="p">(</span><span class="n">circ</span><span class="p">)</span><span class="o">.</span><span class="n">probabilities_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">qv_circs</span><span class="p">]</span>
+<span class="n">heavy_projectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">heavy_projector</span><span class="p">(</span><span class="n">probs</span><span class="p">)</span> <span class="k">for</span> <span class="n">probs</span> <span class="ow">in</span> <span class="n">ideal_probs</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Now, in preparation for actual execution, we add measurements to the end of our QV circuits, and compile them for the target device</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add meauserements to circuits and transpile</span>
+<span class="n">trans_circs</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">([</span><span class="n">circ</span><span class="o">.</span><span class="n">measure_all</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">qv_circs</span><span class="p">],</span> <span class="n">noisy_sim</span><span class="p">,</span>
+                        <span class="n">layout_method</span><span class="o">=</span><span class="s1">&#39;sabre&#39;</span><span class="p">,</span> <span class="n">routing_method</span><span class="o">=</span><span class="s1">&#39;sabre&#39;</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Because the SWAP mapping of the circuit permutes the qubit states, we need the final measurement mapping for each circuit to know which physical qubit corresponds to each measured bit:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determine final qubit mappings</span>
+<span class="n">maps</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">final_measurement_mapping</span><span class="p">(</span><span class="n">trans_circs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We now calibrate our M3 mitigator over only those qubits used in the QV circuits. (We use the <code class="docutils literal notranslate"><span class="pre">independent</span></code> method since it is much faster to do so on a simulator.) We can directly pass the maps to the calibrtion routine and it will calibrate over the ful lset of qubits used in the mappings.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mit</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">(</span><span class="n">noisy_sim</span><span class="p">)</span>
+<span class="n">mit</span><span class="o">.</span><span class="n">cals_from_system</span><span class="p">(</span><span class="n">maps</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;independent&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We are now ready to execute the circuits on the target backend, and mitigate the resulting raw counts. Here we directly pass the maps which will internally be converted into the correct qubit lists:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Execute circuits and mitigate</span>
+<span class="n">raw_counts</span> <span class="o">=</span> <span class="n">noisy_sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">trans_circs</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">8192</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+<span class="n">quasi_collection</span> <span class="o">=</span> <span class="n">mit</span><span class="o">.</span><span class="n">apply_correction</span><span class="p">(</span><span class="n">raw_counts</span><span class="p">,</span> <span class="n">maps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The value needed to determine if each circuit represents a passing QV value is determined by the expectation value of the heavy projector for each circuit. First let us evaluate the raw counts using the M3 utils function <code class="docutils literal notranslate"><span class="pre">expval</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_expvals</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">raw_counts</span><span class="p">,</span> <span class="n">heavy_projectors</span><span class="p">)</span>
+<span class="n">raw_expvals</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.65490723, 0.65979004, 0.6262207 , 0.6673584 , 0.72717285,
+       0.66125488, 0.6887207 , 0.68518066, 0.71057129, 0.71826172])
+</pre></div></div>
+</div>
+<p>A passing QV score is one where the expectation value is above 2/3:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_expvals</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([False, False, False,  True,  True, False,  True,  True,  True,
+        True])
+</pre></div></div>
+</div>
+<p>Now let us do the same analysis for the mitigated data:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determine expectation value of heavy set prjector</span>
+<span class="n">mit_expvals</span> <span class="o">=</span> <span class="n">quasi_collection</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">heavy_projectors</span><span class="p">)</span>
+<span class="n">mit_expvals</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.68004991, 0.68202321, 0.64865956, 0.69187791, 0.75644644,
+       0.68745793, 0.71523234, 0.71940036, 0.73062056, 0.73826585])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the scores are passing or not</span>
+<span class="n">mit_expvals</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ True,  True, False,  True,  True,  True,  True,  True,  True,
+        True])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+             </article>
+            </div>
+            <footer>
+<!-- USER FEEDBACK -->
+  
+
+  <!-- NEXT/PREVIOUS BUTTONS -->
+  <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+    
+      <a href="04_dynamic_bv.html" class="btn btn-neutral float-right" title="Dynamic Bernstein–Vazirani" accesskey="n" rel="next">Next <img src="../_static/images/chevron-right-purple.svg" class="next-page"></a>
+    
+    
+      <a href="02_correcting_probs.html" class="btn btn-neutral" title="Correcting probabilities" accesskey="p" rel="prev"><img src="../_static/images/chevron-right-purple.svg" class="previous-page"> Previous</a>
+    
+  </div>
+
+  <div role="contentinfo">
+    <p>
+    <!-- SHOW QISKIT COPYRIGHT TEXT -->
+        &copy; Copyright 2021, Mthree Team.
+
+    <!-- SHOW DATE PAGE LAST UPDATED -->
+      Last updated on 2024/02/08.
+
+    </p>
+  </div>
+
+<!-- SHOW 'MADE WITH SPHINX' TEXT -->
+    
+      <div>
+        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using <a href="https://github.com/Qiskit/qiskit_sphinx_theme">Qiskit Sphinx Theme </a> (based on <a href="https://github.com/pytorch/pytorch_sphinx_theme"> PyTorch Sphinx Theme</a>).
+      </div>
+     
+<br>
+</footer>
+
+<script>
+  function clicked(ctaType) {
+    document.getElementById('was-helpful-thank-you').style.visibility = 'visible';
+    window.trackCta(`Helpful - ${ctaType}`);
+  }
+</script>
+
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE AUTOSUMMARY MENU -->
+        <div class="pytorch-content-right" id="pytorch-content-right">
+          <div class="pytorch-right-menu" id="pytorch-right-menu">
+            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
+              <ul>
+<li><a class="reference internal" href="#">Quantum Volume</a></li>
+</ul>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </div> 
+
+  <!-- MOBILE MENU FOR SIDEBAR -->
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ae39cb24"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/thebelab-helper.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <!-- enable language dropdown menu expand -->
+  <script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      mobileMenu.bind();
+      mobileTOC.bind();
+      sideMenus.bind();
+      scrollToAnchor.bind();
+      highlightNavigation.bind();
+      mainMenuDropdown.bind();
+      filterTags.bind();
+
+      // Add class to links that have code blocks, since we cannot create links in code blocks
+      $("article.pytorch-article a span.pre").each(function(e) {
+        $(this).closest("a").addClass("has-code");
+      });
+    })
+  </script>
+
+</body>
+</html>

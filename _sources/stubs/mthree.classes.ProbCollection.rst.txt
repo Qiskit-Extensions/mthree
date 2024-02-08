@@ -1,0 +1,37 @@
+﻿mthree.classes.ProbCollection
+=============================
+
+.. currentmodule:: mthree.classes
+
+.. autoclass:: ProbCollection
+   :members:
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      
+            ~ProbCollection.expval
+         
+      
+            ~ProbCollection.expval_and_stddev
+         
+      
+            ~ProbCollection.stddev
+         
+      
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ProbCollection.mitigation_overhead
+      ~ProbCollection.shots
+   
+   

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+  <html class="no-js" lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Low-weight observables (Marginals) &mdash; Mthree 2.6.0 2.6.0 documentation</title>
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/jupyter-sphinx.css" type="text/css" />
+  <link rel="stylesheet" href="_static/thebelab.css" type="text/css" /><script src="_static/js/web-components/top-nav-bar.js"></script>
+
+  <!-- SEGMENT ANALYTICS --></head>
+<body class="pytorch-body">
+  <!-- UNIFIED TOP MENU -->
+  <qiskit-ui-shell variant="hide-account"></qiskit-ui-shell>
+
+   
+
+    <!-- LEFT SIDE BAR -->
+
+    <!-- if translations available, display language dropdown menu -->
+    
+
+    <!-- Menu becomes dropdown in mobile view -->
+    <div class="table-of-contents-link-wrapper">
+      <span>Table of Contents</span>
+      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+    </div>
+
+    <!-- left side bar main content -->
+    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
+    <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <div class="sidebar">
+    <div class="pytorch-left-menu-search">
+        <div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search Mthree 2.6.0 Docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+    </div>
+
+    <!-- render sidebar from the toctree -->
+    
+    
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.6.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basic.html">Basic usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transpiled.html">Transpiled circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expvals.html">Expectation values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collections.html">Using collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grouped.html">Grouped operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error.html">Error analysis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Low-weight operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probs.html">Obtaining probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cal_io.html">Saving and loading calibrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utility functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="balanced.html">Balanced calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/01_M3_ex1.html">M3 paper example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/02_correcting_probs.html">Correcting probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/03_qv_example.html">Quantum Volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/04_dynamic_bv.html">Dynamic Bernstein–Vazirani</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/10_basic_vqe.html">Basic mitigated VQE</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="apidocs/main.html">Mitigation class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidocs/classes.html">Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidocs/classes.html#distribution-collections">Distribution collections</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidocs/utils.html">Utility functions</a></li>
+</ul>
+
+    
+
+    <!-- PREVIOUS RELEASES -->
+        
+
+    </div>
+  </div>
+</nav>
+
+<!-- OPTIONAL EXPANDABLE FUNCTIONALITY -->
+
+
+<!-- STYLING -->
+<script>
+    // indent subheadings under captions
+    expandable_rows = document.getElementsByClassName("caption");
+    var i;
+    for (i = 0; i < expandable_rows.length; i++) {
+        expandable_rows[i].nextElementSibling.style.marginLeft = "1rem"
+
+        // un-bold subheadings in dropdown
+        var subheadings = expandable_rows[i].nextElementSibling
+        for (j = 0; j < subheadings.children.length; j++) {
+            subheadings.children[j].style.fontWeight = "unset"
+        }
+    }
+
+    // adjust toctree class name to style external links
+    var toc_rows = document.getElementsByClassName("toctree-l1");
+    var i;
+    for (i = 0; i < toc_rows.length; i++) {
+        if (toc_rows[i].children[0].className === "reference external") {
+            toc_rows[i].className = "toctree-l1-external"
+            }
+    }
+
+    // expand and unexpand previous releases dropdown when clicked
+    var release_rows = document.getElementsByClassName("sidebar-l1-expandable");
+    for (i = 0; i < release_rows.length; i++) {
+        release_rows[i].addEventListener("click", function() {
+            this.classList.toggle("open");
+            var clicked_subheadings = this.nextElementSibling;
+            if (clicked_subheadings.style.display === "block") {
+            clicked_subheadings.style.display = "none";
+            } else {
+            clicked_subheadings.style.display = "block";
+            }
+        });
+    }
+</script>
+
+    <div class="pytorch-container">
+
+      <!-- BREADCRUMB MINI MENU BELOW TOP NAV BAR -->
+      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
+        <div class="pytorch-breadcrumbs-wrapper">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="pytorch-breadcrumbs">
+    
+      <li>
+        <a href="index.html">
+            Mthree 2.6.0 2.6.0 documentation
+        </a> &gt;
+      </li>
+
+        
+      <li>Low-weight observables (Marginals)</li>
+    
+  </ul>
+</div>
+        </div>
+      </div>
+
+      <!-- MAIN CENTRE CONTENT -->
+      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
+        
+        <div class="pytorch-content-left">
+          <div class="rst-content">
+            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
+             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
+              
+  <section id="low-weight-observables-marginals">
+<span id="marginals"></span><h1>Low-weight observables (Marginals)<a class="headerlink" href="#low-weight-observables-marginals" title="Link to this heading">¶</a></h1>
+<p>Often one is interested in computing expectation values of “low-weight” observables, where
+the operator is comprised of one or more identity operators, e.g. <span class="math notranslate nohighlight">\(\langle IIZZII\rangle\)</span>.
+Qubits with an idenitiy do not need to be corrected because the eigenvalues associated with the
+<span class="math notranslate nohighlight">\(|0\rangle\)</span> and <span class="math notranslate nohighlight">\(|1\rangle\)</span> states are the same.  Because M3 scales with the number of
+bit-strings, removing these unneeded elements can reduce the amount of computation required. Below
+is an example of how to use M3 to marginalize and correct over the smaller distribution.</p>
+<p>Consider the following circuit that we would like to evaluate:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeGuadalupe</span>
+<span class="kn">import</span> <span class="nn">mthree</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">x</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">h</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">ch</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="n">kk</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">qc</span><span class="o">.</span><span class="n">ch</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="n">kk</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">measure_all</span><span class="p">()</span>
+<span class="n">qc</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s1">&#39;mpl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/marginals_0_0.png" src="_images/marginals_0_0.png" />
+</div>
+</div>
+<p>Let us first map this onto the target system and compute the final measurement mapping:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">FakeGuadalupe</span><span class="p">()</span>
+
+<span class="n">trans_qc</span> <span class="o">=</span> <span class="n">transpile</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">optimization_level</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed_transpiler</span><span class="o">=</span><span class="mi">12345</span><span class="p">)</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">final_measurement_mapping</span><span class="p">(</span><span class="n">trans_qc</span><span class="p">)</span>
+<span class="n">mapping</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{0: 14, 1: 13, 2: 12, 3: 10, 4: 7, 5: 6}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now assume we are only interested in many low-weight operators such as <span class="math notranslate nohighlight">\(\langle ZIIZIZ\rangle\)</span>
+or <span class="math notranslate nohighlight">\(\langle ZZIIII\rangle\)</span>. How would we compute the corrected expectation values?  Because there
+are identity operators, we can marginalize the distributions to be only over those qubits that
+actually play a role in the expectation value.  However, we must remember to keep track of which
+physical qubits go to which classical bits.  We can do this with
+<a class="reference internal" href="stubs/mthree.utils.marginal_distribution.html#mthree.utils.marginal_distribution" title="mthree.utils.marginal_distribution"><code class="xref py py-func docutils literal notranslate"><span class="pre">mthree.utils.marginal_distribution()</span></code></a>:.</p>
+<p>First let us first get a raw distribution:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">trans_qc</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We can get the marginal distributions in two ways.  First we can directly pass a list of indices,
+e.g. for the operator <span class="math notranslate nohighlight">\(\langle ZIIZIZ\rangle\)</span> the list would be <cite>[0, 2, 5]</cite>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">marginal_distribution</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;001&#39;: 533,
+ &#39;100&#39;: 488,
+ &#39;011&#39;: 767,
+ &#39;111&#39;: 6125,
+ &#39;000&#39;: 191,
+ &#39;110&#39;: 298,
+ &#39;010&#39;: 37,
+ &#39;101&#39;: 1561}
+</pre></div>
+</div>
+</div>
+</div>
+<p>or we can use the operator itself:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">marginal_distribution</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="s1">&#39;ZIIZIZ&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;001&#39;: 533,
+ &#39;100&#39;: 488,
+ &#39;011&#39;: 767,
+ &#39;111&#39;: 6125,
+ &#39;000&#39;: 191,
+ &#39;110&#39;: 298,
+ &#39;010&#39;: 37,
+ &#39;101&#39;: 1561}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we have a marginal distribution and in principle we have enough.  However, having a reduced mapping
+of physical qubits that correspond to the bits in the marginal distribution would be handy to have.
+We can pass a mapping to <cite>marginal_distribution</cite> and get such a reduced mapping:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">marginal_counts</span><span class="p">,</span> <span class="n">reduced_map</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">marginal_distribution</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="s1">&#39;ZIIZIZ&#39;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="n">mapping</span><span class="p">)</span>
+<span class="n">reduced_map</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{0: 14, 1: 12, 2: 6}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now mitigate in a smaller probability space:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mit</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
+<span class="n">mit</span><span class="o">.</span><span class="n">cals_from_system</span><span class="p">(</span><span class="n">reduced_map</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="mi">25000</span><span class="p">)</span>
+
+<span class="n">quasi</span> <span class="o">=</span> <span class="n">mit</span><span class="o">.</span><span class="n">apply_correction</span><span class="p">(</span><span class="n">marginal_counts</span><span class="p">,</span> <span class="n">reduced_map</span><span class="p">)</span>
+<span class="n">quasi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: 0.016289430291345545,
+ &#39;001&#39;: 0.049893415054091624,
+ &#39;010&#39;: 0.0005695601789644909,
+ &#39;011&#39;: 0.06823122786348705,
+ &#39;100&#39;: 0.043857793464897626,
+ &#39;101&#39;: 0.14404921337368778,
+ &#39;110&#39;: 0.0064034731921455085,
+ &#39;111&#39;: 0.6707058865813804}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the only non-identity operators are typically <cite>Z</cite> operators it is easy to compute the
+eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quasi</span><span class="o">.</span><span class="n">expval</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>-0.5300533105586682
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+
+             </article>
+            </div>
+            <footer>
+<!-- USER FEEDBACK -->
+  
+
+  <!-- NEXT/PREVIOUS BUTTONS -->
+  <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+    
+      <a href="probs.html" class="btn btn-neutral float-right" title="Converting to probabilites" accesskey="n" rel="next">Next <img src="_static/images/chevron-right-purple.svg" class="next-page"></a>
+    
+    
+      <a href="error.html" class="btn btn-neutral" title="Error analysis" accesskey="p" rel="prev"><img src="_static/images/chevron-right-purple.svg" class="previous-page"> Previous</a>
+    
+  </div>
+
+  <div role="contentinfo">
+    <p>
+    <!-- SHOW QISKIT COPYRIGHT TEXT -->
+        &copy; Copyright 2021, Mthree Team.
+
+    <!-- SHOW DATE PAGE LAST UPDATED -->
+      Last updated on 2024/02/08.
+
+    </p>
+  </div>
+
+<!-- SHOW 'MADE WITH SPHINX' TEXT -->
+    
+      <div>
+        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using <a href="https://github.com/Qiskit/qiskit_sphinx_theme">Qiskit Sphinx Theme </a> (based on <a href="https://github.com/pytorch/pytorch_sphinx_theme"> PyTorch Sphinx Theme</a>).
+      </div>
+     
+<br>
+</footer>
+
+<script>
+  function clicked(ctaType) {
+    document.getElementById('was-helpful-thank-you').style.visibility = 'visible';
+    window.trackCta(`Helpful - ${ctaType}`);
+  }
+</script>
+
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE AUTOSUMMARY MENU -->
+        <div class="pytorch-content-right" id="pytorch-content-right">
+          <div class="pytorch-right-menu" id="pytorch-right-menu">
+            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
+              <ul>
+<li><a class="reference internal" href="#">Low-weight observables (Marginals)</a></li>
+</ul>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </div> 
+
+  <!-- MOBILE MENU FOR SIDEBAR -->
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ae39cb24"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/thebelab-helper.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <!-- enable language dropdown menu expand -->
+  <script type="text/javascript">
+    jQuery(function () {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      mobileMenu.bind();
+      mobileTOC.bind();
+      sideMenus.bind();
+      scrollToAnchor.bind();
+      highlightNavigation.bind();
+      mainMenuDropdown.bind();
+      filterTags.bind();
+
+      // Add class to links that have code blocks, since we cannot create links in code blocks
+      $("article.pytorch-article a span.pre").each(function(e) {
+        $(this).closest("a").addClass("has-code");
+      });
+    })
+  </script>
+
+</body>
+</html>
