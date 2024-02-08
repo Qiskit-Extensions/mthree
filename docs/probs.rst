@@ -15,7 +15,7 @@ done in linear time.
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(6)

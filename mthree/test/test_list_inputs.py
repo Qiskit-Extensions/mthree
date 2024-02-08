@@ -12,8 +12,8 @@
 # pylint: disable=no-name-in-module
 
 """Test list inputs"""
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 
 
@@ -29,7 +29,7 @@ def test_athens_sim():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction([raw_counts]*10, qubits=range(5))

@@ -22,7 +22,7 @@ needed modules, and construct a circuit of interest.
 
     import numpy as np
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     qc = QuantumCircuit(6)
@@ -67,7 +67,7 @@ provided that we select the correct layout.
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider import FakeMontreal
+    from qiskit_ibm_runtime.fake_provider import FakeMontreal
 
     backend = FakeMontreal()
     mit2 = mthree.M3Mitigation(backend)

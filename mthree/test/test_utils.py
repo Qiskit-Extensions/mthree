@@ -13,9 +13,9 @@
 
 """Test utils functions"""
 import numpy as np
-from qiskit import QuantumCircuit, execute
+from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 
 
@@ -29,7 +29,7 @@ def test_gen_dist0():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
@@ -52,7 +52,7 @@ def test_gen_multi_dist0():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = execute([qc]*5, backend).result().get_counts()
+    raw_counts = backend.run([qc]*5).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
@@ -77,7 +77,7 @@ def test_gen_full_dist():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
@@ -101,7 +101,7 @@ def test_gen_multi_full_dist():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = execute([qc]*5, backend).result().get_counts()
+    raw_counts = backend.run([qc]*5).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),

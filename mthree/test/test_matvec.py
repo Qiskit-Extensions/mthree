@@ -13,8 +13,8 @@
 """Test matrix elements"""
 import numpy as np
 import scipy.sparse.linalg as spla
-from qiskit import QuantumCircuit, execute
-from qiskit.providers.fake_provider import FakeAthens
+from qiskit import QuantumCircuit
+from qiskit_ibm_runtime.fake_provider import FakeAthens
 import mthree
 from mthree.matvec import M3MatVec
 
@@ -31,7 +31,7 @@ def test_matvec():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(5))
 

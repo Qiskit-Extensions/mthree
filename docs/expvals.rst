@@ -17,7 +17,7 @@ a noisy-simulator.
 
     import numpy as np
     from qiskit import *
-    from qiskit.providers.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthens
     import mthree
 
     backend = FakeAthens()

@@ -12,7 +12,8 @@
 # pylint: disable=no-name-in-module
 
 """Test utils functions"""
-from qiskit import Aer, QuantumCircuit, transpile
+from qiskit_aer import Aer
+from qiskit import QuantumCircuit, transpile
 import mthree
 
 
