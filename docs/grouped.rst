@@ -19,7 +19,7 @@ this consider the following simple example:
     qc.h(0)
     qc.cx(0, range(1, 4))
     qc.measure_all()
-    qc.draw('mpl')
+    qc.draw('text')
 
 Here we will generate and execute two circuits on the target system (fake system in this case),
 and, because we have transpiled, find the final measurement mapping:

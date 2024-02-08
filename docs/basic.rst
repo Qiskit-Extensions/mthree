@@ -34,7 +34,7 @@ needed modules, and construct a circuit of interest.
     qc.cx(5,4)
     qc.cx(1,2)
     qc.measure_all()
-    qc.draw('mpl')
+    qc.draw('text')
 
 Next we calibrate an M3 mitigator instance over qubits 0 -> 6 (Step #1):
 

@@ -26,7 +26,7 @@ Let us first calibrate the mitigator and get raw results:
     qc.cx(5,4)
     qc.cx(1,2)
     qc.measure_all()
-    qc.draw('mpl')
+    qc.draw('text')
 
 
 .. jupyter-execute::
