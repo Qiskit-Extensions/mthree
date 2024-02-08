@@ -450,7 +450,23 @@ disable=raw-checker-failed,
         deprecated-pragma,
         use-symbolic-message-instead,
         use-implicit-booleaness-not-comparison-to-string,
-        use-implicit-booleaness-not-comparison-to-zero
+        use-implicit-booleaness-not-comparison-to-zero,
+        no-self-use,           # disabled as it is too verbose
+        fixme,                 # disabled as TODOs would show up as warnings
+        protected-access,      # disabled as we don't follow the public vs private
+                               # convention strictly
+        duplicate-code,        # disabled as it is too verbose
+        redundant-returns-doc, # for @abstractmethod, it cannot interpret "pass"
+        # disable the "too-many/few-..." refactoring hints
+        too-many-lines, too-many-branches, too-many-locals, too-many-nested-blocks,
+        too-many-statements, too-many-instance-attributes, too-many-arguments,
+        too-many-public-methods, too-few-public-methods, too-many-ancestors,
+        unnecessary-pass,           # allow for methods with just "pass", for clarity
+        no-else-return,             # relax "elif" after a clause with a return
+        docstring-first-line-empty, # relax docstring style
+        import-outside-toplevel,
+        invalid-name,               # disabled as it is dumb
+        consider-using-f-string     # also dumb
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
