@@ -9,7 +9,7 @@ Let us generate some calibration data and save it.
 
 .. jupyter-execute::
 
-    from qiskit.providers.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
     import mthree
 
     backend = FakeCasablanca()
