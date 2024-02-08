@@ -14,20 +14,20 @@ cdef unsigned int within_distance(unsigned int row,
                                   unsigned int col,
                                   const unsigned char * bitstrings,
                                   unsigned int num_bits,
-                                  unsigned int distance) nogil
+                                  unsigned int distance) noexcept nogil
 
 cdef double compute_element(unsigned int row,
                             unsigned int col,
                             const unsigned char * bitstrings,
                             const double * cals,
-                            unsigned int num_bits) nogil
+                            unsigned int num_bits) noexcept nogil
 
 cdef void compute_col_norms(double * col_norms,
                             const unsigned char * bitstrings,
                             const double * cals,
                             unsigned int num_bits,
                             unsigned int num_elems,
-                            unsigned int distance) nogil
+                            unsigned int distance) noexcept nogil
 
 cdef unsigned int hamming_terms(unsigned int num_bits,
-                                unsigned int distance) nogil
+                                unsigned int distance) noexcept nogil

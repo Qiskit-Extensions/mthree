@@ -128,7 +128,7 @@ cdef void omp_matvec(size_t row,
                      unsigned int num_elems,
                      unsigned int num_bits,
                      unsigned int distance,
-                     bool MAX_DIST) nogil:
+                     bool MAX_DIST) noexcept nogil:
     cdef double temp_elem, row_sum = 0
     cdef size_t col
     for col in range(num_elems):
@@ -151,7 +151,7 @@ cdef void omp_rmatvec(size_t col,
                       unsigned int num_elems,
                       unsigned int num_bits,
                       unsigned int distance,
-                      bool MAX_DIST) nogil:
+                      bool MAX_DIST) noexcept nogil:
     cdef double temp_elem, row_sum = 0
     cdef size_t row
     for row in range(num_elems):
