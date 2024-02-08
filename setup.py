@@ -24,7 +24,7 @@ from Cython.Build import cythonize
 
 MAJOR = 2
 MINOR = 6
-MICRO = 1
+MICRO = 2
 
 ISRELEASED = True
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
@@ -184,7 +184,7 @@ class StyleCommand(setuptools.Command):
 setuptools.setup(
     name='mthree',
     version=VERSION,
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     packages=PACKAGES,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
@@ -200,7 +200,6 @@ setuptools.setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS",
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
