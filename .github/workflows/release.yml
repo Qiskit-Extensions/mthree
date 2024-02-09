@@ -25,7 +25,7 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64:latest
           CIBW_MANYLINUX_I686_IMAGE: quay.io/pypa/manylinux2014_i686:latest
           CIBW_ARCHS_MACOS: x86_64 universal2
-          CIBW_TEST_REQUIRES: pytest qiskit-aer
+          CIBW_TEST_REQUIRES: pytest qiskit-aer setuptools
           CIBW_TEST_COMMAND_LINUX: pytest -p no:warnings /mthree_test
           CIBW_TEST_COMMAND_WINDOWS: pytest -p no:warnings C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test
           CIBW_TEST_COMMAND_MACOS:  pytest -p no:warnings /tmp/mthree_test
