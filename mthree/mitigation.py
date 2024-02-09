@@ -33,7 +33,7 @@ from mthree.circuits import (
     balanced_cal_circuits,
 )
 from mthree.matrix import _reduced_cal_matrix, sdd_check
-from mthree.utils import counts_to_vector, vector_to_quasiprobs
+from mthree.utils import counts_to_vector, vector_to_quasiprobs, gmres
 from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
@@ -779,7 +779,7 @@ class M3Mitigation:
 
         P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec)
         vec = counts_to_vector(M.sorted_counts)
-        out, error = spla.gmres(
+        out, error = gmres(
             L,
             vec,
             rtol=tol,

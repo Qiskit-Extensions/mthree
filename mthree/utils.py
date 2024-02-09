@@ -24,12 +24,29 @@ Utility functions
    marginal_distribution
 
 """
+import functools
 import numpy as np
+import scipy.sparse.linalg
 
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
 from mthree.classes import (QuasiDistribution, ProbDistribution,
                             QuasiCollection, ProbCollection)
+
+# This dynamic switch on keyword arguments in 'gmres' can be removed once Scipy 1.11 is
+# the minimum supported version.
+
+SCIPY_MAJOR, SCIPY_MINOR, *_ = scipy.__version__.split(".", 2)
+if (int(SCIPY_MAJOR), int(SCIPY_MINOR)) >= (1, 11):
+    gmres = scipy.sparse.linalg.gmres
+else:
+    @functools.wraps(scipy.sparse.linalg.gmres)
+    def gmres(*args, **kwargs):
+        """Compatibility wrapper around Scipy's `gmres` to convert the new-style 'rtol'
+        argument into the old-style 'tol' for old SciPys."""
+        if "rtol" in kwargs:
+            kwargs["tol"] = kwargs.pop("rtol")
+        return scipy.sparse.linalg.gmres(*args, **kwargs)
 
 
 def final_measurement_mapping(circuit):
