@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mthree.utils &mdash; Mthree 2.6.2 2.6.2 documentation</title>
+  <title>mthree.utils &mdash; Mthree 2.6.3 2.6.3 documentation</title>
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/jupyter-sphinx.css" type="text/css" />
@@ -35,7 +35,7 @@
     <div class="pytorch-left-menu-search">
         <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search Mthree 2.6.2 Docs" />
+    <input type="text" name="q" placeholder="Search Mthree 2.6.3 Docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -46,7 +46,7 @@
     
     
         <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.6.2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.6.3)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
 </ul>
@@ -144,7 +144,7 @@
     
       <li>
         <a href="../../index.html">
-            Mthree 2.6.2 2.6.2 documentation
+            Mthree 2.6.3 2.6.3 documentation
         </a> &gt;
       </li>
 
@@ -193,12 +193,29 @@
 <span class="sd">   marginal_distribution</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
 
 <span class="kn">from</span> <span class="nn">qiskit.result</span> <span class="kn">import</span> <span class="n">marginal_distribution</span> <span class="k">as</span> <span class="n">marg_dist</span>
 <span class="kn">from</span> <span class="nn">mthree.exceptions</span> <span class="kn">import</span> <span class="n">M3Error</span>
 <span class="kn">from</span> <span class="nn">mthree.classes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QuasiDistribution</span><span class="p">,</span> <span class="n">ProbDistribution</span><span class="p">,</span>
                             <span class="n">QuasiCollection</span><span class="p">,</span> <span class="n">ProbCollection</span><span class="p">)</span>
+
+<span class="c1"># This dynamic switch on keyword arguments in &#39;gmres&#39; can be removed once Scipy 1.11 is</span>
+<span class="c1"># the minimum supported version.</span>
+
+<span class="n">SCIPY_MAJOR</span><span class="p">,</span> <span class="n">SCIPY_MINOR</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">SCIPY_MAJOR</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">SCIPY_MINOR</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">gmres</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">gmres</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compatibility wrapper around Scipy&#39;s `gmres` to convert the new-style &#39;rtol&#39;</span>
+<span class="sd">        argument into the old-style &#39;tol&#39; for old SciPys.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;rtol&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;tol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rtol&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="final_measurement_mapping">
@@ -535,7 +552,7 @@
         &copy; Copyright 2021, Mthree Team.
 
     <!-- SHOW DATE PAGE LAST UPDATED -->
-      Last updated on 2024/02/08.
+      Last updated on 2024/02/09.
 
     </p>
   </div>
@@ -574,7 +591,7 @@
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=3db9c557"></script>
+      <script src="../../_static/documentation_options.js?v=99c1414e"></script>
       <script src="../../_static/doctools.js?v=888ff710"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../../_static/thebelab-helper.js"></script>
