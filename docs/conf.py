@@ -125,7 +125,7 @@ modindex_common_prefix = ['mthree.']
 # a list of builtin themes.
 #
 html_theme = "qiskit-ecosystem"
-html_title = f"{project} {release}"
+html_title = f"{project}"
 
 
 #html_sidebars = {'**': ['globaltoc.html']}
