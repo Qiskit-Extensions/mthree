@@ -124,7 +124,8 @@ modindex_common_prefix = ['mthree.']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "qiskit_sphinx_theme"
+html_theme = "qiskit-ecosystem"
+html_title = f"{project} {release}"
 
 
 #html_sidebars = {'**': ['globaltoc.html']}
