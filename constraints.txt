@@ -1,0 +1,2 @@
+astroid~=3.0.1  # Must be kept aligned to what pylint wants
+ipykernel==6.11.0
