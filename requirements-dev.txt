@@ -1,6 +1,6 @@
 qiskit-aer>=0.13
 pytest
-pylint==2.16.2
+pylint~=3.0.2
 pycodestyle
 Sphinx>=7.0,<=8
 qiskit_sphinx_theme~=1.12.0
@@ -9,6 +9,5 @@ pylatexenc
 jupyter-sphinx
 nbsphinx
 psutil
-ipykernel<6
 Jinja2<3.1
 quantum-styles

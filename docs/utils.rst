@@ -75,7 +75,7 @@ For example let us compare raw data verse the mitigated results in a simple case
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = execute(qc, backend).result().get_counts()
+    raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
@@ -117,7 +117,7 @@ mitigate 5 circuits:
 
 .. jupyter-execute::
 
-    raw_counts = execute([qc]*5, backend).result().get_counts()
+    raw_counts = backend.run([qc]*5).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
