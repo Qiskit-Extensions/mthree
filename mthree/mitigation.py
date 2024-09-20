@@ -892,9 +892,9 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
                 counts.extend(_counts)
             else:
                 counts.append(_counts)
+            # attach timestamp
+            timestamp = job.metrics()["timestamps"]["running"]
     logger.info("All jobs are done.")
-    # attach timestamp
-    timestamp = job.metrics()["timestamps"]["running"]
     # Timestamp can be None
     if timestamp is None:
         timestamp = datetime.datetime.now()
