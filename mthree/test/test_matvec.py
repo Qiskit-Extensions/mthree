@@ -14,7 +14,7 @@
 import numpy as np
 import scipy.sparse.linalg as spla
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 import mthree
 from mthree.matvec import M3MatVec
 

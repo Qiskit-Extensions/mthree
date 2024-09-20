@@ -16,7 +16,7 @@
 import numpy as np
 import orjson
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 
 import mthree
 

@@ -12,7 +12,7 @@
 # pylint: disable=no-name-in-module
 
 """Test matrix elements"""
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 import mthree
 
 LOW_SHOTS = 543

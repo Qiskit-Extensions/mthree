@@ -13,7 +13,7 @@
 """Test Hamming distance truncation"""
 import numpy as np
 
-from qiskit_ibm_runtime.fake_provider import FakeKolkata
+from qiskit_ibm_runtime.fake_provider import FakeKolkataV2 as FakeKolkata
 import mthree
 
 

@@ -14,13 +14,13 @@
 """Test collection classes"""
 import numpy as np
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2
 import mthree
 
 
 def test_mit_overhead():
     """Test if mitigation overhead over collection is same as loop"""
-    backend = FakeAthens()
+    backend = FakeAthensV2()
     qc = QuantumCircuit(5)
     qc.h(2)
     qc.cx(2, 1)

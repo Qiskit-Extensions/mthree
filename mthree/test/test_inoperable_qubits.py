@@ -12,7 +12,7 @@
 
 """Test inoperable qubits"""
 import pytest
-from qiskit_ibm_runtime.fake_provider import FakeKolkata
+from qiskit_ibm_runtime.fake_provider import FakeKolkataV2 as FakeKolkata
 import mthree
 
 

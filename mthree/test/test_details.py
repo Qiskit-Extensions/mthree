@@ -13,12 +13,12 @@
 
 """Test details handling"""
 from qiskit import QuantumCircuit, transpile
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2
 
 import mthree
 
 
-BACKEND = FakeAthens()
+BACKEND = FakeAthensV2()
 
 
 def test_details_one_circuit():
