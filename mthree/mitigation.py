@@ -24,7 +24,9 @@ import numpy as np
 import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
-from qiskit.providers import BackendV2, BackendV1
+from qiskit.providers import BackendV2
+from qiskit_ibm_runtime import Batch, Session, SamplerV2
+
 
 from mthree.circuits import (
     _tensor_meas_states,
@@ -55,12 +57,17 @@ class M3Mitigation:
                                   is turned on (assuming reasonable error rates).
 
         Attributes:
-            system (Backend): The target system.
+            system (Backend or Batch or Session): The target system or execution manager.
             system_info (dict): Information needed about the system
             cal_method (str): Calibration method used
             cal_timestamp (str): Time at which cals were taken
             single_qubit_cals (list): 1Q calibration matrices
         """
+        executor = SamplerV2(mode=system)
+        if isinstance(system, (Batch, Session)):
+            # Replace execution manager with system instance
+            system = system.service.backend(system.backend())
+        self.executor = executor
         self.system = system
         self.system_info = system_info(system) if system else {}
         self.single_qubit_cals = None
@@ -105,7 +112,7 @@ class M3Mitigation:
 
         # Reverse index qubits for easier indexing later
         for kk, qubit in enumerate(qubits[::-1]):
-            cals[4 * kk: 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
+            cals[4 * kk : 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
         return cals
 
     def _check_sdd(self, counts, qubits, distance=None):
@@ -180,6 +187,9 @@ class M3Mitigation:
             cals_file (str): Output path to write JSON calibration data to.
             async_cal (bool): Do calibration async in a separate thread, default is False.
 
+        Returns:
+            list: List of jobs submitted.
+
         Raises:
             M3Error: Called while a calibration currently in progress.
         """
@@ -209,7 +219,7 @@ class M3Mitigation:
         self.rep_delay = rep_delay
         self.cals_file = cals_file
         self.cal_timestamp = None
-        self._grab_additional_cals(
+        jobs = self._grab_additional_cals(
             qubits,
             shots=shots,
             method=method,
@@ -217,6 +227,8 @@ class M3Mitigation:
             initial_reset=initial_reset,
             async_cal=async_cal,
         )
+
+        return jobs
 
     def cals_from_file(self, cals_file):
         """Generated the calibration data from a previous runs output
@@ -342,8 +354,12 @@ class M3Mitigation:
         if self.rep_delay is None:
             self.rep_delay = rep_delay
 
-        logger.info("Grabbing calibration data for qubits=%s, method=%s, async_cal=%s",
-                    qubits, method, async_cal)
+        logger.info(
+            "Grabbing calibration data for qubits=%s, method=%s, async_cal=%s",
+            qubits,
+            method,
+            async_cal,
+        )
 
         if method not in ["independent", "balanced", "marginal"]:
             raise M3Error(f"Invalid calibration method {method}.")
@@ -401,12 +417,8 @@ class M3Mitigation:
                 )
 
         num_circs = len(trans_qcs)
-        # check for max number of circuits per job
-        if isinstance(self.system, BackendV1):
-            # Aer simulator has no 'max_experiments'
-            max_circuits = getattr(self.system.configuration(), "max_experiments", 300)
-        elif isinstance(self.system, BackendV2):
-            max_circuits = self.system.max_circuits
+        if isinstance(self.system, BackendV2):
+            max_circuits = getattr(self.system.configuration(), "max_circuits", 300)
             # Needed for https://github.com/Qiskit/qiskit-terra/issues/9947
             if max_circuits is None:
                 max_circuits = 300
@@ -414,18 +426,25 @@ class M3Mitigation:
             raise M3Error("Unknown backend type")
         # Determine the number of jobs required
         num_jobs = ceil(num_circs / max_circuits)
-        logger.info("Generated %s circuits, which will run in %s jobs using %s shots",
-                    num_circs, num_jobs, shots)
+        logger.info(
+            "Generated %s circuits, which will run in %s jobs using %s shots",
+            num_circs,
+            num_jobs,
+            shots,
+        )
         # Get the slice length
         circ_slice = ceil(num_circs / num_jobs)
         circs_list = [
-            trans_qcs[kk * circ_slice: (kk + 1) * circ_slice]
+            trans_qcs[kk * circ_slice : (kk + 1) * circ_slice]
             for kk in range(num_jobs - 1)
-        ] + [trans_qcs[(num_jobs - 1) * circ_slice:]]
+        ] + [trans_qcs[(num_jobs - 1) * circ_slice :]]
         # Do job submission here
         jobs = []
+        if self.rep_delay:
+            self.executor.options.execution.rep_delay = self.rep_delay
+        self.executor.options.environment.job_tags = ["M3 calibration"]
         for circs in circs_list:
-            _job = self.system.run(circs, shots=shots, rep_delay=self.rep_delay)
+            _job = self.executor.run(circs, shots=shots)
             jobs.append(_job)
 
         # Execute job and cal building in new thread.
@@ -439,6 +458,8 @@ class M3Mitigation:
             self._thread.start()
         else:
             _job_thread(jobs, self, qubits, num_cal_qubits, cal_strings)
+
+        return jobs
 
     def apply_correction(
         self,
@@ -512,14 +533,14 @@ class M3Mitigation:
                     logger.debug("Applying correction %s/%s", idx, len(counts))
                 st = perf_counter()
             corrected = self._apply_correction(
-                    cnts,
-                    qubits=qubits[idx],
-                    distance=distance,
-                    method=method,
-                    max_iter=max_iter,
-                    tol=tol,
-                    return_mitigation_overhead=return_mitigation_overhead,
-                    details=details,
+                cnts,
+                qubits=qubits[idx],
+                distance=distance,
+                method=method,
+                max_iter=max_iter,
+                tol=tol,
+                return_mitigation_overhead=return_mitigation_overhead,
+                details=details,
             )
             if logger.isEnabledFor(logging.DEBUG):
                 dur = perf_counter() - st
@@ -865,7 +886,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
             mit._job_error = error
             return
         else:
-            _counts = res.get_counts()
+            _counts = [rr.data.c.get_counts() for rr in res]
             # _counts can be a list or a dict (if only one circuit was executed within the job)
             if isinstance(_counts, list):
                 counts.extend(_counts)
@@ -873,7 +894,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
                 counts.append(_counts)
     logger.info("All jobs are done.")
     # attach timestamp
-    timestamp = res.date
+    timestamp = job.metrics()["timestamps"]["running"]
     # Timestamp can be None
     if timestamp is None:
         timestamp = datetime.datetime.now()

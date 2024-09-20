@@ -32,13 +32,15 @@ def test_gen_dist0():
     raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                      return_mitigation_overhead=True,
-                                      distance=0)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(4), return_mitigation_overhead=True, distance=0
+    )
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
-    assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
+    assert np.allclose(
+        mthree.utils.expval(mit_counts, "IZZI"), mit_counts.expval("IZZI")
+    )
     assert np.allclose(mthree.utils.stddev(raw_counts), mit_counts.stddev())
 
 
@@ -52,16 +54,18 @@ def test_gen_multi_dist0():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = backend.run([qc]*5).result().get_counts()
+    raw_counts = backend.run([qc] * 5).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                      return_mitigation_overhead=True,
-                                      distance=0)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(4), return_mitigation_overhead=True, distance=0
+    )
 
     assert np.allclose(mthree.utils.expval(raw_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
-    assert np.allclose(mthree.utils.expval(mit_counts, 'IZZI'), mit_counts.expval('IZZI'))
+    assert np.allclose(
+        mthree.utils.expval(mit_counts, "IZZI"), mit_counts.expval("IZZI")
+    )
     dicts = [dict(rc) for rc in raw_counts]
     assert np.allclose(mthree.utils.expval(dicts), mit_counts.expval())
     assert np.allclose(mthree.utils.stddev(raw_counts), mit_counts.stddev())
@@ -80,8 +84,9 @@ def test_gen_full_dist():
     raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                      return_mitigation_overhead=True)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(4), return_mitigation_overhead=True
+    )
 
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.stddev(mit_counts), mit_counts.stddev())
@@ -101,11 +106,12 @@ def test_gen_multi_full_dist():
     qc.cx(1, 0)
     qc.measure_all()
 
-    raw_counts = backend.run([qc]*5).result().get_counts()
+    raw_counts = backend.run([qc] * 5).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(4),
-                                      return_mitigation_overhead=True)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(4), return_mitigation_overhead=True
+    )
 
     assert np.allclose(mthree.utils.expval(mit_counts), mit_counts.expval())
     assert np.allclose(mthree.utils.stddev(mit_counts), mit_counts.stddev())

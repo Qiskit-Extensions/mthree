@@ -48,12 +48,12 @@ def system_info(backend):
         # No other way to tell outside of configuration
         # E.g. how to tell that ibmq_qasm_simulator is sim, but real devices not
         # outside of configuration?
-        if hasattr(backend, 'configuration'):
+        if hasattr(backend, "configuration"):
             info_dict["simulator"] = backend.configuration().simulator
     else:
-        raise M3Error('Invalid backend passed.')
+        raise M3Error("Invalid backend passed.")
     # Look for faulty qubits.  Renaming to 'inoperable' here
-    if hasattr(backend, 'properties'):
-        if hasattr(backend.properties(), 'faulty_qubits'):
+    if hasattr(backend, "properties"):
+        if hasattr(backend.properties(), "faulty_qubits"):
             info_dict["inoperable_qubits"] = backend.properties().faulty_qubits()
     return info_dict

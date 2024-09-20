@@ -21,4 +21,4 @@ def test_v2_fake_backend():
     backend = FakeAthensV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    assert mit.cal_method == 'independent'
+    assert mit.cal_method == "independent"
