@@ -34,7 +34,7 @@ def system_info(backend):
     info_dict["num_qubits"] = config.num_qubits
     _max_shots = backend.options.validator.get("shots", (None, None))[1]
     info_dict["max_shots"] = _max_shots if _max_shots else int(1e9)
-    
+
     if isinstance(backend, IBMBackend):
         info_dict["simulator"] = False
     elif isinstance(backend, BackendV2):
