@@ -22,7 +22,7 @@ HIGH_SHOTS = 100000
 def test_athens_mod_shots1():
     """Check that default shots works properly for low settings"""
     backend = FakeAthens()
-    backend._configuration.max_shots = LOW_SHOTS
+    backend._conf_dict['max_shots'] = LOW_SHOTS
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
 
@@ -32,7 +32,7 @@ def test_athens_mod_shots1():
 def test_athens_mod_shots2():
     """Check that default shots works properly for high settings"""
     backend = FakeAthens()
-    backend._configuration.max_shots = HIGH_SHOTS
+    backend._conf_dict['max_shots'] = HIGH_SHOTS
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
 

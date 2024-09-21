@@ -21,8 +21,7 @@ def _faulty():
 
 
 BACKEND = FakeKolkata()
-_ = BACKEND.properties()
-BACKEND._properties.faulty_qubits = _faulty
+BACKEND._props_dict['faulty_qubits'] = _faulty
 
 
 def test_inoperable_qubits1():
