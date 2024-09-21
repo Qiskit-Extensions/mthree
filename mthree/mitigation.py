@@ -63,10 +63,12 @@ class M3Mitigation:
             cal_timestamp (str): Time at which cals were taken
             single_qubit_cals (list): 1Q calibration matrices
         """
-        executor = SamplerV2(mode=system)
-        if isinstance(system, (Batch, Session)):
-            # Replace execution manager with system instance
-            system = system.service.backend(system.backend())
+        self.executor = None
+        if system is not None:
+            executor = SamplerV2(mode=system)
+            if isinstance(system, (Batch, Session)):
+                # Replace execution manager with system instance
+                system = system.service.backend(system.backend())
         self.executor = executor
         self.system = system
         self.system_info = system_info(system) if system else {}
