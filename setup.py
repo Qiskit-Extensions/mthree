@@ -22,6 +22,9 @@ import setuptools
 import numpy as np
 from Cython.Build import cythonize
 
+if int(np.__version__.split('.')[0]) < 2:
+    raise Exception('Must build M3 against Numpy 2.0+')
+
 MAJOR = 2
 MINOR = 7
 MICRO = 0
