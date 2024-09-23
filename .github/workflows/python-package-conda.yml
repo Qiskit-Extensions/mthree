@@ -34,7 +34,7 @@ jobs:
     - name: Run tests with pytest
       run: |
         conda install pytest
-        python setup.py install
+        pip install .
         pytest -p no:warnings --pyargs mthree/test
     - name: Build docs
       run: |
