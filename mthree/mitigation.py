@@ -57,19 +57,13 @@ class M3Mitigation:
                                   is turned on (assuming reasonable error rates).
 
         Attributes:
-            system (Backend or Batch or Session): The target system or execution manager.
+            system (Backend): The target system or execution manager.
             system_info (dict): Information needed about the system
             cal_method (str): Calibration method used
             cal_timestamp (str): Time at which cals were taken
             single_qubit_cals (list): 1Q calibration matrices
         """
         self.executor = None
-        if system is not None:
-            executor = SamplerV2(mode=system)
-            self.executor = executor
-            if isinstance(system, (Batch, Session)):
-                # Replace execution manager with system instance
-                system = system.service.backend(system.backend())
         self.system = system
         self.system_info = system_info(system) if system else {}
         self.single_qubit_cals = None
@@ -176,6 +170,7 @@ class M3Mitigation:
         rep_delay=None,
         cals_file=None,
         async_cal=False,
+        mode=None
     ):
         """Grab calibration data from system.
 
@@ -188,6 +183,7 @@ class M3Mitigation:
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
             async_cal (bool): Do calibration async in a separate thread, default is False.
+            mode (Batch or Session): Mode to run jobs in, default=None 
 
         Returns:
             list: List of jobs submitted.
@@ -195,6 +191,13 @@ class M3Mitigation:
         Raises:
             M3Error: Called while a calibration currently in progress.
         """
+        if mode is not None:
+            executor = SamplerV2(mode=mode)
+            if mode.backend() != self.system.name:
+                raise M3Error(f'Mode backend {mode.backend()} != M3 backend {self.system.name}')
+        else:
+            executor = SamplerV2(mode=self.system)
+        self.executor = executor
         if self._thread:
             raise M3Error("Calibration currently in progress.")
         if qubits is None:
