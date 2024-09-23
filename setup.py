@@ -23,8 +23,8 @@ import numpy as np
 from Cython.Build import cythonize
 
 MAJOR = 2
-MINOR = 6
-MICRO = 3
+MINOR = 7
+MICRO = 0
 
 ISRELEASED = True
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)

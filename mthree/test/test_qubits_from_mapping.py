@@ -12,7 +12,7 @@
 
 """Test QuantumCircuit final measurement mapping"""
 from qiskit import QuantumCircuit, transpile
-from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2 as FakeCasablanca
 import mthree
 from mthree.utils import final_measurement_mapping
 
@@ -30,7 +30,7 @@ def test_cals_mappings():
     qc.measure(range(4), range(4))
 
     backend = FakeCasablanca()
-    circs = transpile([qc]*5, backend, seed_transpiler=12345)
+    circs = transpile([qc] * 5, backend, seed_transpiler=12345)
     maps = final_measurement_mapping(circs)
 
     qubits = []

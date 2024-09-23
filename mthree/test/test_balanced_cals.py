@@ -21,8 +21,8 @@ def test_balanced_strings():
         cal_strs = balanced_cal_strings(num_qubits)
         for kk in range(num_qubits):
             _sum = 0
-            str1 = cal_strs[2*kk]
-            str2 = cal_strs[2*kk+1]
+            str1 = cal_strs[2 * kk]
+            str2 = cal_strs[2 * kk + 1]
             for jj in range(num_qubits):
                 _sum += int(str1[jj]) + int(str2[jj])
             assert _sum == num_qubits

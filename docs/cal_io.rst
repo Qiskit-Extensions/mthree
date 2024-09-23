@@ -9,10 +9,10 @@ Let us generate some calibration data and save it.
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
 
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system([1, 3, 5], cals_file='my_cals.json')

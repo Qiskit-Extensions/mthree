@@ -13,7 +13,7 @@
 
 """Test list inputs"""
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 import mthree
 
 
@@ -32,7 +32,7 @@ def test_athens_sim():
     raw_counts = backend.run(qc).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction([raw_counts]*10, qubits=range(5))
+    mit_counts = mit.apply_correction([raw_counts] * 10, qubits=range(5))
     assert isinstance(mit_counts, list)
     mit_counts = mit.apply_correction([raw_counts], qubits=range(5))
     assert isinstance(mit_counts, list)

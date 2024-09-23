@@ -9,7 +9,7 @@ When you mitigate over multiple circuits the return object is a :class:`mthree.c
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
     qc = QuantumCircuit(6)
@@ -22,7 +22,7 @@ When you mitigate over multiple circuits the return object is a :class:`mthree.c
     qc.cx(1,2)
     qc.measure_all()
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(6))
 

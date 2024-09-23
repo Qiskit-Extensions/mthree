@@ -14,7 +14,7 @@
 import numpy as np
 import scipy.sparse.linalg as spla
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 import mthree
 from mthree.matvec import M3MatVec
 
@@ -37,14 +37,14 @@ def test_matvec():
 
     cals = mit._form_cals(range(5))
     M = M3MatVec(dict(raw_counts), cals, 5)
-    L = spla.LinearOperator((M.num_elems, M.num_elems),
-                            matvec=M.matvec)
+    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec)
 
-    LT = spla.LinearOperator((M.num_elems, M.num_elems),
-                             matvec=M.rmatvec)
+    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec)
 
     A = mit.reduced_cal_matrix(raw_counts, range(5))[0]
-    vec = (-1)**np.arange(M.num_elems)*np.ones(M.num_elems, dtype=float) / M.num_elems
+    vec = (
+        (-1) ** np.arange(M.num_elems) * np.ones(M.num_elems, dtype=float) / M.num_elems
+    )
 
     v1 = L.dot(vec)
     v2 = A.dot(vec)

@@ -16,7 +16,7 @@
 import numpy as np
 import orjson
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 
 import mthree
 
@@ -71,8 +71,8 @@ def test_save_cals(tmp_path):
     cal_file = tmp_path / "cal.json"
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(cals_file=cal_file)
-    with open(cal_file, 'r', encoding='utf-8') as fd:
-        cals = np.array(orjson.loads(fd.read())['cals'])
+    with open(cal_file, "r", encoding="utf-8") as fd:
+        cals = np.array(orjson.loads(fd.read())["cals"])
     assert np.array_equal(mit.single_qubit_cals, cals)
 
 

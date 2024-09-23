@@ -12,7 +12,7 @@
 
 """Test QuantumCircuit final measurement mapping"""
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
-from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2 as FakeCasablanca
 from mthree.utils import final_measurement_mapping
 
 
@@ -83,7 +83,7 @@ def test_mapping_list():
     qc.measure(range(4), range(4))
 
     backend = FakeCasablanca()
-    circs = transpile([qc]*5, backend)
+    circs = transpile([qc] * 5, backend)
     maps = final_measurement_mapping(circs)
     assert len(maps) == 5
 

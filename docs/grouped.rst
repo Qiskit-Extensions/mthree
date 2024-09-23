@@ -12,7 +12,7 @@ this consider the following simple example:
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
     import mthree
 
     qc = QuantumCircuit(4)
@@ -26,7 +26,7 @@ and, because we have transpiled, find the final measurement mapping:
 
 .. jupyter-execute::
 
-    backend = FakeAthens()
+    backend = FakeAthensV2()
     trans_circs = transpile([qc]*2, backend, optimization_level=3, approximation_degree=0)
     mappings = mthree.utils.final_measurement_mapping(trans_circs)  
 

@@ -13,12 +13,12 @@
 
 """Test details handling"""
 from qiskit import QuantumCircuit, transpile
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2
 
 import mthree
 
 
-BACKEND = FakeAthens()
+BACKEND = FakeAthensV2()
 
 
 def test_details_one_circuit():
@@ -73,7 +73,7 @@ def test_details_multi_circuit():
     mit = mthree.M3Mitigation(BACKEND)
     mit.cals_from_system()
 
-    quasi, details = mit.apply_correction([raw_counts]*2, [mapping]*2, details=True)
+    quasi, details = mit.apply_correction([raw_counts] * 2, [mapping] * 2, details=True)
 
     assert isinstance(quasi, mthree.classes.QuasiCollection)
     assert isinstance(details, list)

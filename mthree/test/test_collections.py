@@ -14,13 +14,12 @@
 """Test collection classes"""
 import numpy as np
 from qiskit import QuantumCircuit
-from qiskit_ibm_runtime.fake_provider import FakeAthens
+from qiskit_ibm_runtime.fake_provider import FakeAthensV2 as FakeAthens
 import mthree
 
 
 def test_mit_overhead():
-    """Test if mitigation overhead over collection is same as loop
-    """
+    """Test if mitigation overhead over collection is same as loop"""
     backend = FakeAthens()
     qc = QuantumCircuit(5)
     qc.h(2)
@@ -30,19 +29,19 @@ def test_mit_overhead():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = backend.run([qc]*10).result().get_counts()
+    raw_counts = backend.run([qc] * 10).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(5),
-                                      return_mitigation_overhead=True)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(5), return_mitigation_overhead=True
+    )
 
     ind_overheads = np.asarray([cnt.mitigation_overhead for cnt in mit_counts])
     assert np.allclose(mit_counts.mitigation_overhead, ind_overheads)
 
 
 def test_shots():
-    """Test if shots works over collections
-    """
+    """Test if shots works over collections"""
     backend = FakeAthens()
     qc = QuantumCircuit(5)
     qc.h(2)
@@ -52,13 +51,15 @@ def test_shots():
     qc.cx(3, 4)
     qc.measure_all()
 
-    raw_counts = backend.run([qc]*10, shots=4321).result().get_counts()
+    raw_counts = backend.run([qc] * 10, shots=4321).result().get_counts()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
-    mit_counts = mit.apply_correction(raw_counts, qubits=range(5),
-                                      return_mitigation_overhead=True)
+    mit_counts = mit.apply_correction(
+        raw_counts, qubits=range(5), return_mitigation_overhead=True
+    )
 
-    assert np.allclose(mit_counts.nearest_probability_distribution().shots,
-                       mit_counts.shots)
+    assert np.allclose(
+        mit_counts.nearest_probability_distribution().shots, mit_counts.shots
+    )
 
     assert np.all(mit_counts.shots == 4321)

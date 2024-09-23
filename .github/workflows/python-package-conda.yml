@@ -8,25 +8,26 @@ jobs:
   conda-test:
     name: Conda tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
     strategy:
       max-parallel: 5
       matrix:
-        os: [ubuntu-20.04, macos-11]
-        python-version: [3.8, 3.9, "3.10", "3.11", "3.12"]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.11", "3.12"]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: conda-incubator/setup-miniconda@v3
       with:
+        miniconda-version: "latest"
+        auto-update-conda: true
         python-version: ${{ matrix.python-version }}
-    - name: Add conda to system path
-      run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
       run: |
-        conda config --set always_yes yes --set changeps1 no
+        conda info
         pip install -U -r requirements.txt -c constraints.txt
     - name: Lint with pylint and pycodestyle
       run: |
@@ -36,8 +37,8 @@ jobs:
         pycodestyle --max-line-length=100 mthree
     - name: Run tests with pytest
       run: |
-        conda install pytest
-        python setup.py install
+        pip install pytest
+        pip install .
         pytest -p no:warnings --pyargs mthree/test
     - name: Build docs
       run: |

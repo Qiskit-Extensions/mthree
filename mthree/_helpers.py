@@ -13,7 +13,8 @@
 """
 Helper functions
 """
-from qiskit.providers import BackendV1, BackendV2
+from qiskit.providers import BackendV2
+from qiskit_ibm_runtime import IBMBackend
 from mthree.exceptions import M3Error
 
 
@@ -28,32 +29,20 @@ def system_info(backend):
     """
     info_dict = {}
     info_dict["inoperable_qubits"] = []
-    if isinstance(backend, BackendV1):
-        config = backend.configuration()
-        info_dict["name"] = backend.name()
-        info_dict["num_qubits"] = config.num_qubits
-        info_dict["max_shots"] = config.max_shots
-        info_dict["simulator"] = config.simulator
-        # A hack for Qiskit/Terra #9572
-        if "fake" in info_dict["name"]:
-            info_dict["simulator"] = True
+    config = backend.configuration()
+    info_dict["name"] = backend.name
+    info_dict["num_qubits"] = config.num_qubits
+    _max_shots = backend.configuration().max_shots
+    info_dict["max_shots"] = _max_shots if _max_shots else int(1e6)
+
+    if isinstance(backend, IBMBackend):
+        info_dict["simulator"] = False
     elif isinstance(backend, BackendV2):
-        info_dict["name"] = backend.name
-        info_dict["num_qubits"] = backend.num_qubits
-        _max_shots = backend.options.validator.get("shots", (None, None))[1]
-        info_dict["max_shots"] = _max_shots if _max_shots else int(1e9)
-        # Default to simulator is True for safety
         info_dict["simulator"] = True
-        # This is a V2 coming from IBM provider
-        # No other way to tell outside of configuration
-        # E.g. how to tell that ibmq_qasm_simulator is sim, but real devices not
-        # outside of configuration?
-        if hasattr(backend, 'configuration'):
-            info_dict["simulator"] = backend.configuration().simulator
     else:
-        raise M3Error('Invalid backend passed.')
+        raise M3Error("Invalid backend passed.")
     # Look for faulty qubits.  Renaming to 'inoperable' here
-    if hasattr(backend, 'properties'):
-        if hasattr(backend.properties(), 'faulty_qubits'):
+    if hasattr(backend, "properties"):
+        if hasattr(backend.properties(), "faulty_qubits"):
             info_dict["inoperable_qubits"] = backend.properties().faulty_qubits()
     return info_dict

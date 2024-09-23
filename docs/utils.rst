@@ -19,7 +19,7 @@ bits they correspond to.  Here we show another example of this usage.  First we 
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
     qc = QuantumCircuit(7)
@@ -32,7 +32,7 @@ and then transpile it:
 
 .. jupyter-execute::
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=54321)
     trans_qc.draw('mpl')
 
@@ -66,8 +66,8 @@ For example let us compare raw data verse the mitigated results in a simple case
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeAthens
-    backend = FakeAthens()
+    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
+    backend = FakeAthensV2()
     qc = QuantumCircuit(4)
     qc.h(2)
     qc.cx(2, 1)

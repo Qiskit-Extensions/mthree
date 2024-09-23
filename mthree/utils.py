@@ -30,8 +30,12 @@ import scipy.sparse.linalg
 
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
-from mthree.classes import (QuasiDistribution, ProbDistribution,
-                            QuasiCollection, ProbCollection)
+from mthree.classes import (
+    QuasiDistribution,
+    ProbDistribution,
+    QuasiCollection,
+    ProbCollection,
+)
 
 # This dynamic switch on keyword arguments in 'gmres' can be removed once Scipy 1.11 is
 # the minimum supported version.
@@ -40,6 +44,7 @@ SCIPY_MAJOR, SCIPY_MINOR, *_ = scipy.__version__.split(".", 2)
 if (int(SCIPY_MAJOR), int(SCIPY_MINOR)) >= (1, 11):
     gmres = scipy.sparse.linalg.gmres
 else:
+
     @functools.wraps(scipy.sparse.linalg.gmres)
     def gmres(*args, **kwargs):
         """Compatibility wrapper around Scipy's `gmres` to convert the new-style 'rtol'
@@ -102,8 +107,14 @@ def marginal_distribution(dist, indices, mapping=None):
     if isinstance(indices, str):
         indices = indices.upper()
         if len(indices) != key_len:
-            raise M3Error('Operator length does not equal distribution bit-string length.')
-        indices = [(key_len-kk-1) for kk in range(key_len-1, -1, -1) if indices[kk] != 'I']
+            raise M3Error(
+                "Operator length does not equal distribution bit-string length."
+            )
+        indices = [
+            (key_len - kk - 1)
+            for kk in range(key_len - 1, -1, -1)
+            if indices[kk] != "I"
+        ]
 
     out_dist = marg_dist(dist, indices)
 
@@ -167,7 +178,7 @@ def _final_measurement_mapping(circuit):
     return mapping
 
 
-def _expval_std(items, exp_ops='', method=0):
+def _expval_std(items, exp_ops="", method=0):
     """Compute expectation values from distributions.
 
     Parameters:
@@ -189,7 +200,7 @@ def _expval_std(items, exp_ops='', method=0):
         M3Error: Not a valid method.
     """
     if method not in [0, 1, 2]:
-        raise M3Error('Invalid method int {} passed.'.format(method))
+        raise M3Error("Invalid method int {} passed.".format(method))
 
     got_list = False
     if isinstance(items, list):
@@ -199,10 +210,14 @@ def _expval_std(items, exp_ops='', method=0):
 
     if isinstance(exp_ops, list):
         if not len(exp_ops) == len(items):
-            raise M3Error(('exp_ops length ({}) does not match number ' +
-                          'of items passed ({}).').format(len(exp_ops), len(items)))
+            raise M3Error(
+                (
+                    "exp_ops length ({}) does not match number "
+                    + "of items passed ({})."
+                ).format(len(exp_ops), len(items))
+            )
     else:
-        exp_ops = [exp_ops]*len(items)
+        exp_ops = [exp_ops] * len(items)
 
     if isinstance(items[0], (ProbCollection, QuasiCollection)):
         if method == 0:
@@ -243,7 +258,7 @@ def _expval_std(items, exp_ops='', method=0):
     return out
 
 
-def expval(items, exp_ops=''):
+def expval(items, exp_ops=""):
     """Compute expectation values from distributions.
 
     .. versionadded:: 0.16.0
@@ -288,7 +303,7 @@ def stddev(items):
     return _expval_std(items, method=1)
 
 
-def expval_and_stddev(items, exp_ops=''):
+def expval_and_stddev(items, exp_ops=""):
     """Compute expectation values from distributions.
 
     .. versionadded:: 0.16.0
@@ -314,7 +329,7 @@ def expval_and_stddev(items, exp_ops=''):
 
 
 def counts_to_vector(counts):
-    """ Return probability vector from counts dict.
+    """Return probability vector from counts dict.
 
     Parameters:
         counts (dict): Input dict of counts.
@@ -333,7 +348,7 @@ def counts_to_vector(counts):
 
 
 def vector_to_quasiprobs(vec, counts):
-    """ Return dict of quasi-probabilities.
+    """Return dict of quasi-probabilities.
 
     Parameters:
         vec (ndarray): 1d vector of quasi-probabilites.

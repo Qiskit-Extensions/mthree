@@ -13,7 +13,7 @@ For example consider the Bernstein-Vazirani circuit
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
     qc = QuantumCircuit(5, 4)
@@ -32,7 +32,7 @@ embed the circuit and we must SWAP map it:
 
 .. jupyter-execute::
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=12345)
     trans_qc.draw('mpl')
 

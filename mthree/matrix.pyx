@@ -14,6 +14,8 @@ cimport cython
 from cython.parallel cimport prange
 import numpy as np
 cimport numpy as np
+np.import_array()
+
 from libc.stdlib cimport malloc, free
 from libcpp.map cimport map
 from libcpp.string cimport string
