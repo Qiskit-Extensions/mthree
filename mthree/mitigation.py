@@ -66,10 +66,10 @@ class M3Mitigation:
         self.executor = None
         if system is not None:
             executor = SamplerV2(mode=system)
+            self.executor = executor
             if isinstance(system, (Batch, Session)):
                 # Replace execution manager with system instance
                 system = system.service.backend(system.backend())
-            self.executor = executor
         self.system = system
         self.system_info = system_info(system) if system else {}
         self.single_qubit_cals = None

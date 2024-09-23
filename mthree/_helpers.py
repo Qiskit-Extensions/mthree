@@ -29,11 +29,11 @@ def system_info(backend):
     """
     info_dict = {}
     info_dict["inoperable_qubits"] = []
-    config = backend.target
+    config = backend.configuration()
     info_dict["name"] = backend.name
     info_dict["num_qubits"] = config.num_qubits
-    _max_shots = backend.options.validator.get("shots", (None, None))[1]
-    info_dict["max_shots"] = _max_shots if _max_shots else int(1e9)
+    _max_shots = backend.configuration().max_shots
+    info_dict["max_shots"] = _max_shots if _max_shots else int(1e6)
 
     if isinstance(backend, IBMBackend):
         info_dict["simulator"] = False
