@@ -24,6 +24,7 @@ BACKEND = FakeKolkata()
 BACKEND.properties()
 BACKEND._props_dict['faulty_qubits'] = _faulty
 
+
 @pytest.mark.skip(reason="Do not know how to do this with latest version")
 def test_inoperable_qubits1():
     """Test that inoperable qubits are ignored"""
@@ -31,6 +32,7 @@ def test_inoperable_qubits1():
     mit.cals_from_system()
     for qubit in _faulty():
         assert mit.single_qubit_cals[qubit] is None
+
 
 @pytest.mark.skip(reason="Do not know how to do this with latest version")
 def test_inoperable_qubits2():
