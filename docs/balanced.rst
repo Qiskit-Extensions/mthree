@@ -17,7 +17,7 @@ consider the balanced calibration circuits for 5 qubits:
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
     import mthree
 
     mthree.circuits.balanced_cal_strings(5)
@@ -33,7 +33,7 @@ matches the precison of the other methods.  That is to say that the following:
 
  .. jupyter-execute::
 
-    backend = FakeAthens()
+    backend = FakeAthensV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(method='balanced')
 

@@ -16,10 +16,10 @@ over direct LU factorization (selection also depends on free memory).
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     mit = mthree.M3Mitigation(backend, iter_threshold=4321)
 
 
