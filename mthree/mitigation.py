@@ -25,7 +25,7 @@ import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
 from qiskit.providers import BackendV2
-from qiskit_ibm_runtime import Batch, Session, SamplerV2
+from qiskit_ibm_runtime import SamplerV2
 
 
 from mthree.circuits import (
