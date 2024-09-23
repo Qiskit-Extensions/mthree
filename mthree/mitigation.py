@@ -350,6 +350,8 @@ class M3Mitigation:
         """
         if self.system is None:
             raise M3Error("System is not set.  Use 'cals_from_file'.")
+        if self.executor is None:
+            self.executor = SamplerV2(mode=self.system)
         if self.single_qubit_cals is None:
             self.single_qubit_cals = [None] * self.num_qubits
         if self.cal_shots is None:
