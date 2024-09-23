@@ -33,7 +33,8 @@ jobs:
         pycodestyle --max-line-length=100 mthree
     - name: Run tests with pytest
       run: |
-        conda install pytest
+        pip pytest
+        pip install -U numpy>=2.1
         pip install .
         pytest -p no:warnings --pyargs mthree/test
     - name: Build docs
