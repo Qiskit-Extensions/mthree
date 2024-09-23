@@ -183,7 +183,7 @@ class M3Mitigation:
             rep_delay (float): Delay between circuits on IBM Quantum backends.
             cals_file (str): Output path to write JSON calibration data to.
             async_cal (bool): Do calibration async in a separate thread, default is False.
-            mode (Batch or Session): Mode to run jobs in, default=None 
+            mode (Batch or Session): Mode to run jobs in, default=None
 
         Returns:
             list: List of jobs submitted.
