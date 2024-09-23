@@ -11,4 +11,3 @@ nbsphinx
 psutil
 Jinja2<3.1
 quantum-styles
-numpy>=2.1
