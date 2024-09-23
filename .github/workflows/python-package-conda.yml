@@ -25,7 +25,7 @@ jobs:
       run: |
         conda config --set always_yes yes --set changeps1 no
         conda create -n mthree python=${{ matrix.python-version }}
-        conda init mthree
+        conda init bash
         conda activate mthree
         pip install -U -r requirements.txt -c constraints.txt
     - name: Lint with pylint and pycodestyle
