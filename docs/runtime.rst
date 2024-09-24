@@ -1,11 +1,11 @@
 .. _runtime:
 
-########################
-Using Runtime containers
-########################
+#############################
+Using Runtime execution modes
+#############################
 
-The Qiskit Runtime has two execution containers, `Batch` and `Session`, that allow for grouping
-multiple jobs.  You can include M3 calibration jobs in these containers using the `mode` argument 
+The Qiskit Runtime has two execution modes, `Batch` and `Session`, that allow for grouping
+multiple jobs.  You can include M3 calibration jobs in these modes using the `mode` argument 
 in `mthree.M3Mitigation.cals_from_system`.  For example:
 
 .. jupyter-execute::

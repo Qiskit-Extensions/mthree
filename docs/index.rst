@@ -43,7 +43,7 @@ measurements; it cannot mitigate single-shot measurements used for conditional-g
     :hidden:
  
     Basic usage <basic>
-    Runtime <runtime>
+    Using Runtime modes <runtime>
     Transpiled circuits <transpiled>
     Expectation values <expvals>
     Sampling problems <sampling>
