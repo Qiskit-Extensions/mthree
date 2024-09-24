@@ -22,6 +22,7 @@ import mthree
 faulty = [1, 3, 5, 7]
 
 class Service:
+    """Some class docstring"""
     def __init__(self) -> None:
         self._channel_strategy = 'test'
 
@@ -34,7 +35,7 @@ for faulty_qubit in faulty:
                                                "unit": "", "value": 0})
 
 FAULTY_BACKEND = IBMBackend(configuration=BACKEND.configuration(),
-                            service=Service(), 
+                            service=Service(),
                             api_client=None, instance=None)
 
 FAULTY_BACKEND.properties = lambda: BackendProperties.from_dict(properties)
