@@ -13,19 +13,12 @@
 """Test inoperable qubits"""
 from datetime import datetime
 import pytest
-from qiskit_ibm_runtime.ibm_backend import IBMBackend
 from qiskit_ibm_runtime.models import BackendProperties
 from qiskit_ibm_runtime.fake_provider import FakeKolkataV2
 import mthree
 
 
 faulty = [1, 3, 5, 7]
-
-
-class Service:
-    """Some class docstring"""
-    def __init__(self) -> None:
-        self._channel_strategy = 'test'
 
 
 BACKEND = FakeKolkataV2()
@@ -35,16 +28,12 @@ for faulty_qubit in faulty:
                                                "name": "operational",
                                                "unit": "", "value": 0})
 
-FAULTY_BACKEND = IBMBackend(configuration=BACKEND.configuration(),
-                            service=Service(),
-                            api_client=None, instance=None)
-
-FAULTY_BACKEND.properties = lambda: BackendProperties.from_dict(properties)
+BACKEND.properties = lambda: BackendProperties.from_dict(properties)
 
 
 def test_inoperable_qubits1():
     """Test that inoperable qubits are ignored"""
-    mit = mthree.M3Mitigation(FAULTY_BACKEND)
+    mit = mthree.M3Mitigation(BACKEND)
     mit.cals_from_system()
     for qubit in faulty:
         assert mit.single_qubit_cals[qubit] is None
@@ -52,6 +41,6 @@ def test_inoperable_qubits1():
 
 def test_inoperable_qubits2():
     """Test that explicitly using inoperable qubits raises error"""
-    mit = mthree.M3Mitigation(FAULTY_BACKEND)
+    mit = mthree.M3Mitigation(BACKEND)
     with pytest.raises(mthree.exceptions.M3Error):
         mit.cals_from_system([0, 3])
