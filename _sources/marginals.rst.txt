@@ -16,7 +16,7 @@ Consider the following circuit that we would like to evaluate:
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeGuadalupe
+    from qiskit_ibm_runtime.fake_provider import FakeGuadalupeV2
     import mthree
 
     N = 6
@@ -35,7 +35,7 @@ Let us first map this onto the target system and compute the final measurement m
 
 .. jupyter-execute::
 
-    backend = FakeGuadalupe()
+    backend = FakeGuadalupeV2()
 
     trans_qc = transpile(qc, backend, optimization_level=3, seed_transpiler=12345)
     mapping = mthree.utils.final_measurement_mapping(trans_qc)

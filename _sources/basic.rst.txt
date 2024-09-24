@@ -22,7 +22,7 @@ needed modules, and construct a circuit of interest.
 
     import numpy as np
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
     qc = QuantumCircuit(6)
@@ -40,7 +40,7 @@ Next we calibrate an M3 mitigator instance over qubits 0 -> 6 (Step #1):
 
 .. jupyter-execute::
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(6))
 
@@ -67,9 +67,9 @@ provided that we select the correct layout.
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeMontreal
+    from qiskit_ibm_runtime.fake_provider import FakeMontrealV2
 
-    backend = FakeMontreal()
+    backend = FakeMontrealV2()
     mit2 = mthree.M3Mitigation(backend)
 
 In our case, ``qubits = [10, 12, 15, 13, 11, 14]`` is an appropriate layout.  Importantly, the

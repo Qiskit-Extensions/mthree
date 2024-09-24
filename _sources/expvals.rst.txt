@@ -17,10 +17,10 @@ a noisy-simulator.
 
     import numpy as np
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeAthens
+    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
     import mthree
 
-    backend = FakeAthens()
+    backend = FakeAthensV2()
 
     ghz2 = QuantumCircuit(2)
     ghz2.h(0)

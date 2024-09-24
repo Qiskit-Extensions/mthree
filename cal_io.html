@@ -1,59 +1,191 @@
-<!DOCTYPE html>
-  <html class="no-js" lang="en" >
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utility functions" href="utils.html" /><link rel="prev" title="Converting to probabilites" href="probs.html" />
 
-  <title>Saving and loading calibration data &mdash; Mthree 2.6.3 2.6.3 documentation</title>
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/jupyter-sphinx.css" type="text/css" />
-  <link rel="stylesheet" href="_static/thebelab.css" type="text/css" /><script src="_static/js/web-components/top-nav-bar.js"></script>
-
-  <!-- SEGMENT ANALYTICS --></head>
-<body class="pytorch-body">
-  <!-- UNIFIED TOP MENU -->
-  <qiskit-ui-shell variant="hide-account"></qiskit-ui-shell>
-
-   
-
-    <!-- LEFT SIDE BAR -->
-
-    <!-- if translations available, display language dropdown menu -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
+        <title>Saving and loading calibration data - Mthree 2.7.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
     
 
-    <!-- Menu becomes dropdown in mobile view -->
-    <div class="table-of-contents-link-wrapper">
-      <span>Table of Contents</span>
-      <a href="#" class="toggle-table-of-contents" data-behavior="toggle-table-of-contents"></a>
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<script src="_static/js/web-components/top-nav-bar.js"></script></head>
+  <body>
+    
+    <script>document.body.dataset.theme = "light";</script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <path d="M28,4H4A2,2,0,0,0,2,6V26a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V6A2,2,0,0,0,28,4ZM4,6H20V26H4ZM28,26H22V6h6Z"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <defs><style>.cls-1{fill:none;}</style></defs>
+      <rect x="4" y="6" width="24" height="2"/>
+      <rect x="4" y="24" width="24" height="2"/>
+      <rect x="4" y="12" width="24" height="2"/>
+      <rect x="4" y="18" width="24" height="2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+         viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"><polygon points="22,16 12,26 10.6,24.6 19.2,16 10.6,7.4 12,6 " stroke="currentColor"/>
+      <rect id="_x3C_Transparent_Rectangle_x3E_" fill="none" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-new-tab" viewBox="0 0 32 32">
+    <svg id="icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+      <defs>
+        <style>
+          .cls-1 {
+            fill: none;
+          }
+        </style>
+      </defs>
+      <path fill="#6929C4" d="M26,28H6a2.0027,2.0027,0,0,1-2-2V6A2.0027,2.0027,0,0,1,6,4H16V6H6V26H26V16h2V26A2.0027,2.0027,0,0,1,26,28Z"/>
+      <polygon fill="#6929C4" points="20 2 20 4 26.586 4 18 12.586 19.414 14 28 5.414 28 12 30 12 30 2 20 2"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
     </div>
-
-    <!-- left side bar main content -->
-    <nav data-toggle="wy-nav-shift" class="pytorch-left-menu" id="pytorch-left-menu">
-    <div class="pytorch-menu pytorch-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-      <div class="sidebar">
-    <div class="pytorch-left-menu-search">
-        <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search Mthree 2.6.3 Docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Mthree 2.7.0</div></a>
     </div>
-
-    <!-- render sidebar from the toctree -->
-    
-    
-        <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.6.3)</a></li>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><div class="sidebar-brand">
+  <a href="https://www.qiskit.org/ecosystem">
+    <div class="sidebar-logo-container">
+      <img class="sidebar-logo" src="_static/images/ecosystem-logo.svg" alt="Qiskit Ecosystem logo"/>
+    </div>
+  </a>
+  
+  <span class="sidebar-brand-text">Mthree 2.7.0</span>
+</div><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.7.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="basic.html">Basic usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="runtime.html">Using Runtime modes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transpiled.html">Transpiled circuits</a></li>
 <li class="toctree-l1"><a class="reference internal" href="expvals.html">Expectation values</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sampling.html">Sampling problems</a></li>
@@ -62,7 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="error.html">Error analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="marginals.html">Low-weight operators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="probs.html">Obtaining probabilities</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Saving and loading calibrations</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Saving and loading calibrations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utility functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="balanced.html">Balanced calibration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced usage</a></li>
@@ -77,104 +209,70 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/main.html">Mitigation class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/classes.html">Distributions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/classes.html#distribution-collections">Distribution collections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/utils.html">Utility functions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/main.html">Mitigation class</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Mitigation class</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.M3Mitigation.html">mthree.M3Mitigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/classes.html">Distributions</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Distributions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.classes.QuasiDistribution.html">mthree.classes.QuasiDistribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.classes.ProbDistribution.html">mthree.classes.ProbDistribution</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/classes.html#distribution-collections">Distribution collections</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Distribution collections</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.classes.QuasiCollection.html">mthree.classes.QuasiCollection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.classes.ProbCollection.html">mthree.classes.ProbCollection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/utils.html">Utility functions</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Utility functions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.utils.final_measurement_mapping.html">mthree.utils.final_measurement_mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.utils.expval.html">mthree.utils.expval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.utils.stddev.html">mthree.utils.stddev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.utils.expval_and_stddev.html">mthree.utils.expval_and_stddev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stubs/mthree.utils.marginal_distribution.html">mthree.utils.marginal_distribution</a></li>
+</ul>
+</li>
 </ul>
 
-    
-
-    <!-- PREVIOUS RELEASES -->
-        
-
-    </div>
-  </div>
-</nav>
-
-<!-- OPTIONAL EXPANDABLE FUNCTIONALITY -->
-
-
-<!-- STYLING -->
-<script>
-    // indent subheadings under captions
-    expandable_rows = document.getElementsByClassName("caption");
-    var i;
-    for (i = 0; i < expandable_rows.length; i++) {
-        expandable_rows[i].nextElementSibling.style.marginLeft = "1rem"
-
-        // un-bold subheadings in dropdown
-        var subheadings = expandable_rows[i].nextElementSibling
-        for (j = 0; j < subheadings.children.length; j++) {
-            subheadings.children[j].style.fontWeight = "unset"
-        }
-    }
-
-    // adjust toctree class name to style external links
-    var toc_rows = document.getElementsByClassName("toctree-l1");
-    var i;
-    for (i = 0; i < toc_rows.length; i++) {
-        if (toc_rows[i].children[0].className === "reference external") {
-            toc_rows[i].className = "toctree-l1-external"
-            }
-    }
-
-    // expand and unexpand previous releases dropdown when clicked
-    var release_rows = document.getElementsByClassName("sidebar-l1-expandable");
-    for (i = 0; i < release_rows.length; i++) {
-        release_rows[i].addEventListener("click", function() {
-            this.classList.toggle("open");
-            var clicked_subheadings = this.nextElementSibling;
-            if (clicked_subheadings.style.display === "block") {
-            clicked_subheadings.style.display = "none";
-            } else {
-            clicked_subheadings.style.display = "block";
-            }
-        });
-    }
-</script>
-
-    <div class="pytorch-container">
-
-      <!-- BREADCRUMB MINI MENU BELOW TOP NAV BAR -->
-      <div class="pytorch-page-level-bar" id="pytorch-page-level-bar">
-        <div class="pytorch-breadcrumbs-wrapper">
-          <div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="pytorch-breadcrumbs">
-    
-      <li>
-        <a href="index.html">
-            Mthree 2.6.3 2.6.3 documentation
-        </a> &gt;
-      </li>
-
-        
-      <li>Saving and loading calibration data</li>
-    
-  </ul>
-</div>
-        </div>
+</div></div>
       </div>
-
-      <!-- MAIN CENTRE CONTENT -->
-      <section data-toggle="wy-nav-shift" id="pytorch-content-wrap" class="pytorch-content-wrap">
-        
-        <div class="pytorch-content-left">
-          <div class="rst-content">
-            <div role="main" class="main-content" itemscope="itemscope" itemtype="http://schema.org/Article">
-             <article itemprop="articleBody" id="pytorch-article" class="pytorch-article">
-              
-  <section id="saving-and-loading-calibration-data">
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="saving-and-loading-calibration-data">
 <span id="calio"></span><h1>Saving and loading calibration data<a class="headerlink" href="#saving-and-loading-calibration-data" title="Link to this heading">¶</a></h1>
 <p>It is possible to save calibration data and, optionally, re-load it at a later time.
 Let us generate some calibration data and save it.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablanca</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
 <span class="kn">import</span> <span class="nn">mthree</span>
 
-<span class="n">backend</span> <span class="o">=</span> <span class="n">FakeCasablanca</span><span class="p">()</span>
+<span class="n">backend</span> <span class="o">=</span> <span class="n">FakeCasablancaV2</span><span class="p">()</span>
 
 <span class="n">mit</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 <span class="n">mit</span><span class="o">.</span><span class="n">cals_from_system</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">cals_file</span><span class="o">=</span><span class="s1">&#39;my_cals.json&#39;</span><span class="p">)</span>
@@ -184,14 +282,14 @@ Let us generate some calibration data and save it.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[None,
- array([[0.99291992, 0.01977539],
-        [0.00708008, 0.98022461]]),
+ array([[0.99206543, 0.02026367],
+        [0.00793457, 0.97973633]]),
  None,
- array([[0.9855957 , 0.01733398],
-        [0.0144043 , 0.98266602]]),
+ array([[0.9855957 , 0.01879883],
+        [0.0144043 , 0.98120117]]),
  None,
- array([[0.9921875 , 0.02734375],
-        [0.0078125 , 0.97265625]]),
+ array([[0.99365234, 0.03137207],
+        [0.00634766, 0.96862793]]),
  None]
 </pre></div>
 </div>
@@ -222,14 +320,14 @@ Let us generate some calibration data and save it.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[None,
- array([[0.99328613, 0.02111816],
-        [0.00671387, 0.97888184]]),
+ array([[0.99353027, 0.02160645],
+        [0.00646973, 0.97839355]]),
  None,
- array([[0.98583984, 0.01806641],
-        [0.01416016, 0.98193359]]),
+ array([[0.98388672, 0.01794434],
+        [0.01611328, 0.98205566]]),
  None,
- array([[0.99353027, 0.02929688],
-        [0.00646973, 0.97070312]]),
+ array([[0.99401855, 0.02905273],
+        [0.00598145, 0.97094727]]),
  None]
 </pre></div>
 </div>
@@ -237,105 +335,63 @@ Let us generate some calibration data and save it.</p>
 </div>
 </section>
 
-
-             </article>
-            </div>
-            <footer>
-<!-- USER FEEDBACK -->
-  
-
-  <!-- NEXT/PREVIOUS BUTTONS -->
-  <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-    
-      <a href="utils.html" class="btn btn-neutral float-right" title="Utility functions" accesskey="n" rel="next">Next <img src="_static/images/chevron-right-purple.svg" class="next-page"></a>
-    
-    
-      <a href="probs.html" class="btn btn-neutral" title="Converting to probabilites" accesskey="p" rel="prev"><img src="_static/images/chevron-right-purple.svg" class="previous-page"> Previous</a>
-    
-  </div>
-
-  <div role="contentinfo">
-    <p>
-    <!-- SHOW QISKIT COPYRIGHT TEXT -->
-        &copy; Copyright 2021, Mthree Team.
-
-    <!-- SHOW DATE PAGE LAST UPDATED -->
-      Last updated on 2024/02/09.
-
-    </p>
-  </div>
-
-<!-- SHOW 'MADE WITH SPHINX' TEXT -->
-    
-      <div>
-        Built with <a href="http://sphinx-doc.org/">Sphinx</a> using <a href="https://github.com/Qiskit/qiskit_sphinx_theme">Qiskit Sphinx Theme </a> (based on <a href="https://github.com/pytorch/pytorch_sphinx_theme"> PyTorch Sphinx Theme</a>).
+        </article>
       </div>
-     
-<br>
-</footer>
-
-<script>
-  function clicked(ctaType) {
-    document.getElementById('was-helpful-thank-you').style.visibility = 'visible';
-    window.trackCta(`Helpful - ${ctaType}`);
-  }
-</script>
-
-          </div>
+      <footer>
+        <div class="related-pages">
+          <a class="next-page" href="utils.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Utility functions</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="probs.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Converting to probabilites</div>
+                
+              </div>
+            </a>
         </div>
-
-        <!-- RIGHT SIDE AUTOSUMMARY MENU -->
-        <div class="pytorch-content-right" id="pytorch-content-right">
-          <div class="pytorch-right-menu" id="pytorch-right-menu">
-            <div class="pytorch-side-scroll" id="pytorch-side-scroll-right">
-              <ul>
-<li><a class="reference internal" href="#">Saving and loading calibration data</a></li>
-</ul>
-
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, Mthree Team
             </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024/09/24</div>
+          </div>
+          <div class="right-details">
+            
           </div>
         </div>
-      </section>
-    </div> 
-
-  <!-- MOBILE MENU FOR SIDEBAR -->
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=99c1414e"></script>
-      <script src="_static/doctools.js?v=888ff710"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="_static/thebelab-helper.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-  <!-- enable language dropdown menu expand -->
-  <script type="text/javascript">
-    jQuery(function () {
-        SphinxRtdTheme.Navigation.enable(true);
-    });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function() {
-      mobileMenu.bind();
-      mobileTOC.bind();
-      sideMenus.bind();
-      scrollToAnchor.bind();
-      highlightNavigation.bind();
-      mainMenuDropdown.bind();
-      filterTags.bind();
-
-      // Add class to links that have code blocks, since we cannot create links in code blocks
-      $("article.pytorch-article a span.pre").each(function(e) {
-        $(this).closest("a").addClass("has-code");
-      });
-    })
-  </script>
-
-</body>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=dfec817d"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
 </html>

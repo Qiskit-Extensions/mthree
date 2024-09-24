@@ -19,7 +19,7 @@
     "import scipy.optimize as opt\n",
     "from qiskit import *\n",
     "from qiskit.circuit.library import TwoLocal\n",
-    "from qiskit_ibm_runtime.fake_provider import FakeAthens\n",
+    "from qiskit_ibm_runtime.fake_provider import FakeAthensV2\n",
     "import mthree"
    ]
   },
@@ -210,7 +210,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "backend = FakeAthens()\n",
+    "backend = FakeAthensV2()\n",
     "trans_circs = transpile(full_circs, backend)"
    ]
   },
@@ -301,7 +301,7 @@
    "source": [
     "def vqe_func(params, *args):\n",
     "    # Attach parameters to the transpiled circuit variables\n",
-    "    bound_circs = [circ.bind_parameters(params) for circ in trans_circs]\n",
+    "    bound_circs = [circ.assign_parameters(params) for circ in trans_circs]\n",
     "    # Submit the job and get the resultant counts back\n",
     "    counts = backend.run(bound_circs, shots=4096).result().get_counts()\n",
     "    # Apply mitigation to get quasi-probabilities\n",

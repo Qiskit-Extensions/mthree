@@ -15,7 +15,7 @@ done in linear time.
 .. jupyter-execute::
 
     from qiskit import *
-    from qiskit_ibm_runtime.fake_provider import FakeCasablanca
+    from qiskit_ibm_runtime.fake_provider import FakeCasablancaV2
     import mthree
 
     qc = QuantumCircuit(6)
@@ -28,7 +28,7 @@ done in linear time.
     qc.cx(1,2)
     qc.measure_all()
 
-    backend = FakeCasablanca()
+    backend = FakeCasablancaV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(range(6))
 

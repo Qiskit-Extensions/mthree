@@ -17,7 +17,7 @@
    "source": [
     "import numpy as np\n",
     "from qiskit import *\n",
-    "from qiskit_ibm_runtime.fake_provider import FakeGuadalupe\n",
+    "from qiskit_ibm_runtime.fake_provider import FakeGuadalupeV2\n",
     "import mthree\n",
     "import matplotlib.pyplot as plt\n",
     "plt.style.use('quantum-light')"
@@ -38,7 +38,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "backend = FakeGuadalupe()\n",
+    "backend = FakeGuadalupeV2()\n",
     "qubits= [1,4,7,10,12,13,14,11,8,5,3,2]"
    ]
   },
