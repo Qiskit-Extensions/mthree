@@ -26,13 +26,13 @@ BACKEND = FakeKolkataV2()
 properties = BACKEND.properties().to_dict()
 for faulty_qubit in faulty:
     properties["qubits"][faulty_qubit].append({"date": datetime.now(),
-                                               "name": "operational", 
+                                               "name": "operational",
                                                "unit": "", "value": 0})
 
 FAULTY_BACKEND = IBMBackend(configuration=BACKEND.configuration(),
                             service=None, api_client=None, instance=None)
 
-FAULTY_BACKEND.properties = lambda: BackendProperties.from_dict(properties)  
+FAULTY_BACKEND.properties = lambda: BackendProperties.from_dict(properties)
 
 
 def test_inoperable_qubits1():
