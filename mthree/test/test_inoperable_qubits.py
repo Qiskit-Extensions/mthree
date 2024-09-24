@@ -30,7 +30,8 @@ for faulty_qubit in faulty:
                                                "unit": "", "value": 0})
 
 FAULTY_BACKEND = IBMBackend(configuration=BACKEND.configuration(),
-                            service=None, api_client=None, instance=None)
+                            service={'_channel_strategy': 'test'}, 
+                            api_client=None, instance=None)
 
 FAULTY_BACKEND.properties = lambda: BackendProperties.from_dict(properties)
 
