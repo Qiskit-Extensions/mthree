@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-11]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
           CIBW_TEST_COMMAND_WINDOWS: pytest -p no:warnings C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test
           CIBW_TEST_COMMAND_MACOS:  pytest -p no:warnings /tmp/mthree_test
           CIBW_ENVIRONMENT_LINUX: MTHREE_OPENMP=1
-          CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=10.15
+          CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=12.5
           CIBW_BEFORE_TEST_LINUX: rm -rf /mthree_test && cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
           CIBW_BEFORE_TEST_WINDOWS: rm -rf C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && cp -r {project}/mthree/test C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_converters.py && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_columns.py && pip install --prefer-binary orjson
           CIBW_BEFORE_TEST_MACOS: rm -rf /tmp/mthree_test && cp -r {project}/mthree/test /tmp/mthree_test && rm -f /tmp/mthree_test/test_converters.py && rm -f /tmp/mthree_test/test_columns.py
