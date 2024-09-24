@@ -11,8 +11,8 @@
 # that they have been altered from the originals.
 
 """Test inoperable qubits"""
-import pytest
 from datetime import datetime
+import pytest
 from qiskit_ibm_runtime.ibm_backend import IBMBackend
 from qiskit_ibm_runtime.models import BackendProperties
 from qiskit_ibm_runtime.fake_provider import FakeKolkataV2
