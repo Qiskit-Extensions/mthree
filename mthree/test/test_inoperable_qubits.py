@@ -21,6 +21,7 @@ import mthree
 
 faulty = [1, 3, 5, 7]
 
+
 class Service:
     """Some class docstring"""
     def __init__(self) -> None:
