@@ -32,13 +32,21 @@ jobs:
     - name: Lint with pylint and pycodestyle
       run: |
         pip install -U -r requirements-dev.txt -c constraints.txt
-        python setup.py build_ext --inplace
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          MTHREE_OPENMP=1 python setup.py build_ext --inplace
+        else
+          python setup.py build_ext --inplace
+        fi
         pylint -rn mthree
         pycodestyle --max-line-length=100 mthree
     - name: Run tests with pytest
       run: |
         pip install pytest
-        pip install .
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          MTHREE_OPENMP=1 pip install .
+        else
+          pip install .
+        fi
         pytest -p no:warnings --pyargs mthree/test
     - name: Build docs
       run: |
