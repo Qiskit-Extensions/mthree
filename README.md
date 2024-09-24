@@ -15,50 +15,42 @@ M3 is a measurement mitigation technique that solves for corrected measurement p
 
 ## Installation
 
-You can `pip` install M3 in serial mode using PyPi via:
+You can `pip` install M3 in using PyPi via:
 
 ```bash
 pip install mthree
 ```
 
-Alternatively, one can install from source:
+This will install an OpenMP optimized version on Linux, and serial versions for OSX and Windows.  Alternatively, one can install from source:
 
 ```bash
-python setup.py install
+pip install .
 ```
 
 To enable openmp one must have an openmp 3.0+ enabled compiler and install with:
 
 ```bash
-python setup.py install --openmp
+MTHREE_OPENMP=1 pip install .
 ```
 
 ### OpenMP on OSX
 
-On OSX one must install LLVM using homebrew (You cannot use GCC):
+On OSX one must install GCC using homebrew:
 
 ```bash
-brew install llvm
+brew install gcc
 ```
 
-after which the following (or the like) must be executed in the terminal:
+Then installation with openmp can be accomplished using a call like:
 
 ```bash
-export PATH="/usr/local/opt/llvm/bin:$PATH"
+MTHREE_OPENMP=1 CC=gcc-14 CXX=g++14 python setup.py install
 ```
 
-and
+Note that previously the instructions said to install LLVM and NOT GCC.  However,
+in the latest version of OSX (Sequoia) LLVM based installations will build, but segfault
+upon execution. GCC however works fine, thus the change above.
 
-```bash
-export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
-export CPPFLAGS="-I/usr/local/opt/llvm/include"
-```
-
-Then installation with openmp can be accomplished using:
-
-```bash
-CC=clang CXX=clang python setup.py install --openmp
-```
 
 ## Usage
 
