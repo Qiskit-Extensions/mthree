@@ -22,8 +22,8 @@ import setuptools
 import numpy as np
 from Cython.Build import cythonize
 
-MAJOR = 2
-MINOR = 7
+MAJOR = 3
+MINOR = 0
 MICRO = 0
 
 ISRELEASED = True
@@ -182,7 +182,7 @@ class StyleCommand(setuptools.Command):
 setuptools.setup(
     name='mthree',
     version=VERSION,
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     packages=PACKAGES,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
