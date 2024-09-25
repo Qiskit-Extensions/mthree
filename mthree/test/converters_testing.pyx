@@ -21,16 +21,16 @@ from mthree.converters cimport counts_to_internal, internal_to_probs
 
 def _test_counts_to_array(object counts):
 
-    cdef double shots = sum(counts.values())
+    cdef float shots = sum(counts.values())
     cdef unsigned int num_bits = len(next(iter(counts)))
-    cdef map[string, double] counts_map = counts
+    cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
     cdef size_t kk, ll
     cdef list out
     
     # Assign memeory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
-    cdef double * input_probs = <double *>malloc(num_elems*sizeof(double))
+    cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
 
     # Convert sorted counts dict into bistrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
@@ -49,15 +49,15 @@ def _test_counts_to_array(object counts):
 
 def _test_counts_roundtrip(object counts):
     
-    cdef double shots = sum(counts.values())
+    cdef float shots = sum(counts.values())
     cdef unsigned int num_bits = len(next(iter(counts)))
-    cdef map[string, double] counts_map = counts
+    cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
     cdef size_t kk, ll
     
     # Assign memeory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
-    cdef double * input_probs = <double *>malloc(num_elems*sizeof(double))
+    cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
 
     # Convert sorted counts dict into bistrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)

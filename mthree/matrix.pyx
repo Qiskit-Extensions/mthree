@@ -25,16 +25,16 @@ from .converters cimport counts_to_internal
 from .compute cimport compute_element, compute_col_norms, within_distance
 
 @cython.boundscheck(False)
-cdef double matrix_element(unsigned int row,
+cdef float matrix_element(unsigned int row,
                            unsigned int col,
                            const unsigned char * bitstrings,
-                           const double * cals,
+                           const float * cals,
                            unsigned int num_bits,
                            unsigned int distance,
                            unsigned int MAX_DIST) noexcept nogil:
     
     cdef size_t kk
-    cdef double out = 0
+    cdef float out = 0
     
     if MAX_DIST or within_distance(row, col, bitstrings, num_bits, distance):
         out = compute_element(row, col, bitstrings, cals, num_bits)
@@ -45,25 +45,25 @@ def bitstring_int(str string):
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-def _reduced_cal_matrix(object counts, double[::1] cals,
+def _reduced_cal_matrix(object counts, float[::1] cals,
                         unsigned int num_bits, unsigned int distance):
     
-    cdef double shots = sum(counts.values())
-    cdef map[string, double] counts_map = counts
+    cdef float shots = sum(counts.values())
+    cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
     cdef unsigned int MAX_DIST
 
     MAX_DIST = distance == num_bits
-    cdef double[::1,:] W = np.zeros((num_elems, num_elems), order='F', dtype=float)
+    cdef float[::1,:] W = np.zeros((num_elems, num_elems), order='F', dtype=np.float32)
 
-    cdef double[::1] col_norms = np.zeros(num_elems, dtype=float)
+    cdef float[::1] col_norms = np.zeros(num_elems, dtype=np.float32)
 
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
-    cdef double * input_probs = <double *>malloc(num_elems*sizeof(double))
+    cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
 
     cdef size_t ii, jj
-    cdef double col_norm, _temp
+    cdef float col_norm, _temp
     cdef dict out_dict = counts_map
     
     with nogil:
@@ -78,16 +78,16 @@ def _reduced_cal_matrix(object counts, double[::1] cals,
 @cython.boundscheck(False)
 @cython.cdivision(True)
 cdef void omp_element_compute(size_t jj, const unsigned char * bitstrings,
-                              const double * cals_ptr,
+                              const float * cals_ptr,
                               unsigned int num_elems,
                               unsigned int num_bits,
                               unsigned int distance,
-                              double * W_ptr,
-                              double * col_norms_ptr,
+                              float * W_ptr,
+                              float * col_norms_ptr,
                               unsigned int MAX_DIST) noexcept nogil:
     """Computes the matrix elements for a single column
     """
-    cdef double _temp, col_norm = 0
+    cdef float _temp, col_norm = 0
     cdef size_t ii, col_idx
     col_idx = jj*num_elems
     for ii in range(num_elems):
@@ -100,7 +100,7 @@ cdef void omp_element_compute(size_t jj, const unsigned char * bitstrings,
         W_ptr[col_idx+ii] /= col_norm
 
 @cython.boundscheck(False)
-def sdd_check(dict counts, double[::1] cals,
+def sdd_check(dict counts, float[::1] cals,
               unsigned int num_bits, unsigned int distance):
     """Determines if the sub-space A matrix is strictly
     diagonally dominant or not.
@@ -114,8 +114,8 @@ def sdd_check(dict counts, double[::1] cals,
     Returns:
         int: Is matrix SDD or not.
     """
-    cdef double shots = sum(counts.values())
-    cdef map[string, double] counts_map = counts
+    cdef float shots = sum(counts.values())
+    cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
     cdef unsigned int MAX_DIST
 
@@ -130,9 +130,9 @@ def sdd_check(dict counts, double[::1] cals,
 
     # Assign memeory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
-    cdef double * input_probs = <double *>malloc(num_elems*sizeof(double))  
+    cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))  
     # Assign memeory for column norms
-    cdef double * col_norms = <double *>malloc(num_elems*sizeof(double))
+    cdef float * col_norms = <float *>malloc(num_elems*sizeof(float))
 
     # Assign memeory sdd checks
     cdef bool * row_sdd = <bool *>malloc(num_elems*sizeof(bool))
@@ -164,8 +164,8 @@ def sdd_check(dict counts, double[::1] cals,
 @cython.cdivision(True)
 cdef void omp_sdd_compute(size_t row,
                           const unsigned char * bitstrings,
-                          const double * cals,
-                          const double * col_norms,
+                          const float * cals,
+                          const float * col_norms,
                           bool * row_sdd,
                           unsigned int num_bits,
                           unsigned int num_elems,
@@ -173,7 +173,7 @@ cdef void omp_sdd_compute(size_t row,
                           unsigned int MAX_DIST) noexcept nogil:
 
     cdef size_t col
-    cdef double diag_elem, mat_elem, row_sum = 0
+    cdef float diag_elem, mat_elem, row_sum = 0
 
     diag_elem = matrix_element(row, row, bitstrings, cals, num_bits, distance, MAX_DIST)
     diag_elem /= col_norms[row]

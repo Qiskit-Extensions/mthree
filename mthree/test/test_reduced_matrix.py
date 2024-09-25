@@ -30,7 +30,7 @@ def test_reduced_matrix():
     for kk in range(2, len(qubits)):
         A = np.kron(mit.single_qubit_cals[qubits[kk]], A)
 
-    assert np.linalg.norm(A - M, np.inf) < 1e-14
+    assert np.linalg.norm(A - M, np.inf) < 1e-6
 
 
 def counts_to_vector(counts):

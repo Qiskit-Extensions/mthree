@@ -104,7 +104,7 @@ class M3Mitigation:
             ndarray: 1D Array of float cals data.
         """
         qubits = np.asarray(qubits, dtype=int)
-        cals = np.zeros(4 * qubits.shape[0], dtype=float)
+        cals = np.zeros(4 * qubits.shape[0], dtype=np.float32)
 
         # Reverse index qubits for easier indexing later
         for kk, qubit in enumerate(qubits[::-1]):
@@ -170,7 +170,7 @@ class M3Mitigation:
         rep_delay=None,
         cals_file=None,
         async_cal=False,
-        mode=None
+        mode=None,
     ):
         """Grab calibration data from system.
 
@@ -194,7 +194,9 @@ class M3Mitigation:
         if mode is not None:
             executor = SamplerV2(mode=mode)
             if mode.backend() != self.system.name:
-                raise M3Error(f'Mode backend {mode.backend()} != M3 backend {self.system.name}')
+                raise M3Error(
+                    f"Mode backend {mode.backend()} != M3 backend {self.system.name}"
+                )
         else:
             executor = SamplerV2(mode=self.system)
         self.executor = executor
@@ -250,7 +252,8 @@ class M3Mitigation:
             loaded_data = orjson.loads(fd.read())
             if isinstance(loaded_data, dict):
                 self.single_qubit_cals = [
-                    np.asarray(cal) if cal else None for cal in loaded_data["cals"]
+                    np.asarray(cal, dtype=np.float32) if cal else None
+                    for cal in loaded_data["cals"]
                 ]
                 self.cal_timestamp = loaded_data["timestamp"]
                 self.cal_shots = loaded_data.get("shots", None)
@@ -259,7 +262,8 @@ class M3Mitigation:
                 self.cal_timestamp = None
                 self.cal_shots = None
                 self.single_qubit_cals = [
-                    np.asarray(cal) if cal else None for cal in loaded_data
+                    np.asarray(cal, dtype=np.float32) if cal else None
+                    for cal in loaded_data
                 ]
         self.faulty_qubits = _faulty_qubit_checker(self.single_qubit_cals)
 
@@ -797,7 +801,10 @@ class M3Mitigation:
         cals = self._form_cals(qubits)
         M = M3MatVec(dict(counts), cals, distance)
         L = spla.LinearOperator(
-            (M.num_elems, M.num_elems), matvec=M.matvec, rmatvec=M.rmatvec
+            (M.num_elems, M.num_elems),
+            matvec=M.matvec,
+            rmatvec=M.rmatvec,
+            dtype=np.float32,
         )
         diags = M.get_diagonal()
 
@@ -805,8 +812,11 @@ class M3Mitigation:
             out = x / diags
             return out
 
-        P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec)
+        P = spla.LinearOperator(
+            (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
+        )
         vec = counts_to_vector(M.sorted_counts)
+
         out, error = gmres(
             L,
             vec,
@@ -900,7 +910,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
             else:
                 counts.append(_counts)
             # attach timestamp
-            if hasattr(job, 'metrics'):
+            if hasattr(job, "metrics"):
                 timestamp = job.metrics()["timestamps"]["running"]
             else:
                 timestamp = None
@@ -920,7 +930,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
     bad_list = []
     if mit.cal_method == "independent":
         for idx, qubit in enumerate(qubits):
-            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
+            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=np.float32)
             # Counts 0 has all P00, P10 data, so do that here
             prep0_counts = counts[2 * idx]
             P10 = prep0_counts.get("1", 0) / mit.cal_shots
@@ -937,7 +947,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
         prep0_counts = counts[0]
         prep1_counts = counts[1]
         for idx, qubit in enumerate(qubits):
-            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=float)
+            mit.single_qubit_cals[qubit] = np.zeros((2, 2), dtype=np.float32)
             count_vals = 0
             index = num_cal_qubits - idx - 1
             for key, val in prep0_counts.items():
@@ -957,11 +967,11 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
                 bad_list.append(qubit)
     # balanced calibration
     else:
-        cals = [np.zeros((2, 2), dtype=float) for kk in range(num_cal_qubits)]
+        cals = [np.zeros((2, 2), dtype=np.float32) for kk in range(num_cal_qubits)]
 
         for idx, count in enumerate(counts):
             target = cal_strings[idx][::-1]
-            good_prep = np.zeros(num_cal_qubits, dtype=float)
+            good_prep = np.zeros(num_cal_qubits, dtype=np.float32)
             # divide by 2 since total shots is double
             denom = mit._balanced_shots
 
