@@ -18,7 +18,7 @@ import mthree
 def test_multiple_job_submission():
     """Test that submitting multiple jobs works"""
     backend = FakeKolkata()
-    backend._conf_dict['max_experiments'] = 5
+    backend._conf_dict["max_experiments"] = 5
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     assert all(cal.trace() > 1.8 for cal in mit.single_qubit_cals)
@@ -27,7 +27,7 @@ def test_multiple_job_submission():
 def test_multiple_job_submission_single_circuit():
     """Test that submitting multiple single-circuit jobs works"""
     backend = FakeKolkata()
-    backend._conf_dict['max_experiments'] = 5
+    backend._conf_dict["max_experiments"] = 5
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
     assert all(cal.trace() > 1.8 for cal in mit.single_qubit_cals)

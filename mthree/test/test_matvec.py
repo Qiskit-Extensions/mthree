@@ -37,13 +37,19 @@ def test_matvec():
 
     cals = mit._form_cals(range(5))
     M = M3MatVec(dict(raw_counts), cals, 5)
-    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec, dtype=np.float32)
+    L = spla.LinearOperator(
+        (M.num_elems, M.num_elems), matvec=M.matvec, dtype=np.float32
+    )
 
-    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec, dtype=np.float32)
+    LT = spla.LinearOperator(
+        (M.num_elems, M.num_elems), matvec=M.rmatvec, dtype=np.float32
+    )
 
     A = mit.reduced_cal_matrix(raw_counts, range(5))[0]
     vec = (
-        (-1) ** np.arange(M.num_elems, dtype=np.float32) * np.ones(M.num_elems, dtype=np.float32) / M.num_elems
+        (-1) ** np.arange(M.num_elems, dtype=np.float32)
+        * np.ones(M.num_elems, dtype=np.float32)
+        / M.num_elems
     )
 
     v1 = L.dot(vec)

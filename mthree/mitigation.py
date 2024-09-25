@@ -108,7 +108,7 @@ class M3Mitigation:
 
         # Reverse index qubits for easier indexing later
         for kk, qubit in enumerate(qubits[::-1]):
-            cals[4 * kk: 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
+            cals[4 * kk : 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
         return cals
 
     def _check_sdd(self, counts, qubits, distance=None):
@@ -170,7 +170,7 @@ class M3Mitigation:
         rep_delay=None,
         cals_file=None,
         async_cal=False,
-        mode=None
+        mode=None,
     ):
         """Grab calibration data from system.
 
@@ -194,7 +194,9 @@ class M3Mitigation:
         if mode is not None:
             executor = SamplerV2(mode=mode)
             if mode.backend() != self.system.name:
-                raise M3Error(f'Mode backend {mode.backend()} != M3 backend {self.system.name}')
+                raise M3Error(
+                    f"Mode backend {mode.backend()} != M3 backend {self.system.name}"
+                )
         else:
             executor = SamplerV2(mode=self.system)
         self.executor = executor
@@ -250,7 +252,8 @@ class M3Mitigation:
             loaded_data = orjson.loads(fd.read())
             if isinstance(loaded_data, dict):
                 self.single_qubit_cals = [
-                    np.asarray(cal, dtype=np.float32) if cal else None for cal in loaded_data["cals"]
+                    np.asarray(cal, dtype=np.float32) if cal else None
+                    for cal in loaded_data["cals"]
                 ]
                 self.cal_timestamp = loaded_data["timestamp"]
                 self.cal_shots = loaded_data.get("shots", None)
@@ -259,7 +262,8 @@ class M3Mitigation:
                 self.cal_timestamp = None
                 self.cal_shots = None
                 self.single_qubit_cals = [
-                    np.asarray(cal, dtype=np.float32) if cal else None for cal in loaded_data
+                    np.asarray(cal, dtype=np.float32) if cal else None
+                    for cal in loaded_data
                 ]
         self.faulty_qubits = _faulty_qubit_checker(self.single_qubit_cals)
 
@@ -442,9 +446,9 @@ class M3Mitigation:
         # Get the slice length
         circ_slice = ceil(num_circs / num_jobs)
         circs_list = [
-            trans_qcs[kk * circ_slice: (kk + 1) * circ_slice]
+            trans_qcs[kk * circ_slice : (kk + 1) * circ_slice]
             for kk in range(num_jobs - 1)
-        ] + [trans_qcs[(num_jobs - 1) * circ_slice:]]
+        ] + [trans_qcs[(num_jobs - 1) * circ_slice :]]
         # Do job submission here
         jobs = []
         if self.rep_delay:
@@ -797,7 +801,10 @@ class M3Mitigation:
         cals = self._form_cals(qubits)
         M = M3MatVec(dict(counts), cals, distance)
         L = spla.LinearOperator(
-            (M.num_elems, M.num_elems), matvec=M.matvec, rmatvec=M.rmatvec, dtype=np.float32
+            (M.num_elems, M.num_elems),
+            matvec=M.matvec,
+            rmatvec=M.rmatvec,
+            dtype=np.float32,
         )
         diags = M.get_diagonal()
 
@@ -805,7 +812,9 @@ class M3Mitigation:
             out = x / diags
             return out
 
-        P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec, dtype=np.float32)
+        P = spla.LinearOperator(
+            (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
+        )
         vec = counts_to_vector(M.sorted_counts)
 
         out, error = gmres(
@@ -901,7 +910,7 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
             else:
                 counts.append(_counts)
             # attach timestamp
-            if hasattr(job, 'metrics'):
+            if hasattr(job, "metrics"):
                 timestamp = job.metrics()["timestamps"]["running"]
             else:
                 timestamp = None

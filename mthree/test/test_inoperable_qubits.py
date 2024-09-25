@@ -24,9 +24,9 @@ faulty = [1, 3, 5, 7]
 BACKEND = FakeKolkataV2()
 properties = BACKEND.properties().to_dict()
 for faulty_qubit in faulty:
-    properties["qubits"][faulty_qubit].append({"date": datetime.now(),
-                                               "name": "operational",
-                                               "unit": "", "value": 0})
+    properties["qubits"][faulty_qubit].append(
+        {"date": datetime.now(), "name": "operational", "unit": "", "value": 0}
+    )
 
 BACKEND.properties = lambda: BackendProperties.from_dict(properties)
 

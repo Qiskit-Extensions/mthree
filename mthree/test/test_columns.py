@@ -47,7 +47,8 @@ cals = np.array(
         0.0682,
         0.0046,
         0.9318,
-    ], dtype=np.float32
+    ],
+    dtype=np.float32,
 )
 
 FULL_MAT = np.kron(mats[1], mats[0])

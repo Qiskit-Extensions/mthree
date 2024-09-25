@@ -112,9 +112,13 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         M3Error: Error in iterative solver.
     """
     # Setup linear operator interfaces
-    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec, dtype=np.float32)
+    L = spla.LinearOperator(
+        (M.num_elems, M.num_elems), matvec=M.matvec, dtype=np.float32
+    )
 
-    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec, dtype=np.float32)
+    LT = spla.LinearOperator(
+        (M.num_elems, M.num_elems), matvec=M.rmatvec, dtype=np.float32
+    )
 
     diags = M.get_diagonal()
 
@@ -122,7 +126,9 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         out = x / diags
         return out
 
-    P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec, dtype=np.float32)
+    P = spla.LinearOperator(
+        (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
+    )
 
     dims = M.num_elems
 
