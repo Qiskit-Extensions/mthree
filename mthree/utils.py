@@ -231,11 +231,11 @@ def _expval_std(items, exp_ops="", method=0):
         if method == 0:
             for idx, it in enumerate(items):
                 out.append(ProbDistribution(it).expval(exp_ops[idx]))
-            out = np.asarray(out, dtype=float)
+            out = np.asarray(out, dtype=np.float32)
         elif method == 1:
             for _, it in enumerate(items):
                 out.append(ProbDistribution(it).stddev())
-            out = np.asarray(out, dtype=float)
+            out = np.asarray(out, dtype=np.float32)
         else:
             for idx, it in enumerate(items):
                 out.append(ProbDistribution(it).expval_and_stddev(exp_ops[idx]))
@@ -244,7 +244,7 @@ def _expval_std(items, exp_ops="", method=0):
         if method == 0:
             for idx, it in enumerate(items):
                 out.append(it.expval(exp_ops[idx]))
-            out = np.asarray(out, dtype=float)
+            out = np.asarray(out, dtype=np.float32)
         elif method == 1:
             for _, it in enumerate(items):
                 out.append(it.stddev())
@@ -339,7 +339,7 @@ def counts_to_vector(counts):
     """
     num_bitstrings = len(counts)
     shots = sum(counts.values())
-    vec = np.zeros(num_bitstrings, dtype=float)
+    vec = np.zeros(num_bitstrings, dtype=np.float32)
     idx = 0
     for val in counts.values():
         vec[idx] = val / shots

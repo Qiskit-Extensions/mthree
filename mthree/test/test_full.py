@@ -26,7 +26,7 @@ def test_full_problem():
     qubits = [1, 4, 7, 10, 12, 2, 3, 5]
     mit = M3Mitigation(None)
     mit.cals_from_matrices(CALS)
-    mit_counts = mit.apply_correction(COUNTS, qubits, tol=1e-10, method="iterative")
+    mit_counts = mit.apply_correction(COUNTS, qubits, tol=1e-6, method="iterative")
 
     # Compute using LU solver
     sorted_counts = dict(
@@ -42,7 +42,7 @@ def test_full_problem():
     lu_counts = vector_to_probs(x, sorted_counts)
 
     for key, val in lu_counts.items():
-        assert abs(val - mit_counts[key]) < 1e-9
+        assert abs(val - mit_counts[key]) < 1e-6
 
 
 def counts_to_vector(counts):
@@ -55,7 +55,7 @@ def counts_to_vector(counts):
         ndarray: 1D array of probabilities.
     """
     shots = sum(counts.values())
-    vec = np.zeros(len(counts), dtype=float)
+    vec = np.zeros(len(counts), dtype=np.float32)
     idx = 0
     for val in counts.values():
         vec[idx] = val / shots
@@ -342,18 +342,18 @@ COUNTS = {
 
 CALS = [
     None,
-    np.array([[0.98299193, 0.01979335], [0.01700807, 0.98020665]]),
-    np.array([[0.96917076, 0.03369085], [0.03082924, 0.96630915]]),
-    np.array([[0.9858876, 0.02348826], [0.0141124, 0.97651174]]),
-    np.array([[0.99496994, 0.02733885], [0.00503006, 0.97266115]]),
-    np.array([[0.96395599, 0.18330204], [0.03604401, 0.81669796]]),
+    np.array([[0.98299193, 0.01979335], [0.01700807, 0.98020665]], dtype=np.float32),
+    np.array([[0.96917076, 0.03369085], [0.03082924, 0.96630915]], dtype=np.float32),
+    np.array([[0.9858876, 0.02348826], [0.0141124, 0.97651174]], dtype=np.float32),
+    np.array([[0.99496994, 0.02733885], [0.00503006, 0.97266115]], dtype=np.float32),
+    np.array([[0.96395599, 0.18330204], [0.03604401, 0.81669796]], dtype=np.float32),
     None,
-    np.array([[0.98876682, 0.03722461], [0.01123318, 0.96277539]]),
+    np.array([[0.98876682, 0.03722461], [0.01123318, 0.96277539]], dtype=np.float32),
     None,
     None,
-    np.array([[0.99187792, 0.06334372], [0.00812208, 0.93665628]]),
+    np.array([[0.99187792, 0.06334372], [0.00812208, 0.93665628]], dtype=np.float32),
     None,
-    np.array([[0.94568855, 0.07140989], [0.05431145, 0.92859011]]),
+    np.array([[0.94568855, 0.07140989], [0.05431145, 0.92859011]], dtype=np.float32),
     None,
     None,
     None,

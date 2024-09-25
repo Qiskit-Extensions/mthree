@@ -36,7 +36,7 @@ def test_hamming_equiv():
             COUNTS, list(range(8)), details=True, method="direct", distance=kk
         )
 
-        assert np.linalg.norm(details2["col_norms"] - details["col_norms"]) < 1e-15
+        assert np.linalg.norm(details2["col_norms"] - details["col_norms"]) < 1e-7
 
 
 COUNTS = {

@@ -56,10 +56,10 @@ def exp_val(object dist, str exp_ops='', dict dict_ops={}):
             raise M3Error('exp_ops length does not equal number of bits.')
     
     # Find normalization to probs
-    cdef double exp_val = 0
+    cdef float exp_val = 0
     cdef string key
-    cdef double val
-    cdef double oper_prod = 1
+    cdef float val
+    cdef float oper_prod = 1
     cdef size_t kk
     cdef unsigned int shots
     for key, val in dist.items():

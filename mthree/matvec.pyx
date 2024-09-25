@@ -26,18 +26,18 @@ from mthree.compute cimport within_distance, compute_element, compute_col_norms
 
 cdef class M3MatVec():
     cdef unsigned char * bitstrings
-    cdef double * col_norms
+    cdef float * col_norms
     cdef bool MAX_DIST
     cdef unsigned int distance
     cdef public unsigned int num_elems
     cdef public unsigned int num_bits
-    cdef double * cals
+    cdef float * cals
     cdef public dict sorted_counts
     
-    def __cinit__(self, object counts, double[::1] cals, int distance=-1):
+    def __cinit__(self, object counts, float[::1] cals, int distance=-1):
         
-        cdef double shots = sum(counts.values())
-        cdef map[string, double] counts_map = counts
+        cdef float shots = sum(counts.values())
+        cdef map[string, float] counts_map = counts
         self.num_elems = counts_map.size()
         self.num_bits = len(next(iter(counts)))
         self.cals = &cals[0]
@@ -50,7 +50,7 @@ cdef class M3MatVec():
         self.MAX_DIST = self.distance == self.num_bits
         
         self.bitstrings = <unsigned char *>malloc(self.num_bits*self.num_elems*sizeof(unsigned char))
-        self.col_norms = <double *>malloc(self.num_elems*sizeof(double))
+        self.col_norms = <float *>malloc(self.num_elems*sizeof(float))
         
         counts_to_bitstrings(&counts_map, self.bitstrings, self.num_bits)
         
@@ -66,51 +66,51 @@ cdef class M3MatVec():
             ndarray: Column norms.
         """
         cdef size_t kk
-        cdef double[::1] out = np.empty(self.num_elems, dtype=float)
+        cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         for kk in range(self.num_elems):
             out[kk] = self.col_norms[kk]
-        return np.asarray(out, dtype=float)
+        return np.asarray(out, dtype=np.float32)
 
     @cython.boundscheck(False)
     @cython.cdivision(True)
     def get_diagonal(self):
         cdef size_t kk
-        cdef double temp_elem
-        cdef double[::1] out = np.empty(self.num_elems, dtype=float)
+        cdef float temp_elem
+        cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         for kk in range(self.num_elems):
             temp_elem = compute_element(kk, kk, self.bitstrings,
                                         self.cals, self.num_bits)
             temp_elem /= self.col_norms[kk]
             out[kk] = temp_elem
-        return np.asarray(out, dtype=float)
+        return np.asarray(out, dtype=np.float32)
 
     @cython.boundscheck(False)
-    def matvec(self, const double[::1] x):
+    def matvec(self, const float[::1] x):
         cdef size_t row
         if x.shape[0] != self.num_elems:
             raise Exception('Incorrect length of input vector.')
-        cdef double[::1] out = np.empty(self.num_elems, dtype=float)
+        cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         with nogil:
             for row in prange(self.num_elems, schedule='static'):
                 omp_matvec(row, &x[0], &out[0],
                            self.bitstrings, self.col_norms, self.cals,
                            self.num_elems, self.num_bits, self.distance,
                            self.MAX_DIST)
-        return np.asarray(out, dtype=float)
+        return np.asarray(out, dtype=np.float32)
 
     @cython.boundscheck(False)
-    def rmatvec(self, const double[::1] x):
+    def rmatvec(self, const float[::1] x):
         cdef size_t col
         if x.shape[0] != self.num_elems:
             raise Exception('Incorrect length of input vector.')
-        cdef double[::1] out = np.empty(self.num_elems, dtype=float)
+        cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         with nogil:
             for col in prange(self.num_elems, schedule='static'):
                 omp_rmatvec(col, &x[0], &out[0],
                             self.bitstrings, self.col_norms, self.cals,
                             self.num_elems, self.num_bits, self.distance,
                             self.MAX_DIST)
-        return np.asarray(out, dtype=float)
+        return np.asarray(out, dtype=np.float32)
 
     def __dealloc__(self):
         if self.bitstrings is not NULL:
@@ -121,16 +121,16 @@ cdef class M3MatVec():
 @cython.boundscheck(False)
 @cython.cdivision(True)
 cdef void omp_matvec(size_t row,
-                     const double * x,
-                     double * out,
+                     const float * x,
+                     float * out,
                      const unsigned char * bitstrings,
-                     const double * col_norms,
-                     const double * cals,
+                     const float * col_norms,
+                     const float * cals,
                      unsigned int num_elems,
                      unsigned int num_bits,
                      unsigned int distance,
                      bool MAX_DIST) noexcept nogil:
-    cdef double temp_elem, row_sum = 0
+    cdef float temp_elem, row_sum = 0
     cdef size_t col
     for col in range(num_elems):
         if MAX_DIST or within_distance(row, col, bitstrings,
@@ -144,16 +144,16 @@ cdef void omp_matvec(size_t row,
 @cython.boundscheck(False)
 @cython.cdivision(True)
 cdef void omp_rmatvec(size_t col,
-                      const double * x,
-                      double * out,
+                      const float * x,
+                      float * out,
                       const unsigned char * bitstrings,
-                      const double * col_norms,
-                      const double * cals,
+                      const float * col_norms,
+                      const float * cals,
                       unsigned int num_elems,
                       unsigned int num_bits,
                       unsigned int distance,
                       bool MAX_DIST) noexcept nogil:
-    cdef double temp_elem, row_sum = 0
+    cdef float temp_elem, row_sum = 0
     cdef size_t row
     for row in range(num_elems):
         if MAX_DIST or within_distance(row, col, bitstrings,
@@ -167,13 +167,13 @@ cdef void omp_rmatvec(size_t col,
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-cdef void counts_to_bitstrings(map[string, double] * counts_map,
+cdef void counts_to_bitstrings(map[string, float] * counts_map,
                                unsigned char * bitstrings,
                                unsigned int num_bits):
    
     cdef unsigned int idx, letter, start
-    cdef map[string, double].iterator end = counts_map.end()
-    cdef map[string, double].iterator it = counts_map.begin()
+    cdef map[string, float].iterator end = counts_map.end()
+    cdef map[string, float].iterator it = counts_map.begin()
     cdef string temp
     idx = 0
     while it != end:

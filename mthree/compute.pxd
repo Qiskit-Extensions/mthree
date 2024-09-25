@@ -16,15 +16,15 @@ cdef unsigned int within_distance(unsigned int row,
                                   unsigned int num_bits,
                                   unsigned int distance) noexcept nogil
 
-cdef double compute_element(unsigned int row,
+cdef float compute_element(unsigned int row,
                             unsigned int col,
                             const unsigned char * bitstrings,
-                            const double * cals,
+                            const float * cals,
                             unsigned int num_bits) noexcept nogil
 
-cdef void compute_col_norms(double * col_norms,
+cdef void compute_col_norms(float * col_norms,
                             const unsigned char * bitstrings,
-                            const double * cals,
+                            const float * cals,
                             unsigned int num_bits,
                             unsigned int num_elems,
                             unsigned int distance) noexcept nogil

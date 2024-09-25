@@ -63,4 +63,4 @@ def test_roundtrip_convert():
     shots = sum(COUNTS.values())
     out = _test_counts_roundtrip(COUNTS)
     for key, val in COUNTS.items():
-        assert abs(val / shots - out[key]) <= 1e-15
+        assert abs(val / shots - out[key]) <= 1e-7

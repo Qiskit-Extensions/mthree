@@ -43,7 +43,7 @@ def ainv_onenorm_est_lu(A, LU=None):
         return 1.0
 
     # Starting vec
-    v = (1.0 / dims) * np.ones(dims, dtype=float)
+    v = (1.0 / dims) * np.ones(dims, dtype=np.float32)
 
     # Factor A and A.T
     if LU is None:
@@ -112,9 +112,9 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         M3Error: Error in iterative solver.
     """
     # Setup linear operator interfaces
-    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec)
+    L = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.matvec, dtype=np.float32)
 
-    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec)
+    LT = spla.LinearOperator((M.num_elems, M.num_elems), matvec=M.rmatvec, dtype=np.float32)
 
     diags = M.get_diagonal()
 
@@ -122,7 +122,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         out = x / diags
         return out
 
-    P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec)
+    P = spla.LinearOperator((M.num_elems, M.num_elems), precond_matvec, dtype=np.float32)
 
     dims = M.num_elems
 
@@ -131,7 +131,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         return 1.0
 
     # Starting vec
-    v = (1.0 / dims) * np.ones(dims, dtype=float)
+    v = (1.0 / dims) * np.ones(dims, dtype=np.float32)
 
     # Initial solve
     v, error = gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
@@ -147,7 +147,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
     while k < 6:
         x_nrm = la.norm(x, np.inf)
         idx = np.where(np.abs(x) == x_nrm)[0][0]
-        v = np.zeros(dims, dtype=float)
+        v = np.zeros(dims, dtype=np.float32)
         v[idx] = 1
         v, error = gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
         if error:
@@ -167,7 +167,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         k += 1
 
     # After loop do Higham's check for cancellations.
-    x = np.arange(1, dims + 1)
+    x = np.arange(1, dims + 1, dtype=np.float32)
     x = (-1) ** (x + 1) * (1 + (x - 1) / (dims - 1))
 
     x, error = gmres(L, x, rtol=tol, atol=tol, maxiter=max_iter, M=P)

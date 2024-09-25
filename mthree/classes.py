@@ -104,7 +104,7 @@ class ProbDistribution(dict):
         elif isinstance(exp_ops, dict):
             return exp_val(self, dict_ops=exp_ops)
         elif isinstance(exp_ops, list):
-            return np.array([self.expval(item) for item in exp_ops], dtype=float)
+            return np.array([self.expval(item) for item in exp_ops], dtype=np.float32)
         else:
             raise M3Error("Invalid type passed to exp_ops")
 
@@ -180,7 +180,7 @@ class QuasiDistribution(dict):
         elif isinstance(exp_ops, dict):
             return exp_val(self, dict_ops=exp_ops)
         elif isinstance(exp_ops, list):
-            return np.array([self.expval(item) for item in exp_ops], dtype=float)
+            return np.array([self.expval(item) for item in exp_ops], dtype=np.float32)
         else:
             raise M3Error("Invalid type passed to exp_ops")
 
@@ -270,7 +270,7 @@ class QuasiCollection(list):
         Returns:
             ndarray: Array of mitigation overhead values.
         """
-        return np.array([item.mitigation_overhead for item in self], dtype=float)
+        return np.array([item.mitigation_overhead for item in self], dtype=np.float32)
 
     def expval(self, exp_ops=""):
         """Expectation value over entire collection.
@@ -295,9 +295,9 @@ class QuasiCollection(list):
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
             if not any(isinstance(item, (list, np.ndarray)) for item in out):
-                return np.asarray(out, dtype=float)
+                return np.asarray(out, dtype=np.float32)
             return out
-        return np.array([item.expval(exp_ops) for item in self])
+        return np.array([item.expval(exp_ops) for item in self], dtype=np.float32)
 
     def expval_and_stddev(self, exp_ops=""):
         """Expectation value and standard deviation over entire collection.
@@ -330,7 +330,7 @@ class QuasiCollection(list):
         Returns:
             ndarray: Array of standard deviations.
         """
-        return np.array([item.stddev() for item in self], dtype=float)
+        return np.array([item.stddev() for item in self], dtype=np.float32)
 
     def nearest_probability_distribution(self):
         """Nearest probability distribution over collection
@@ -401,9 +401,9 @@ class ProbCollection(list):
             for idx, item in enumerate(self):
                 out.append(item.expval(exp_ops[idx]))
             if not any(isinstance(item, (list, np.ndarray)) for item in out):
-                return np.asarray(out, dtype=float)
+                return np.asarray(out, dtype=np.float32)
             return out
-        return np.array([item.expval(exp_ops) for item in self], dtype=float)
+        return np.array([item.expval(exp_ops) for item in self], dtype=np.float32)
 
     def expval_and_stddev(self, exp_ops=""):
         """Expectation value and standard deviation over entire collection.
@@ -436,4 +436,4 @@ class ProbCollection(list):
         Returns:
             ndarray: Array of standard deviations.
         """
-        return np.array([item.stddev() for item in self], dtype=float)
+        return np.array([item.stddev() for item in self], dtype=np.float32)

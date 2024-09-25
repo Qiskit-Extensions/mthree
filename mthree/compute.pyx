@@ -43,10 +43,10 @@ cdef inline unsigned int within_distance(unsigned int row,
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-cdef inline double compute_element(unsigned int row,
+cdef inline float compute_element(unsigned int row,
                                    unsigned int col,
                                    const unsigned char * bitstrings,
-                                   const double * cals,
+                                   const float * cals,
                                    unsigned int num_bits) noexcept nogil:
     """Computes the matrix element specified by the input
     bit strings from the supplied tensored cals data.
@@ -54,13 +54,13 @@ cdef inline double compute_element(unsigned int row,
     Parameters:
         row_arr (unsigned char *): Basis element giving row index.
         col_arr (unsigned char *): Basis element giving col index.
-        cals (const double *): Tensored calibration data.
+        cals (const float *): Tensored calibration data.
         num_qubits (unsigned int): Number of qubits in arrays
 
     Returns:
-        double: Matrix element value.
+        float: Matrix element value.
     """
-    cdef double res = 1
+    cdef float res = 1
     cdef size_t kk
     cdef unsigned int offset
     cdef unsigned int row_start = num_bits*row
@@ -73,23 +73,23 @@ cdef inline double compute_element(unsigned int row,
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
-cdef void compute_col_norms(double * col_norms,
+cdef void compute_col_norms(float * col_norms,
                             const unsigned char * bitstrings,
-                            const double * cals,
+                            const float * cals,
                             unsigned int num_bits,
                             unsigned int num_elems,
                             unsigned int distance) noexcept nogil:
     """Compute the matrix column norms for each bitstring.
 
     Parameters:
-        col_norms (double *): Pointer to double array in which to poulate norms.
+        col_norms (float *): Pointer to float array in which to poulate norms.
         bitstrings (unsigned char *): Pointer to array of all bitstrings.
         num_bits (unsigned int): The number of bits in a bitstring.
         num_elems (unsigned int): The number of bitstring elements.
         distance (unsigned int): The distance to calculate out to.
     """
     cdef size_t col, row
-    cdef double col_norm
+    cdef float col_norm
     cdef unsigned int MAX_DIST = 0
 
     if distance == num_bits:
@@ -107,9 +107,9 @@ cdef void compute_col_norms(double * col_norms,
             col_norms[col] = col_norm
 
 
-cdef double _inner_col_norm_loop(unsigned int col,
+cdef float _inner_col_norm_loop(unsigned int col,
                                  const unsigned char * bitstrings,
-                                 const double * cals,
+                                 const float * cals,
                                  unsigned int num_bits,
                                  unsigned int num_elems,
                                  unsigned int distance,
@@ -121,7 +121,7 @@ cdef double _inner_col_norm_loop(unsigned int col,
 
     Parameters:
         col (int): The column of interest.
-        col_norms (double *): Pointer to double array in which to poulate norms.
+        col_norms (float *): Pointer to float array in which to poulate norms.
         bitstrings (unsigned char *): Pointer to array of all bitstrings.
         num_bits (unsigned int): The number of bits in a bitstring.
         num_elems (unsigned int): The number of bitstring elements.
@@ -129,7 +129,7 @@ cdef double _inner_col_norm_loop(unsigned int col,
         MAX_DIST (unsigned int): Are we doing max distance.
     """
     cdef size_t row
-    cdef double col_norm = 0
+    cdef float col_norm = 0
     cdef unsigned int num_terms = hamming_terms(num_bits, distance)
     cdef unsigned int terms = 0
 

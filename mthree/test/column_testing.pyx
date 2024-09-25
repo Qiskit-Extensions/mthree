@@ -16,25 +16,25 @@ from mthree.converters cimport counts_to_internal
 
 
 def _test_vector_column_norm(object counts,
-                             double[::1] cals,
+                             float[::1] cals,
                              int distance):
     """Test computing the column norm on a full vector
 
     Parameters:
         col (unsigned char memoryview): Bitstring for column
-        cals (double memoryview): Input calibration data.
+        cals (float memoryview): Input calibration data.
         distance (int): Distance (weight) of errors to consider.
     """
     cdef unsigned int num_bits = len(next(iter(counts)))
-    cdef double shots = sum(counts.values())
-    cdef map[string, double] counts_map = counts
+    cdef float shots = sum(counts.values())
+    cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
 
     # Assign memeory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
-    cdef double * input_probs = <double *>malloc(num_elems*sizeof(double))
+    cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
     # Assign memeory for column norms
-    cdef double[::1] col_norms = np.zeros(num_elems, dtype=float)
+    cdef float[::1] col_norms = np.zeros(num_elems, dtype=np.float32)
 
     # Convert sorted counts dict into bistrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
