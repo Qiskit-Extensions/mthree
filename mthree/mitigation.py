@@ -34,7 +34,7 @@ from mthree.circuits import (
     balanced_cal_strings,
     balanced_cal_circuits,
 )
-from mthree.matrix import _reduced_cal_matrix, sdd_check
+from mthree.matrix import _reduced_cal_matrix
 from mthree.utils import counts_to_vector, vector_to_quasiprobs, gmres
 from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
