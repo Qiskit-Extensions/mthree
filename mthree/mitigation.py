@@ -34,7 +34,7 @@ from mthree.circuits import (
     balanced_cal_strings,
     balanced_cal_circuits,
 )
-from mthree.matrix import _reduced_cal_matrix, sdd_check
+from mthree.matrix import _reduced_cal_matrix
 from mthree.utils import counts_to_vector, vector_to_quasiprobs, gmres
 from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
@@ -110,35 +110,6 @@ class M3Mitigation:
         for kk, qubit in enumerate(qubits[::-1]):
             cals[4 * kk: 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
         return cals
-
-    def _check_sdd(self, counts, qubits, distance=None):
-        """Checks if reduced A-matrix is SDD or not
-
-        Parameters:
-            counts (dict): Dictionary of counts.
-            qubits (array_like): List of qubits.
-            distance (int): Distance to compute over.
-
-        Returns:
-            bool: True if A-matrix is SDD, else False
-
-        Raises:
-            M3Error: Number of qubits supplied does not match bit-string length.
-        """
-        # If distance is None, then assume max distance.
-        num_bits = len(qubits)
-        if distance is None:
-            distance = num_bits
-
-        # check if len of bitstrings does not equal number of qubits passed.
-        bitstring_len = len(next(iter(counts)))
-        if bitstring_len != num_bits:
-            raise M3Error(
-                "Bitstring length ({}) does not match".format(bitstring_len)
-                + " number of qubits ({})".format(num_bits)
-            )
-        cals = self._form_cals(qubits)
-        return sdd_check(counts, cals, num_bits, distance)
 
     def tensored_cals_from_system(
         self, qubits=None, shots=None, method="balanced", rep_delay=None, cals_file=None
