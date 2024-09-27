@@ -44,7 +44,7 @@ void compute_col_norms(float * col_norms,
         MAX_DIST = true;
       }
       else{
-        num_terms = hamming_terms(num_bits, distance); 
+        num_terms = (int)hamming_terms(num_bits, distance, num_elems); 
       }
 
       #pragma omp parallel for
