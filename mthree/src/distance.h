@@ -46,7 +46,7 @@ static inline bool within_distance(unsigned int row,
   }
 
 
-static inline unsigned int binomial_coeff(unsigned int n, unsigned int k)
+static inline long long binomial_coeff(unsigned int n, unsigned int k)
   {
     if (k > n)
       {
@@ -71,12 +71,27 @@ static inline unsigned int binomial_coeff(unsigned int n, unsigned int k)
   }
 
 
-unsigned int hamming_terms(unsigned int num_bits, unsigned int distance)
+unsigned int hamming_terms(unsigned int num_bits, unsigned int distance, unsigned int num_elems)
+  /**
+   * @brief Computes number of Hamming terms of a given distance, up to the total number of elements
+   *
+   * @param num_bits Number of length of the bit-strings
+   * @param distance Distance to consider
+   * @param num_elems Number of elements (dimension) of reduced A-matrix
+   *
+   * @return Number of elements within distance or num_elems at most 
+   */
 {
-  unsigned int kk, out = 0;
+  unsigned int kk;
+  unsigned int out = 0;
   for (kk=0; kk < (distance+1); ++kk)
     {
       out += binomial_coeff(num_bits, kk);
+      if (out >= num_elems)
+      {
+        out = num_elems;
+        break;
+      }
     }
   return out;
 }
