@@ -27,7 +27,7 @@ This will install an OpenMP optimized version on Linux, and serial versions for 
 pip install .
 ```
 
-To enable openmp one must have an openmp 3.0+ enabled compiler and install with:
+To enable openmp one must have an openmp 4.0+ enabled compiler and install with:
 
 ```bash
 MTHREE_OPENMP=1 pip install .
