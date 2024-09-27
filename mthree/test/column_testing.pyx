@@ -11,8 +11,15 @@ from libc.stdlib cimport malloc, free
 from libcpp.map cimport map
 from libcpp.string cimport string
 
-from mthree.compute cimport compute_col_norms
 from mthree.converters cimport counts_to_internal
+
+cdef extern from "../src/col_renorm.h" nogil:
+    void compute_col_norms(float * col_norms,
+                           const unsigned char * bitstrings,
+                           const float * cals,
+                           unsigned int num_bits,
+                           unsigned int num_elems,
+                           unsigned int distance)
 
 
 def _test_vector_column_norm(object counts,

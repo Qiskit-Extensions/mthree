@@ -22,12 +22,6 @@ cdef float compute_element(unsigned int row,
                             const float * cals,
                             unsigned int num_bits) noexcept nogil
 
-cdef void compute_col_norms(float * col_norms,
-                            const unsigned char * bitstrings,
-                            const float * cals,
-                            unsigned int num_bits,
-                            unsigned int num_elems,
-                            unsigned int distance) noexcept nogil
 
 cdef unsigned int hamming_terms(unsigned int num_bits,
                                 unsigned int distance) noexcept nogil
