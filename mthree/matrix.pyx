@@ -22,7 +22,7 @@ from libcpp.string cimport string
 from libcpp cimport bool
 
 from .converters cimport counts_to_internal
-from .compute cimport compute_element, compute_col_norms, within_distance
+from .compute cimport compute_element, within_distance
 
 @cython.boundscheck(False)
 cdef float matrix_element(unsigned int row,
