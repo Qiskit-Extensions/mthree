@@ -21,7 +21,17 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 from cython.operator cimport dereference, postincrement
 
-from mthree.compute cimport within_distance, compute_element, compute_col_norms
+from mthree.compute cimport within_distance, compute_element
+
+
+cdef extern from "src/col_renorm.h" nogil:
+    void compute_col_norms(float * col_norms,
+                           const unsigned char * bitstrings,
+                           const float * cals,
+                           unsigned int num_bits,
+                           unsigned int num_elems,
+                           unsigned int distance)
+
 
 
 cdef class M3MatVec():
