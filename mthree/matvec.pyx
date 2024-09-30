@@ -152,28 +152,7 @@ cdef class M3MatVec():
         if self.col_norms is not NULL:
             free(self.col_norms)
 
-@cython.boundscheck(False)
-@cython.cdivision(True)
-cdef void omp_matvec(size_t row,
-                     const float * x,
-                     float * out,
-                     const unsigned char * bitstrings,
-                     const float * col_norms,
-                     const float * cals,
-                     unsigned int num_elems,
-                     unsigned int num_bits,
-                     unsigned int distance,
-                     bool MAX_DIST) noexcept nogil:
-    cdef float temp_elem, row_sum = 0
-    cdef size_t col
-    for col in range(num_elems):
-        if MAX_DIST or within_distance(row, col, bitstrings,
-                                       num_bits, distance):
-            temp_elem = compute_element(row, col, bitstrings,
-                                        cals, num_bits)
-            temp_elem /= col_norms[col]
-            row_sum += temp_elem * x[col]
-    out[row] = row_sum
+
 
 @cython.boundscheck(False)
 @cython.cdivision(True)
