@@ -16,6 +16,7 @@ that they have been altered from the originals.
 #include "distance.h"
 #include "elements.h"
 
+#pragma once
 
 void compute_col_norms(float * col_norms,
                        const unsigned char * __restrict bitstrings,

@@ -14,6 +14,7 @@ that they have been altered from the originals.
 #include <stddef.h>
 #include <stdbool.h>
 
+#pragma once
 
 static inline bool within_distance(unsigned int row,
                                    unsigned int col,

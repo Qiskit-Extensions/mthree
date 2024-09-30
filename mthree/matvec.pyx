@@ -23,6 +23,11 @@ from cython.operator cimport dereference, postincrement
 
 from mthree.compute cimport within_distance, compute_element
 
+cdef extern from "src/distance.h" nogil:
+    unsigned int hamming_terms(unsigned int num_bits,
+                               unsigned int distance,
+                               unsigned int num_elems)
+
 
 cdef extern from "src/col_renorm.h" nogil:
     void compute_col_norms(float * col_norms,
@@ -31,6 +36,30 @@ cdef extern from "src/col_renorm.h" nogil:
                            unsigned int num_bits,
                            unsigned int num_elems,
                            unsigned int distance)
+
+
+cdef extern from "src/matvec.h" nogil:
+    void matvec(const float * x,
+                float * out,
+                float * col_norms,
+                const unsigned char * bitstrings,
+                const float * cals,
+                unsigned int num_bits,
+                unsigned int num_elems,
+                unsigned int distance,
+                int num_terms,
+                bool MAX_DIST)
+
+    void rmatvec(const float * x,
+                 float * out,
+                 float * col_norms,
+                 const unsigned char * bitstrings,
+                 const float * cals,
+                 unsigned int num_bits,
+                 unsigned int num_elems,
+                 unsigned int distance,
+                 int num_terms,
+                 bool MAX_DIST)
 
 
 
@@ -43,6 +72,7 @@ cdef class M3MatVec():
     cdef public unsigned int num_bits
     cdef float * cals
     cdef public dict sorted_counts
+    cdef int num_terms
     
     def __cinit__(self, object counts, float[::1] cals, int distance=-1):
         
@@ -52,12 +82,15 @@ cdef class M3MatVec():
         self.num_bits = len(next(iter(counts)))
         self.cals = &cals[0]
         self.sorted_counts = counts_map
+        self.num_terms = -1
         
         if distance == -1:
             distance = self.num_bits
 
         self.distance = distance
         self.MAX_DIST = self.distance == self.num_bits
+        if not self.MAX_DIST:
+            self.num_terms = <int>hamming_terms(self.num_bits, self.distance, self.num_elems)
         
         self.bitstrings = <unsigned char *>malloc(self.num_bits*self.num_elems*sizeof(unsigned char))
         self.col_norms = <float *>malloc(self.num_elems*sizeof(float))
@@ -100,12 +133,16 @@ cdef class M3MatVec():
         if x.shape[0] != self.num_elems:
             raise Exception('Incorrect length of input vector.')
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
-        with nogil:
-            for row in prange(self.num_elems, schedule='static'):
-                omp_matvec(row, &x[0], &out[0],
-                           self.bitstrings, self.col_norms, self.cals,
-                           self.num_elems, self.num_bits, self.distance,
-                           self.MAX_DIST)
+        matvec(&x[0],
+               &out[0],
+               self.col_norms,
+               self.bitstrings,
+               self.cals,
+               self.num_bits,
+               self.num_elems,
+               self.distance,
+               self.num_terms,
+               self.MAX_DIST)
         return np.asarray(out, dtype=np.float32)
 
     @cython.boundscheck(False)
@@ -114,12 +151,16 @@ cdef class M3MatVec():
         if x.shape[0] != self.num_elems:
             raise Exception('Incorrect length of input vector.')
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
-        with nogil:
-            for col in prange(self.num_elems, schedule='static'):
-                omp_rmatvec(col, &x[0], &out[0],
-                            self.bitstrings, self.col_norms, self.cals,
-                            self.num_elems, self.num_bits, self.distance,
-                            self.MAX_DIST)
+        rmatvec(&x[0],
+                &out[0],
+                self.col_norms,
+                self.bitstrings,
+                self.cals,
+                self.num_bits,
+                self.num_elems,
+                self.distance,
+                self.num_terms,
+                self.MAX_DIST)
         return np.asarray(out, dtype=np.float32)
 
     def __dealloc__(self):
@@ -127,52 +168,6 @@ cdef class M3MatVec():
             free(self.bitstrings)
         if self.col_norms is not NULL:
             free(self.col_norms)
-
-@cython.boundscheck(False)
-@cython.cdivision(True)
-cdef void omp_matvec(size_t row,
-                     const float * x,
-                     float * out,
-                     const unsigned char * bitstrings,
-                     const float * col_norms,
-                     const float * cals,
-                     unsigned int num_elems,
-                     unsigned int num_bits,
-                     unsigned int distance,
-                     bool MAX_DIST) noexcept nogil:
-    cdef float temp_elem, row_sum = 0
-    cdef size_t col
-    for col in range(num_elems):
-        if MAX_DIST or within_distance(row, col, bitstrings,
-                                       num_bits, distance):
-            temp_elem = compute_element(row, col, bitstrings,
-                                        cals, num_bits)
-            temp_elem /= col_norms[col]
-            row_sum += temp_elem * x[col]
-    out[row] = row_sum
-
-@cython.boundscheck(False)
-@cython.cdivision(True)
-cdef void omp_rmatvec(size_t col,
-                      const float * x,
-                      float * out,
-                      const unsigned char * bitstrings,
-                      const float * col_norms,
-                      const float * cals,
-                      unsigned int num_elems,
-                      unsigned int num_bits,
-                      unsigned int distance,
-                      bool MAX_DIST) noexcept nogil:
-    cdef float temp_elem, row_sum = 0
-    cdef size_t row
-    for row in range(num_elems):
-        if MAX_DIST or within_distance(row, col, bitstrings,
-                                       num_bits, distance):
-            temp_elem = compute_element(row, col, bitstrings,
-                                        cals, num_bits)
-            temp_elem /= col_norms[col]
-            row_sum += temp_elem * x[row]
-    out[col] = row_sum
 
 
 @cython.boundscheck(False)
