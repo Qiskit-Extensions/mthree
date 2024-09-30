@@ -120,12 +120,16 @@ cdef class M3MatVec():
         if x.shape[0] != self.num_elems:
             raise Exception('Incorrect length of input vector.')
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
-        with nogil:
-            for row in prange(self.num_elems, schedule='static'):
-                omp_matvec(row, &x[0], &out[0],
-                           self.bitstrings, self.col_norms, self.cals,
-                           self.num_elems, self.num_bits, self.distance,
-                           self.MAX_DIST)
+        matvec(&x[0],
+               &out[0],
+               self.col_norms,
+               self.bitstrings,
+               self.cals,
+               self.num_bits,
+               self.num_elems,
+               self.distance,
+               self.num_terms,
+               self.MAX_DIST)
         return np.asarray(out, dtype=np.float32)
 
     @cython.boundscheck(False)

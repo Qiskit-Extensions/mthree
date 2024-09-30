@@ -56,7 +56,7 @@ void matvec(const float * __restrict x,
           {
             temp_elem = compute_element(row, col, bitstrings, cals, num_bits);
             temp_elem /= col_norms[col];
-            row_sum += temp_elem * x[row];
+            row_sum += temp_elem * x[col];
             terms += 1;
             if (terms == num_terms)
             {
