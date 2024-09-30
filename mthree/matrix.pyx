@@ -24,6 +24,11 @@ from libcpp cimport bool
 from .converters cimport counts_to_internal
 
 
+cdef extern from "src/distance.h" nogil:
+    unsigned int hamming_terms(unsigned int num_bits,
+                               unsigned int distance,
+                               unsigned int num_elems)
+
 cdef extern from "src/elements.h" nogil:
     void column_elements(const unsigned char * bitstrings,
                          const float * cals_ptr,
@@ -32,6 +37,7 @@ cdef extern from "src/elements.h" nogil:
                          unsigned int distance,
                          float * W_ptr,
                          float *  col_norms_ptr,
+                         int num_terms,
                          bool MAX_DIST)
 
 
@@ -47,8 +53,12 @@ def _reduced_cal_matrix(object counts, float[::1] cals,
     cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
     cdef unsigned int MAX_DIST
+    cdef int num_terms = -1
 
     MAX_DIST = distance == num_bits
+    if not MAX_DIST:
+        num_terms = <int>hamming_terms(num_bits, distance, num_elems)
+
     cdef float[::1,:] W = np.zeros((num_elems, num_elems), order='F', dtype=np.float32)
 
     cdef float[::1] col_norms = np.zeros(num_elems, dtype=np.float32)
@@ -68,6 +78,7 @@ def _reduced_cal_matrix(object counts, float[::1] cals,
                     distance,
                     &W[0,0],
                     &col_norms[0],
+                    num_terms,
                     MAX_DIST)
 
     free(bitstrings)

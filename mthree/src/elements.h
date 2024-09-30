@@ -45,10 +45,10 @@ void column_elements(const unsigned char * __restrict bitstrings,
                      unsigned int distance,
                      float * W_ptr,
                      float *  col_norms_ptr,
+                     int num_terms,
                      bool MAX_DIST)
     {
       size_t jj;
-      int num_terms = -1;
 
       #pragma omp parallel for
       for (jj = 0; jj < num_elems; ++jj)
