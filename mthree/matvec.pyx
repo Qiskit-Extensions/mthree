@@ -67,7 +67,6 @@ cdef extern from "src/matvec.h" nogil:
                  bool MAX_DIST)
 
 
-
 cdef class M3MatVec():
     cdef unsigned char * bitstrings
     cdef float * col_norms
@@ -104,6 +103,12 @@ cdef class M3MatVec():
         
         compute_col_norms(self.col_norms, self.bitstrings, self.cals,
                           self.num_bits, self.num_elems, distance)
+    
+    def __dealloc__(self):
+        if self.bitstrings is not NULL:
+            free(self.bitstrings)
+        if self.col_norms is not NULL:
+            free(self.col_norms)
         
     @cython.boundscheck(False)
     def get_col_norms(self):
@@ -167,12 +172,6 @@ cdef class M3MatVec():
                 self.num_terms,
                 self.MAX_DIST)
         return np.asarray(out, dtype=np.float32)
-
-    def __dealloc__(self):
-        if self.bitstrings is not NULL:
-            free(self.bitstrings)
-        if self.col_norms is not NULL:
-            free(self.col_norms)
 
 
 @cython.boundscheck(False)
