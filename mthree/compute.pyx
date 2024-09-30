@@ -1,0 +1,114 @@
+# This code is part of Mthree.
+#
+# (C) Copyright IBM 2021.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+cimport cython
+from cython.parallel cimport prange
+
+@cython.boundscheck(False)
+@cython.cdivision(True)
+cdef inline unsigned int within_distance(unsigned int row,
+                                         unsigned int col,
+                                         const unsigned char * bitstrings,
+                                         unsigned int num_bits,
+                                         unsigned int distance) noexcept nogil:
+    """Computes the Hamming distance between two bitstrings.
+
+    Parameters:
+        row (unsigned int): The row index.
+        col (unsigned int): The col index.
+        bitstrings (unsigned char *): Pointer to array of all bitstrings.
+        num_bits (unsigned int): The number of bits in a bitstring.
+        distance (unsigned int): The distance to calculate out to.
+
+    Returns:
+        unsigned int: Are the bitstrings within given distance.
+    """
+
+    cdef size_t kk
+    cdef unsigned int temp_dist = 0
+    cdef unsigned int row_start = row*num_bits
+    cdef unsigned int col_start = col*num_bits
+
+    for kk in range(num_bits):
+        temp_dist += bitstrings[row_start+kk] != bitstrings[col_start+kk]
+    return temp_dist <= distance
+
+@cython.boundscheck(False)
+@cython.cdivision(True)
+cdef inline float compute_element(unsigned int row,
+                                   unsigned int col,
+                                   const unsigned char * bitstrings,
+                                   const float * cals,
+                                   unsigned int num_bits) noexcept nogil:
+    """Computes the matrix element specified by the input
+    bit strings from the supplied tensored cals data.
+
+    Parameters:
+        row_arr (unsigned char *): Basis element giving row index.
+        col_arr (unsigned char *): Basis element giving col index.
+        cals (const float *): Tensored calibration data.
+        num_qubits (unsigned int): Number of qubits in arrays
+
+    Returns:
+        float: Matrix element value.
+    """
+    cdef float res = 1
+    cdef size_t kk
+    cdef unsigned int offset
+    cdef unsigned int row_start = num_bits*row
+    cdef unsigned int col_start = num_bits*col
+    
+    for kk in range(num_bits):
+        offset = 2*bitstrings[row_start+kk]+bitstrings[col_start+kk]
+        res *= cals[4*kk+offset]
+    return res
+
+
+@cython.cdivision(True)
+cdef unsigned int binomial_coeff(unsigned int n, unsigned int k) noexcept nogil:
+    """Computes the binomial coefficient n choose k
+    
+    Parameters:
+        n (unsigned int):  Number of terms
+        k (unsigned int): Number to choose
+    
+    Returns:
+        unsigned int: Resulting number of possibilities
+    
+    """
+    if k > n:
+        return 0
+    elif k == 0 or k == n:
+        return 1
+    elif k ==1 or k == (n-1):
+        return n
+    elif k+k < n:
+        return (binomial_coeff(n-1, k-1) * n) / k
+    else:
+        return (binomial_coeff(n-1, k) * n) / (n-k)
+
+
+@cython.boundscheck(False)
+cdef unsigned int hamming_terms(unsigned int num_bits, unsigned int distance) noexcept nogil:
+    """Compute the total number of terms within a given Hamming distance
+    
+    Parameters:
+        num_bits (unsigned int): Number of bits in bit-strings
+        distance (unsigned int): Hamming distance to consider
+        
+    Returns:
+        unsigned int: Number of terms
+    """
+    cdef unsigned int out = 0
+    cdef unsigned int kk
+    for kk in range(distance+1):
+        out += binomial_coeff(num_bits, kk)
+    return out 

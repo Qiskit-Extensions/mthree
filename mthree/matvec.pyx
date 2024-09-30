@@ -21,20 +21,12 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 from cython.operator cimport dereference, postincrement
 
-from mthree.compute cimport within_distance
+from mthree.compute cimport within_distance, compute_element
 
 cdef extern from "src/distance.h" nogil:
     unsigned int hamming_terms(unsigned int num_bits,
                                unsigned int distance,
                                unsigned int num_elems)
-
-
-cdef extern from "src/elements.h" nogil:
-    float compute_element(unsigned int row,
-                          unsigned int col,
-                          const unsigned char * bitstrings,
-                          const float * cals,
-                          unsigned int num_bits)
 
 
 cdef extern from "src/col_renorm.h" nogil:
