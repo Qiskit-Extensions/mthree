@@ -86,7 +86,9 @@ for idx, ext in enumerate(CYTHON_EXTS):
                                include_dirs=INCLUDE_DIRS,
                                extra_compile_args=COMPILER_FLAGS+OPTIONAL_FLAGS,
                                extra_link_args=LINK_FLAGS+OPTIONAL_ARGS,
-                               language='c++')
+                               language='c++',
+                               define_macros=[("NPY_NO_DEPRECATED_API", 
+                                               "NPY_1_7_API_VERSION")])
     EXT_MODULES.append(mod)
 
 
