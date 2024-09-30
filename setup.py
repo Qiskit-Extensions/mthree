@@ -41,11 +41,11 @@ this_dir = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_dir, 'README.md'), encoding='utf-8') as readme:
     LONG_DESCRIPTION = readme.read()
 
-CYTHON_EXTS = ['compute', 'converters', 'hamming', 'matrix', 'probability', 'matvec'] + \
+CYTHON_EXTS = ['converters', 'hamming', 'matrix', 'probability', 'matvec'] + \
               ['expval', 'column_testing', 'converters_testing']
-CYTHON_MODULES = ['mthree']*7 + \
+CYTHON_MODULES = ['mthree']*6 + \
                  ['mthree.test']*2
-CYTHON_SOURCE_DIRS = ['mthree']*7 + \
+CYTHON_SOURCE_DIRS = ['mthree']*6 + \
                      ['mthree/test']*2
 
 # Add openmp flags
