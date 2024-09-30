@@ -68,6 +68,9 @@ if WITH_OMP or os.getenv("MTHREE_OPENMP", False):
         OPTIONAL_FLAGS = ['-fopenmp']
     OPTIONAL_ARGS = OPTIONAL_FLAGS
 
+if os.getenv("MTHREE_ARCH", False):
+    OPTIONAL_FLAGS.append('-march='+os.getenv("MTHREE_ARCH"))
+
 INCLUDE_DIRS = [np.get_include()]
 # Extra link args
 LINK_FLAGS = []
