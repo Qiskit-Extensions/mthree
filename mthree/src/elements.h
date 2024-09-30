@@ -13,6 +13,8 @@ that they have been altered from the originals.
 */
 #include <stddef.h>
 
+#pragma once
+
 static inline float compute_element(unsigned int row,
                                    unsigned int col,
                                    const unsigned char * __restrict bitstrings,

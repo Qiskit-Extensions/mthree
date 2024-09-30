@@ -18,12 +18,16 @@ that they have been altered from the originals.
 
 #pragma once
 
-void compute_col_norms(float * col_norms,
-                       const unsigned char * __restrict bitstrings,
-                       const float * __restrict cals,
-                       unsigned int num_bits,
-                       unsigned int num_elems,
-                       unsigned int distance)
+void matvec(const float * __restrict x,
+            float * out,
+            const float * __restrict col_norms,
+            const unsigned char * __restrict bitstrings,
+            const float * __restrict cals,
+            unsigned int num_bits,
+            unsigned int num_elems,
+            unsigned int distance,
+            int num_terms,
+            bool MAX_DIST)
     /**
    * @brief Computes the renormalization factor for each column of A-matrix
    *
@@ -36,31 +40,23 @@ void compute_col_norms(float * col_norms,
    */
     {
 
-      size_t col;
-      bool MAX_DIST = false;
-      int num_terms = -1;
-
-      if (distance == num_bits)
-      {
-        MAX_DIST = true;
-      }
-      else{
-        num_terms = (int)hamming_terms(num_bits, distance, num_elems); 
-      }
+      size_t row;
 
       #pragma omp parallel for
-      for (col = 0; col < num_elems; ++col)
+      for (row = 0; row < num_elems; ++row)
       {
+        float temp_elem, row_sum = 0;
+        size_t col;
         bool flag = false;
-        float col_norm = 0.0F;
-        size_t row;
         int terms = 0;
-        for (row = 0; row < num_elems; ++row)
+        for (col = 0; col < num_elems; ++col)
         {
           if (flag) continue;
           if (MAX_DIST || within_distance(row, col, bitstrings, num_bits, distance))
           {
-            col_norm += compute_element(row, col, bitstrings, cals, num_bits);
+            temp_elem = compute_element(row, col, bitstrings, cals, num_bits);
+            temp_elem /= col_norms[col];
+            row_sum += temp_elem * x[row];
             terms += 1;
             if (terms == num_terms)
             {
@@ -68,7 +64,6 @@ void compute_col_norms(float * col_norms,
             }
           }
         }
-        col_norms[col] = col_norm;
+        out[row] = row_sum;
       }
-
     }

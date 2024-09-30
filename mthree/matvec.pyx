@@ -23,6 +23,9 @@ from cython.operator cimport dereference, postincrement
 
 from mthree.compute cimport within_distance, compute_element
 
+cdef extern from "src/distance.h" nogil:
+    unsigned int hamming_terms(unsigned int num_bits, unsigned int distance, unsigned int num_elems)
+
 
 cdef extern from "src/col_renorm.h" nogil:
     void compute_col_norms(float * col_norms,
@@ -31,6 +34,19 @@ cdef extern from "src/col_renorm.h" nogil:
                            unsigned int num_bits,
                            unsigned int num_elems,
                            unsigned int distance)
+
+
+cdef extern from "src/matvec.h" nogil:
+    void matvec(float * x,
+                float * out,
+                float * col_norms,
+                const unsigned char * bitstrings,
+                const float * cals,
+                unsigned int num_bits,
+                unsigned int num_elems,
+                unsigned int distance,
+                int num_terms,
+                bool MAX_DIST)
 
 
 
@@ -43,6 +59,7 @@ cdef class M3MatVec():
     cdef public unsigned int num_bits
     cdef float * cals
     cdef public dict sorted_counts
+    cdef int num_terms
     
     def __cinit__(self, object counts, float[::1] cals, int distance=-1):
         
@@ -52,12 +69,15 @@ cdef class M3MatVec():
         self.num_bits = len(next(iter(counts)))
         self.cals = &cals[0]
         self.sorted_counts = counts_map
+        self.num_terms = -1
         
         if distance == -1:
             distance = self.num_bits
 
         self.distance = distance
         self.MAX_DIST = self.distance == self.num_bits
+        if not self.MAX_DIST:
+            self.num_terms = <int>hamming_terms(self.num_bits, self.distance, self.num_elems)
         
         self.bitstrings = <unsigned char *>malloc(self.num_bits*self.num_elems*sizeof(unsigned char))
         self.col_norms = <float *>malloc(self.num_elems*sizeof(float))
