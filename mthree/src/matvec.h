@@ -29,14 +29,18 @@ void matvec(const float * __restrict x,
             int num_terms,
             bool MAX_DIST)
     /**
-   * @brief Computes the renormalization factor for each column of A-matrix
+   * @brief Action of reduced A-matrix on a vector
    *
+   * @param x Pointer to input vector of data
+   * @param out Pointer to zeroed output vector
    * @param col_norms Pointer to where to store col norm data
    * @param bitstrings Pointer to array of bitstrings
    * @param cals Pointer to array containing calibration data
    * @param num_bits Number of bits in a single bit-string
    * @param num_elems Number of elements (dimension) of reduced A-matrix
    * @param distance Max Hamming distance
+   * @param num_terms Number of terms within hamming distance
+   * @param MAX_DIST Is the distance maximum (equal to number of bits)
    */
     {
 
@@ -65,5 +69,60 @@ void matvec(const float * __restrict x,
           }
         }
         out[row] = row_sum;
+      }
+    }
+
+
+void rmatvec(const float * __restrict x,
+             float * out,
+             const float * __restrict col_norms,
+             const unsigned char * __restrict bitstrings,
+             const float * __restrict cals,
+             unsigned int num_bits,
+             unsigned int num_elems,
+             unsigned int distance,
+             int num_terms,
+             bool MAX_DIST)
+    /**
+   * @brief Action of adjoint of reduced A-matrix on a vector
+   *
+   * @param x Pointer to input vector of data
+   * @param out Pointer to zeroed output vector
+   * @param col_norms Pointer to where to store col norm data
+   * @param bitstrings Pointer to array of bitstrings
+   * @param cals Pointer to array containing calibration data
+   * @param num_bits Number of bits in a single bit-string
+   * @param num_elems Number of elements (dimension) of reduced A-matrix
+   * @param distance Max Hamming distance
+   * @param num_terms Number of terms within hamming distance
+   * @param MAX_DIST Is the distance maximum (equal to number of bits)
+   */
+    {
+
+      size_t col;
+
+      #pragma omp parallel for
+      for (col = 0; col < num_elems; ++col)
+      {
+        float temp_elem, row_sum = 0;
+        size_t row;
+        bool flag = false;
+        int terms = 0;
+        for (row = 0; row < num_elems; ++row)
+        {
+          if (flag) continue;
+          if (MAX_DIST || within_distance(row, col, bitstrings, num_bits, distance))
+          {
+            temp_elem = compute_element(row, col, bitstrings, cals, num_bits);
+            temp_elem /= col_norms[col];
+            row_sum += temp_elem * x[row];
+            terms += 1;
+            if (terms == num_terms)
+            {
+              flag = true;
+            }
+          }
+        }
+        out[col] = row_sum;
       }
     }
