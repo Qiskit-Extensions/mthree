@@ -51,11 +51,9 @@ void matvec(const float * __restrict x,
       {
         float temp_elem, row_sum = 0;
         size_t col;
-        bool flag = false;
         int terms = 0;
         for (col = 0; col < num_elems; ++col)
         {
-          if (flag) continue;
           if (MAX_DIST || within_distance(row, col, bitstrings, num_bits, distance))
           {
             temp_elem = compute_element(row, col, bitstrings, cals, num_bits);
@@ -64,7 +62,7 @@ void matvec(const float * __restrict x,
             terms += 1;
             if (terms == num_terms)
             {
-              flag = true;
+              break;
             }
           }
         }
@@ -106,11 +104,9 @@ void rmatvec(const float * __restrict x,
       {
         float temp_elem, row_sum = 0;
         size_t row;
-        bool flag = false;
         int terms = 0;
         for (row = 0; row < num_elems; ++row)
         {
-          if (flag) continue;
           if (MAX_DIST || within_distance(row, col, bitstrings, num_bits, distance))
           {
             temp_elem = compute_element(row, col, bitstrings, cals, num_bits);
@@ -119,7 +115,7 @@ void rmatvec(const float * __restrict x,
             terms += 1;
             if (terms == num_terms)
             {
-              flag = true;
+              break;
             }
           }
         }
