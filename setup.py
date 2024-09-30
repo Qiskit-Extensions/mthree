@@ -76,7 +76,7 @@ if (sys.platform == 'win32' and os.environ.get('MSYSTEM', None) is None):
     COMPILER_FLAGS = ['/O3']
 # Everything else
 else:
-    COMPILER_FLAGS = ['-O3', '-std=c++17']
+    COMPILER_FLAGS = ['-O3', '-std=c++17', '-DNPY_NO_DEPRECATED_API=NPY_1_23_API_VERSION']
 
 EXT_MODULES = []
 # Add Cython Extensions
