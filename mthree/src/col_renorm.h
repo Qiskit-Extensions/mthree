@@ -51,20 +51,18 @@ void compute_col_norms(float * col_norms,
       #pragma omp parallel for
       for (col = 0; col < num_elems; ++col)
       {
-        bool flag = false;
         float col_norm = 0.0F;
         size_t row;
         int terms = 0;
         for (row = 0; row < num_elems; ++row)
         {
-          if (flag) continue;
           if (MAX_DIST || within_distance(row, col, bitstrings, num_bits, distance))
           {
             col_norm += compute_element(row, col, bitstrings, cals, num_bits);
             terms += 1;
             if (terms == num_terms)
             {
-              flag = true;
+              break;
             }
           }
         }
