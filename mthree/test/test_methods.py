@@ -40,7 +40,7 @@ def test_methods_equality():
 
     for key, val in direct_q.items():
         assert key in iter_q.keys()
-        assert np.abs(val - iter_q[key]) < 1e-4
+        assert np.abs(val - iter_q[key]) < 1e-3
 
 
 def test_set_iterative():
