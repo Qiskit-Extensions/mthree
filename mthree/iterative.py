@@ -11,6 +11,8 @@
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module, invalid-name
 """Iterative solver routines"""
+import logging
+import time
 import numpy as np
 import scipy.sparse.linalg as spla
 
@@ -18,6 +20,8 @@ from mthree.norms import ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.utils import counts_to_vector, vector_to_quasiprobs
 from mthree.exceptions import M3Error
+
+logger = logging.getLogger(__name__)
 
 
 def iterative_solver(
@@ -50,14 +54,20 @@ def iterative_solver(
         M3Error: Solver did not converge.
     """
     cals = mitigator._form_cals(qubits)
+    st = time.perf_counter()
     M = M3MatVec(dict(counts), cals, distance)
+    fin = time.perf_counter()
+    logger.info(f"MatVec build time is {fin-st}")
     L = spla.LinearOperator(
         (M.num_elems, M.num_elems),
         matvec=M.matvec,
         rmatvec=M.rmatvec,
         dtype=np.float32,
     )
+    st = time.perf_counter()
     diags = M.get_diagonal()
+    fin = time.perf_counter()
+    logger.info(f"Diagonal build time: {fin-st}")
 
     def precond_matvec(x):
         out = x / diags
@@ -66,8 +76,12 @@ def iterative_solver(
     P = spla.LinearOperator(
         (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
     )
+    st = time.perf_counter()
     vec = counts_to_vector(M.sorted_counts)
+    fin = time.perf_counter()
+    logger.info(f"Counts to vector time: {fin-st}")
 
+    st = time.perf_counter()
     out, error = spla.gmres(
         L,
         vec,
@@ -78,6 +92,8 @@ def iterative_solver(
         callback=callback,
         callback_type="legacy",
     )
+    fin = time.perf_counter()
+    logger.info(f"Iterative solver time: {fin-st}")
     if error:
         raise M3Error("GMRES did not converge: {}".format(error))
 
@@ -85,7 +101,10 @@ def iterative_solver(
     if return_mitigation_overhead:
         gamma = ainv_onenorm_est_iter(M, tol=tol, max_iter=max_iter)
 
+    st = time.perf_counter()
     quasi = vector_to_quasiprobs(out, M.sorted_counts)
+    fin = time.perf_counter()
+    logger.info(f"Vector to quasi time: {fin-st}")
     if details:
         return quasi, M.get_col_norms(), gamma
     return quasi, gamma

@@ -62,7 +62,7 @@ void matvec(const float * __restrict x,
             terms += 1;
             if (terms == num_terms)
             {
-              break;
+              break; /* Break out of col for-loop*/
             }
           }
         }
