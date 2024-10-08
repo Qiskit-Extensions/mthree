@@ -6,7 +6,7 @@ on:
     branches: [main]
 jobs:
   conda-test:
-    name: Tests on ${{ matrix.os }} using ${{ matrix.python-version }}
+    name: ${{ matrix.os }} using Py ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
