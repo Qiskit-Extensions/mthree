@@ -21,7 +21,6 @@ import logging
 
 import psutil
 import numpy as np
-import scipy.sparse.linalg as spla
 import orjson
 from qiskit.providers import BackendV2
 from qiskit_ibm_runtime import SamplerV2
@@ -33,11 +32,10 @@ from mthree.circuits import (
     balanced_cal_strings,
     balanced_cal_circuits,
 )
-from mthree.utils import counts_to_vector, vector_to_quasiprobs, gmres
 from mthree.direct import direct_solver as direct_solve
 from mthree.direct import reduced_cal_matrix as cal_matrix
-from mthree.norms import  ainv_onenorm_est_iter
-from mthree.matvec import M3MatVec
+from mthree.iterative import iterative_solver
+
 from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
 from ._helpers import system_info
@@ -639,7 +637,7 @@ class M3Mitigation:
 
             if details:
                 st = perf_counter()
-                mit_counts, col_norms, gamma = self._matvec_solver(
+                mit_counts, col_norms, gamma = iterative_solver(self,
                     counts,
                     qubits,
                     distance,
@@ -658,7 +656,7 @@ class M3Mitigation:
                 info["col_norms"] = col_norms
                 return mit_counts, info
             # pylint: disable=unbalanced-tuple-unpacking
-            mit_counts, gamma = self._matvec_solver(
+            mit_counts, gamma = iterative_solver(self,
                 counts,
                 qubits,
                 distance,
@@ -695,76 +693,6 @@ class M3Mitigation:
         """
         return cal_matrix(self, counts, qubits, distance)
 
-
-    def _matvec_solver(
-        self,
-        counts,
-        qubits,
-        distance,
-        tol=1e-5,
-        max_iter=25,
-        details=0,
-        callback=None,
-        return_mitigation_overhead=False,
-    ):
-        """Compute solution using GMRES and Jacobi preconditioning.
-
-        Parameters:
-            counts (dict): Input counts dict.
-            qubits (int): Qubits over which to calibrate.
-            tol (float): Tolerance to use.
-            max_iter (int): Maximum number of iterations to perform.
-            distance (int): Distance to correct for. Default=num_bits
-            details (bool): Return col norms.
-            callback (callable): Callback function to record iteration count.
-            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
-
-        Returns:
-            QuasiDistribution: dict of Quasiprobabilites
-
-        Raises:
-            M3Error: Solver did not converge.
-        """
-        cals = self._form_cals(qubits)
-        M = M3MatVec(dict(counts), cals, distance)
-        L = spla.LinearOperator(
-            (M.num_elems, M.num_elems),
-            matvec=M.matvec,
-            rmatvec=M.rmatvec,
-            dtype=np.float32,
-        )
-        diags = M.get_diagonal()
-
-        def precond_matvec(x):
-            out = x / diags
-            return out
-
-        P = spla.LinearOperator(
-            (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
-        )
-        vec = counts_to_vector(M.sorted_counts)
-
-        out, error = gmres(
-            L,
-            vec,
-            rtol=tol,
-            atol=tol,
-            maxiter=max_iter,
-            M=P,
-            callback=callback,
-            callback_type="legacy",
-        )
-        if error:
-            raise M3Error("GMRES did not converge: {}".format(error))
-
-        gamma = None
-        if return_mitigation_overhead:
-            gamma = ainv_onenorm_est_iter(M, tol=tol, max_iter=max_iter)
-
-        quasi = vector_to_quasiprobs(out, M.sorted_counts)
-        if details:
-            return quasi, M.get_col_norms(), gamma
-        return quasi, gamma
 
     def readout_fidelity(self, qubits=None):
         """Compute readout fidelity for calibrated qubits.

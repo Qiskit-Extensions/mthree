@@ -25,7 +25,6 @@ Utility functions
 
 """
 import numpy as np
-import scipy.sparse.linalg as spla
 
 from qiskit.result import marginal_distribution as marg_dist
 from mthree.exceptions import M3Error
@@ -35,8 +34,6 @@ from mthree.classes import (
     QuasiCollection,
     ProbCollection,
 )
-
-gmres = spla.gmres
 
 
 def final_measurement_mapping(circuit):
