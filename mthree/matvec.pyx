@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # cython: c_string_type=unicode, c_string_encoding=UTF-8
+import logging
 cimport cython
 from cython.parallel cimport prange
 import numpy as np
@@ -20,6 +21,7 @@ from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.string cimport string
 from cython.operator cimport dereference, postincrement
+
 
 cdef extern from "src/distance.h" nogil:
     unsigned int hamming_terms(unsigned int num_bits,
@@ -66,6 +68,7 @@ cdef extern from "src/matvec.h" nogil:
                  int num_terms,
                  bool MAX_DIST)
 
+logger = logging.getLogger(__name__)
 
 cdef class M3MatVec():
     cdef unsigned char * bitstrings
@@ -95,6 +98,8 @@ cdef class M3MatVec():
         self.MAX_DIST = self.distance == self.num_bits
         if not self.MAX_DIST:
             self.num_terms = <int>hamming_terms(self.num_bits, self.distance, self.num_elems)
+        
+        logger.info(f"Number of Hamming terms: {self.num_terms}")
         
         self.bitstrings = <unsigned char *>malloc(self.num_bits*self.num_elems*sizeof(unsigned char))
         self.col_norms = <float *>malloc(self.num_elems*sizeof(float))

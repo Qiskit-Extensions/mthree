@@ -667,9 +667,10 @@ class M3Mitigation:
                 tol,
                 max_iter,
                 0,
-                None,
+                callback,
                 return_mitigation_overhead,
             )
+            logger.info(f"Number of GMRES iterations: {iter_count[0]}")
             mit_counts.shots = shots
             if gamma is not None:
                 mit_counts.mitigation_overhead = gamma * gamma
