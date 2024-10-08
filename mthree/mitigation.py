@@ -21,7 +21,6 @@ import logging
 
 import psutil
 import numpy as np
-import scipy.linalg as la
 import scipy.sparse.linalg as spla
 import orjson
 from qiskit.providers import BackendV2
@@ -34,9 +33,10 @@ from mthree.circuits import (
     balanced_cal_strings,
     balanced_cal_circuits,
 )
-from mthree.matrix import _reduced_cal_matrix
 from mthree.utils import counts_to_vector, vector_to_quasiprobs, gmres
-from mthree.norms import ainv_onenorm_est_lu, ainv_onenorm_est_iter
+from mthree.direct import direct_solver as direct_solve
+from mthree.direct import reduced_cal_matrix as cal_matrix
+from mthree.norms import  ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.exceptions import M3Error
 from mthree.classes import QuasiCollection
@@ -620,9 +620,7 @@ class M3Mitigation:
 
         if method == "direct":
             st = perf_counter()
-            mit_counts, col_norms, gamma = self._direct_solver(
-                counts, qubits, distance, return_mitigation_overhead
-            )
+            mit_counts, col_norms, gamma = direct_solve(self, counts, qubits, distance, return_mitigation_overhead)
             dur = perf_counter() - st
             mit_counts.shots = shots
             if gamma is not None:
@@ -677,6 +675,7 @@ class M3Mitigation:
 
         else:
             raise M3Error("Invalid method: {}".format(method))
+        
 
     def reduced_cal_matrix(self, counts, qubits, distance=None):
         """Return the reduced calibration matrix used in the solution.
@@ -694,51 +693,8 @@ class M3Mitigation:
             M3Error: If bit-string length does not match passed number
                      of qubits.
         """
-        counts = dict(counts)
-        # If distance is None, then assume max distance.
-        num_bits = len(qubits)
-        if distance is None:
-            distance = num_bits
+        return cal_matrix(self, counts, qubits, distance)
 
-        # check if len of bitstrings does not equal number of qubits passed.
-        bitstring_len = len(next(iter(counts)))
-        if bitstring_len != num_bits:
-            raise M3Error(
-                "Bitstring length ({}) does not match".format(bitstring_len)
-                + " number of qubits ({})".format(num_bits)
-            )
-
-        cals = self._form_cals(qubits)
-        A, counts, _ = _reduced_cal_matrix(counts, cals, num_bits, distance)
-        return A, counts
-
-    def _direct_solver(
-        self, counts, qubits, distance=None, return_mitigation_overhead=False
-    ):
-        """Apply the mitigation using direct LU factorization.
-
-        Parameters:
-            counts (dict): Input counts dict.
-            qubits (int): Qubits over which to calibrate.
-            distance (int): Distance to correct for. Default=num_bits
-            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
-
-        Returns:
-            QuasiDistribution: dict of Quasiprobabilites
-        """
-        cals = self._form_cals(qubits)
-        num_bits = len(qubits)
-        A, sorted_counts, col_norms = _reduced_cal_matrix(
-            counts, cals, num_bits, distance
-        )
-        vec = counts_to_vector(sorted_counts)
-        LU = la.lu_factor(A, check_finite=False)
-        x = la.lu_solve(LU, vec, check_finite=False)
-        gamma = None
-        if return_mitigation_overhead:
-            gamma = ainv_onenorm_est_lu(A, LU)
-        out = vector_to_quasiprobs(x, sorted_counts)
-        return out, col_norms, gamma
 
     def _matvec_solver(
         self,
