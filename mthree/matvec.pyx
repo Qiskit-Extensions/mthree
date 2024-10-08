@@ -98,8 +98,6 @@ cdef class M3MatVec():
         self.MAX_DIST = self.distance == self.num_bits
         if not self.MAX_DIST:
             self.num_terms = <int>hamming_terms(self.num_bits, self.distance, self.num_elems)
-        # Reevaluate if using max distance
-        self.MAX_DIST = self.num_terms == self.num_elems
         
         logger.info(f"Number of Hamming terms: {self.num_terms}")
         
