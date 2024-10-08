@@ -14,7 +14,7 @@
 import numpy as np
 import scipy.sparse.linalg as spla
 
-from mthree.norms import  ainv_onenorm_est_iter
+from mthree.norms import ainv_onenorm_est_iter
 from mthree.matvec import M3MatVec
 from mthree.utils import counts_to_vector, vector_to_quasiprobs
 from mthree.exceptions import M3Error

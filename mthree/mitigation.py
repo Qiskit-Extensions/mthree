@@ -106,7 +106,7 @@ class M3Mitigation:
 
         # Reverse index qubits for easier indexing later
         for kk, qubit in enumerate(qubits[::-1]):
-            cals[4 * kk: 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
+            cals[4 * kk : 4 * kk + 4] = self.single_qubit_cals[qubit].ravel()
         return cals
 
     def tensored_cals_from_system(
@@ -415,9 +415,9 @@ class M3Mitigation:
         # Get the slice length
         circ_slice = ceil(num_circs / num_jobs)
         circs_list = [
-            trans_qcs[kk * circ_slice: (kk + 1) * circ_slice]
+            trans_qcs[kk * circ_slice : (kk + 1) * circ_slice]
             for kk in range(num_jobs - 1)
-        ] + [trans_qcs[(num_jobs - 1) * circ_slice:]]
+        ] + [trans_qcs[(num_jobs - 1) * circ_slice :]]
         # Do job submission here
         jobs = []
         if self.rep_delay:
@@ -618,9 +618,9 @@ class M3Mitigation:
 
         if method == "direct":
             st = perf_counter()
-            mit_counts, col_norms, gamma = direct_solve(self, counts,
-                                                        qubits, distance,
-                                                        return_mitigation_overhead)
+            mit_counts, col_norms, gamma = direct_solve(
+                self, counts, qubits, distance, return_mitigation_overhead
+            )
             dur = perf_counter() - st
             mit_counts.shots = shots
             if gamma is not None:
@@ -639,7 +639,8 @@ class M3Mitigation:
 
             if details:
                 st = perf_counter()
-                mit_counts, col_norms, gamma = iterative_solver(self,
+                mit_counts, col_norms, gamma = iterative_solver(
+                    self,
                     counts,
                     qubits,
                     distance,
@@ -658,7 +659,8 @@ class M3Mitigation:
                 info["col_norms"] = col_norms
                 return mit_counts, info
             # pylint: disable=unbalanced-tuple-unpacking
-            mit_counts, gamma = iterative_solver(self,
+            mit_counts, gamma = iterative_solver(
+                self,
                 counts,
                 qubits,
                 distance,
@@ -675,7 +677,6 @@ class M3Mitigation:
 
         else:
             raise M3Error("Invalid method: {}".format(method))
-
 
     def reduced_cal_matrix(self, counts, qubits, distance=None):
         """Return the reduced calibration matrix used in the solution.
@@ -694,7 +695,6 @@ class M3Mitigation:
                      of qubits.
         """
         return cal_matrix(self, counts, qubits, distance)
-
 
     def readout_fidelity(self, qubits=None):
         """Compute readout fidelity for calibrated qubits.

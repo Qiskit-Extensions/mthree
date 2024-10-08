@@ -54,8 +54,9 @@ def reduced_cal_matrix(mitigator, counts, qubits, distance=None):
     return A, counts
 
 
-
-def direct_solver(mitigator, counts, qubits, distance=None, return_mitigation_overhead=False):
+def direct_solver(
+    mitigator, counts, qubits, distance=None, return_mitigation_overhead=False
+):
     """Apply the mitigation using direct LU factorization.
 
     Parameters:
@@ -69,9 +70,7 @@ def direct_solver(mitigator, counts, qubits, distance=None, return_mitigation_ov
     """
     cals = mitigator._form_cals(qubits)
     num_bits = len(qubits)
-    A, sorted_counts, col_norms = _reduced_cal_matrix(
-        counts, cals, num_bits, distance
-    )
+    A, sorted_counts, col_norms = _reduced_cal_matrix(counts, cals, num_bits, distance)
     vec = counts_to_vector(sorted_counts)
     LU = la.lu_factor(A, check_finite=False)
     x = la.lu_solve(LU, vec, check_finite=False)
