@@ -35,12 +35,12 @@ def test_methods_equality():
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system()
 
-    iter_q = mit.apply_correction(raw_counts, range(5), method="iterative")
-    direct_q = mit.apply_correction(raw_counts, range(5), method="direct")
+    iter_q = mit.apply_correction(raw_counts, range(5), distance=-1, method="iterative")
+    direct_q = mit.apply_correction(raw_counts, range(5), distance=-1, method="direct")
 
     for key, val in direct_q.items():
         assert key in iter_q.keys()
-        assert np.abs(val - iter_q[key]) < 1e-5
+        assert np.abs(val - iter_q[key]) < 1e-3
 
 
 def test_set_iterative():

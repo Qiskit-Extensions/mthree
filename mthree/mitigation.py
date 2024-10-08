@@ -448,7 +448,7 @@ class M3Mitigation:
         distance=None,
         method="auto",
         max_iter=25,
-        tol=1e-5,
+        tol=1e-3,
         return_mitigation_overhead=False,
         details=False,
     ):
@@ -460,7 +460,7 @@ class M3Mitigation:
             distance (int): Distance to correct for. Default=num_bits
             method (str): Solution method: 'auto', 'direct' or 'iterative'.
             max_iter (int): Max. number of iterations, Default=25.
-            tol (float): Convergence tolerance of iterative method, Default=1e-5.
+            tol (float): Convergence tolerance of iterative method, Default=1e-3.
             return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
             details (bool): Return extra info, default=False.
 
@@ -579,10 +579,12 @@ class M3Mitigation:
         counts = dict(counts)
         shots = sum(counts.values())
 
-        # If distance is None, then assume max distance.
+        # If distance is None, then assume min(num_bits, 3).
         num_bits = len(qubits)
         num_elems = len(counts)
         if distance is None:
+            distance = min(num_bits,3)
+        elif distance == -1: # shortcut for setting max distance
             distance = num_bits
 
         # check if len of bitstrings does not equal number of qubits passed.
