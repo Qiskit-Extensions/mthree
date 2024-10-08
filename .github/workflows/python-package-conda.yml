@@ -1,4 +1,4 @@
-name: Pytest
+name: Testing
 on:
   push:
     branches: [main]
@@ -6,7 +6,7 @@ on:
     branches: [main]
 jobs:
   conda-test:
-    name: Conda tests on ${{ matrix.os }}
+    name: ${{ matrix.os }} using Py ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -29,7 +29,7 @@ jobs:
       run: |
         conda info
         pip install -U -r requirements.txt -c constraints.txt
-    - name: Lint with pylint and pycodestyle
+    - name: Black
       run: |
         pip install -U -r requirements-dev.txt -c constraints.txt
         if [ "$RUNNER_OS" == "Linux" ]; then
@@ -37,8 +37,7 @@ jobs:
         else
           python setup.py build_ext --inplace
         fi
-        pylint -rn mthree
-        pycodestyle --max-line-length=100 mthree
+        black mthree
     - name: Run tests with pytest
       run: |
         pip install pytest

@@ -17,7 +17,6 @@ import scipy.linalg as la
 import scipy.sparse.linalg as spla
 
 from mthree.exceptions import M3Error
-from mthree.utils import gmres
 
 
 def ainv_onenorm_est_lu(A, LU=None):
@@ -140,12 +139,12 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
     v = (1.0 / dims) * np.ones(dims, dtype=np.float32)
 
     # Initial solve
-    v, error = gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
+    v, error = spla.gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
         raise M3Error("Iterative solver error {}".format(error))
     gamma = la.norm(v, 1)
     eta = np.sign(v)
-    x, error = gmres(LT, eta, rtol=tol, atol=tol, maxiter=max_iter, M=P)
+    x, error = spla.gmres(LT, eta, rtol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
         raise M3Error("Iterative solver error {}".format(error))
     # loop over reasonable number of trials
@@ -155,7 +154,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
         idx = np.where(np.abs(x) == x_nrm)[0][0]
         v = np.zeros(dims, dtype=np.float32)
         v[idx] = 1
-        v, error = gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
+        v, error = spla.gmres(L, v, rtol=tol, atol=tol, maxiter=max_iter, M=P)
         if error:
             raise M3Error("Iterative solver error {}".format(error))
         gamma_prime = gamma
@@ -165,7 +164,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
             break
 
         eta = np.sign(v)
-        x, error = gmres(LT, eta, rtol=tol, atol=tol, maxiter=max_iter, M=P)
+        x, error = spla.gmres(LT, eta, rtol=tol, atol=tol, maxiter=max_iter, M=P)
         if error:
             raise M3Error("Iterative solver error {}".format(error))
         if la.norm(x, np.inf) == x[idx]:
@@ -176,7 +175,7 @@ def ainv_onenorm_est_iter(M, tol=1e-5, max_iter=25):
     x = np.arange(1, dims + 1, dtype=np.float32)
     x = (-1) ** (x + 1) * (1 + (x - 1) / (dims - 1))
 
-    x, error = gmres(L, x, rtol=tol, atol=tol, maxiter=max_iter, M=P)
+    x, error = spla.gmres(L, x, rtol=tol, atol=tol, maxiter=max_iter, M=P)
     if error:
         raise M3Error("Iterative solver error {}".format(error))
 

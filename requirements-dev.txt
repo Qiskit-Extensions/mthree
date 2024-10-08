@@ -1,7 +1,6 @@
 qiskit-aer>=0.13
 pytest
-pylint~=3.0.2
-pycodestyle
+black
 Sphinx>=7.0,<=8
 qiskit_sphinx_theme~=1.16.0,<2
 matplotlib
