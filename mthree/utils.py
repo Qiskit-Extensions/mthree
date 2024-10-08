@@ -24,7 +24,6 @@ Utility functions
    marginal_distribution
 
 """
-import functools
 import numpy as np
 import scipy.sparse.linalg as spla
 
