@@ -1,4 +1,4 @@
-name: Pytest
+name: Testing
 on:
   push:
     branches: [main]
@@ -6,7 +6,7 @@ on:
     branches: [main]
 jobs:
   conda-test:
-    name: Conda tests on ${{ matrix.os }}
+    name: Tests on ${{ matrix.os }} using ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     defaults:
       run:
