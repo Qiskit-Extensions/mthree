@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module, invalid-name
+"""Iterative solver routines"""
 import numpy as np
 import scipy.sparse.linalg as spla
 

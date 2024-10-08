@@ -10,6 +10,7 @@
 # copyright notice, and modified files need to carry a notice indicating
 # that they have been altered from the originals.
 # pylint: disable=no-name-in-module, invalid-name
+"""Direct solver routines"""
 import scipy.linalg as la
 
 from mthree.matrix import _reduced_cal_matrix

@@ -618,7 +618,9 @@ class M3Mitigation:
 
         if method == "direct":
             st = perf_counter()
-            mit_counts, col_norms, gamma = direct_solve(self, counts, qubits, distance, return_mitigation_overhead)
+            mit_counts, col_norms, gamma = direct_solve(self, counts,
+                                                        qubits, distance,
+                                                        return_mitigation_overhead)
             dur = perf_counter() - st
             mit_counts.shots = shots
             if gamma is not None:
