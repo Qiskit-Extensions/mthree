@@ -675,7 +675,7 @@ class M3Mitigation:
 
         else:
             raise M3Error("Invalid method: {}".format(method))
-        
+
 
     def reduced_cal_matrix(self, counts, qubits, distance=None):
         """Return the reduced calibration matrix used in the solution.
