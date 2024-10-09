@@ -77,7 +77,7 @@ def iterative_solver(
         (M.num_elems, M.num_elems), precond_matvec, dtype=np.float32
     )
     st = time.perf_counter()
-    vec = counts_to_vector(M.sorted_counts)
+    vec = np.asarray(M.probs, np.float32)
     fin = time.perf_counter()
     logger.info(f"Counts to vector time: {fin-st}")
 
