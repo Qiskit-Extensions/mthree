@@ -13,11 +13,20 @@
 from libcpp.map cimport map
 from libcpp.string cimport string
 
+
 cdef void counts_to_internal(map[string, float] * counts,
                              unsigned char * vec,
                              float * probs,
                              unsigned int num_bits,
                              float shots)
 
+
 cdef void internal_to_probs(map[string, float] * counts,
                             float * probs)
+
+
+cdef void _core_counts_to_bp(map[string, float] * counts_map,
+                             unsigned int num_bits,
+                             float shots,
+                             unsigned char * bitstrings,
+                             float * probs)

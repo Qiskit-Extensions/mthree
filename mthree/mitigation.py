@@ -583,8 +583,8 @@ class M3Mitigation:
         num_bits = len(qubits)
         num_elems = len(counts)
         if distance is None:
-            distance = min(num_bits,3)
-        elif distance == -1: # shortcut for setting max distance
+            distance = min(num_bits, 3)
+        elif distance == -1:  # shortcut for setting max distance
             distance = num_bits
 
         # check if len of bitstrings does not equal number of qubits passed.

@@ -16,11 +16,13 @@ from cython.parallel cimport prange
 import numpy as np
 cimport numpy as np
 np.import_array()
-from libc.stdlib cimport malloc, free
+
 from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.string cimport string
 from cython.operator cimport dereference, postincrement
+
+from mthree.converters cimport _core_counts_to_bp
 
 
 cdef extern from "src/distance.h" nogil:
@@ -71,13 +73,14 @@ cdef extern from "src/matvec.h" nogil:
 logger = logging.getLogger(__name__)
 
 cdef class M3MatVec():
-    cdef unsigned char * bitstrings
-    cdef float * col_norms
+    cdef public unsigned char[::1] bitstrings
+    cdef public float[::1] probs
+    cdef float[::1] col_norms
     cdef bool MAX_DIST
     cdef unsigned int distance
     cdef public unsigned int num_elems
     cdef public unsigned int num_bits
-    cdef float * cals
+    cdef float[::1] cals
     cdef public dict sorted_counts
     cdef int num_terms
     
@@ -87,7 +90,7 @@ cdef class M3MatVec():
         cdef map[string, float] counts_map = counts
         self.num_elems = counts_map.size()
         self.num_bits = len(next(iter(counts)))
-        self.cals = &cals[0]
+        self.cals = cals
         self.sorted_counts = counts_map
         self.num_terms = -1
         
@@ -101,19 +104,16 @@ cdef class M3MatVec():
         
         logger.info(f"Number of Hamming terms: {self.num_terms}")
         
-        self.bitstrings = <unsigned char *>malloc(self.num_bits*self.num_elems*sizeof(unsigned char))
-        self.col_norms = <float *>malloc(self.num_elems*sizeof(float))
+        self.bitstrings = np.empty(self.num_bits*self.num_elems, np.uint8)
+        self.probs = np.empty(self.num_elems, np.float32)
+        self.col_norms = np.empty(self.num_elems, np.float32)
+
+        _core_counts_to_bp(&counts_map, self.num_bits, shots,
+                           &self.bitstrings[0], &self.probs[0])
         
-        counts_to_bitstrings(&counts_map, self.bitstrings, self.num_bits)
-        
-        compute_col_norms(self.col_norms, self.bitstrings, self.cals,
+        compute_col_norms(&self.col_norms[0], &self.bitstrings[0], &self.cals[0],
                           self.num_bits, self.num_elems, distance)
-    
-    def __dealloc__(self):
-        if self.bitstrings is not NULL:
-            free(self.bitstrings)
-        if self.col_norms is not NULL:
-            free(self.col_norms)
+
         
     @cython.boundscheck(False)
     def get_col_norms(self):
@@ -136,8 +136,8 @@ cdef class M3MatVec():
         cdef float temp_elem
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         for kk in range(self.num_elems):
-            temp_elem = compute_element(kk, kk,self.bitstrings,
-                                        self.cals, self.num_bits)
+            temp_elem = compute_element(kk, kk,&self.bitstrings[0],
+                                        &self.cals[0], self.num_bits)
             temp_elem /= self.col_norms[kk]
             out[kk] = temp_elem
         return np.asarray(out, dtype=np.float32)
@@ -150,9 +150,9 @@ cdef class M3MatVec():
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         matvec(&x[0],
                &out[0],
-               self.col_norms,
-               self.bitstrings,
-               self.cals,
+               &self.col_norms[0],
+               &self.bitstrings[0],
+               &self.cals[0],
                self.num_bits,
                self.num_elems,
                self.distance,
@@ -168,9 +168,9 @@ cdef class M3MatVec():
         cdef float[::1] out = np.empty(self.num_elems, dtype=np.float32)
         rmatvec(&x[0],
                 &out[0],
-                self.col_norms,
-                self.bitstrings,
-                self.cals,
+                &self.col_norms[0],
+                &self.bitstrings[0],
+                &self.cals[0],
                 self.num_bits,
                 self.num_elems,
                 self.distance,
