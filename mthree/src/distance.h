@@ -47,7 +47,7 @@ static inline bool within_distance(unsigned int row,
   }
 
 
-static inline long long binomial_coeff(unsigned int n, unsigned int k)
+static inline unsigned int binomial_coeff(unsigned int n, unsigned int k)
   {
     if (k > n)
       {
